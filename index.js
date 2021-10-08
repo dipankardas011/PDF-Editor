@@ -1,7 +1,7 @@
 const PDFMerger = require('pdf-merger-js');
 
 var merger = new PDFMerger();
-
+var merger2 = new PDFMerger();
 (async()=>{
   merger.add('./01.pdf');
   merger.add('./02.pdf');
@@ -11,6 +11,9 @@ var merger = new PDFMerger();
    * merger.add('pdf3.pdf', '1 to 2'); //merge pages 1 to 2
    * merger.add('pdf3.pdf', '3-4'); //merge pages 3 to 4
    */
+  merger2.add('011.pdf'); // merge the pages 1 and 3
+  merger2.add('012.pdf'); // merge the pages 1 and 3
   
-  await merger.save('merged.pdf');
+  await merger.save('merged1.pdf');
+  await merger2.save('merged2.pdf');
 })();
