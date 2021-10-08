@@ -1,0 +1,26 @@
+{
+  "name": "merge-pdf",
+  "version": "1.0.0",
+  "description": "To be able to merge PDF",
+  "main": "index.js",
+  "scripts": {
+    "install": "npm i pdf-merger-js",
+    "start": "node ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dipsonu10/Merge-PDF.git"
+  },
+  "keywords": [
+    "PDF"
+  ],
+  "author": "Dipankar Das",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/dipsonu10/Merge-PDF/issues"
+  },
+  "homepage": "https://github.com/dipsonu10/Merge-PDF#readme",
+  "dependencies": {
+    "pdf-merger-js": "^3.2.1"
+  }
+}
