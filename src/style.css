@@ -1,3 +1,16 @@
 :root {
     background-color: antiquewhite;
 }
+.belowh1 {
+    border-bottom: 0ch;
+    border-right: 0ch;
+    border-left: 0ch;
+    border-top: 10px solid blueviolet;
+    border-style: dotted;
+}
+h1 {
+    font-size: 50px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    text-shadow: 4px 4px 2px pink;
+}
