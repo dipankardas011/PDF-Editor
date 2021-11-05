@@ -14,3 +14,58 @@ h1 {
     text-align: center;
     text-shadow: 4px 4px 2px pink;
 }
+#navbar {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+
+    width: 100%;
+    background-color: #4eaa4e;
+}
+
+nav ul {
+    margin: 0px;
+    padding: 5px 0px 5px 30px;
+}
+
+nav li {
+    display: inline;
+    margin-right: 20px;
+}
+
+a:link, a:visited {
+    color: rebeccapurple;
+    font-weight: bold;
+}
+
+a:hover {
+    color:hotpink;
+}
+
+.Search {
+    position: absolute;
+    top: 2px;
+    right: 40px;
+}
+
+.SearchButton {
+    position: absolute;
+    top: 2px;
+    right: 0px;
+    color: #c91b1b;
+    background-color: rgb(147, 216, 193);
+    border-radius: 10%;
+}
+
+.btn {
+    background-color: DodgerBlue;
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.btn:hover {
+    background-color: RoyalBlue;
+}
