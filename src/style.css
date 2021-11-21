@@ -1,18 +1,34 @@
 :root {
-    background-color: antiquewhite;
+    --background: #1b1129;
+    --navbarbg: #459c45;
+    --hyperlinkText: #522b79;
+    --hyperlinkHover: #aa4376;
+    --buttonBackground: #3e80c2;
+    --buttonBackgroundHover: #2d57d6;
+    --textColor: #fff;
+    --h1TextColor: rgb(203, 80, 219);
+}
+
+body {
+    background-color: var(--background);
+}
+
+p, main {
+    color: var(--textColor);
 }
 .belowh1 {
     border-bottom: 0ch;
     border-right: 0ch;
     border-left: 0ch;
-    border-top: 10px solid blueviolet;
+    border-top: 10px solid rgb(127, 52, 197);
     border-style: dotted;
 }
 h1 {
     font-size: 50px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: center;
-    text-shadow: 4px 4px 2px pink;
+    color: var(--h1TextColor);
+    text-shadow: 4px 4px 2px rgb(151, 70, 84);
 }
 #navbar {
     position: fixed;
@@ -20,7 +36,7 @@ h1 {
     left: 0px;
 
     width: 100%;
-    background-color: #4eaa4e;
+    background-color: var(--navbarbg);
 }
 
 nav ul {
@@ -34,31 +50,16 @@ nav li {
 }
 
 a:link, a:visited {
-    color: rebeccapurple;
+    color: var(--hyperlinkText);
     font-weight: bold;
 }
 
 a:hover {
-    color:hotpink;
-}
-
-.Search {
-    position: absolute;
-    top: 2px;
-    right: 40px;
-}
-
-.SearchButton {
-    position: absolute;
-    top: 2px;
-    right: 0px;
-    color: #c91b1b;
-    background-color: rgb(147, 216, 193);
-    border-radius: 10%;
+    color: var(--hyperlinkHover);
 }
 
 .btn {
-    background-color: DodgerBlue;
+    background-color: var(--buttonBackground);
     border: none;
     color: white;
     padding: 12px 30px;
@@ -67,5 +68,11 @@ a:hover {
 }
 
 .btn:hover {
-    background-color: RoyalBlue;
+    background-color: var(--buttonBackgroundHover);
 }
+
+@media screen and (min-width: 40em){
+    
+}
+
+@media screen and (min-width: 70em) {}
