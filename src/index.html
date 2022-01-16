@@ -15,31 +15,34 @@
   <hr class="belowh1">
   <nav id="navbar">
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="">MergePDF</a></li>
+      <li><a href="#">Home</a></li>
+      <li><a href="About.html">About</a></li>
     </ul>
   </nav>
 
   <main>
-    <p>
-      Here the select 2 files you want to merge
-      <br>
-      from the file selector menu
-    </p>
-    <form action="/action_page.php">
-      <input type="file" id="myFile" name="filename">
-      <input type="submit">
-    </form>
-    <br>
+    <!-- you file is ready to download
+    <button class="btn"><i class="fa fa-download"></i> Download</button> -->
 
-    you file is ready to download
-    <button class="btn"><i class="fa fa-download"></i> Download</button>
+    <div>
+      Upload file 1
+      <form action="main.js" method="post">
+        <caption>File 2</caption>
+        <input type="file" class="file1">
+        <input type="submit" class="Submit1">
+      </form>
+
+      Upload file 2
+      <form action="main.js" method="post">
+        <caption>File 2</caption>
+        <input type="file" class="file2">
+        <input type="submit" class="Submit2">
+      </form>
+    </div>
   </main>
 
   <footer>
-    <p>
-      Thanks for visiting to our page
-    </p>
+    Thanks for visiting to our page
   </footer>
 </body>
 
