@@ -76,3 +76,9 @@ a:hover {
 }
 
 @media screen and (min-width: 70em) {}
+
+footer {
+    padding-top: 20px;
+    color: #459c45;
+    margin-top: solid var(--navbarbg) 5px;
+}
