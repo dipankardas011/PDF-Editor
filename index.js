@@ -1,4 +1,4 @@
-const PDFMerger = require('pdf-merger-js');
+import PDFMerger from 'pdf-merger-js';
 
 var merger = new PDFMerger();
 var merger2 = new PDFMerger();

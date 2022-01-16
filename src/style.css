@@ -1,0 +1,84 @@
+:root {
+    --background: #1b1129;
+    --navbarbg: #459c45;
+    --hyperlinkText: #522b79;
+    --hyperlinkHover: #aa4376;
+    --buttonBackground: #3e80c2;
+    --buttonBackgroundHover: #2d57d6;
+    --textColor: #fff;
+    --h1TextColor: rgb(203, 80, 219);
+}
+
+body {
+    background-color: var(--background);
+}
+
+p, main {
+    color: var(--textColor);
+}
+.belowh1 {
+    border-bottom: 0ch;
+    border-right: 0ch;
+    border-left: 0ch;
+    border-top: 10px solid rgb(127, 52, 197);
+    border-style: dotted;
+}
+h1 {
+    font-size: 50px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    color: var(--h1TextColor);
+    text-shadow: 4px 4px 2px rgb(151, 70, 84);
+}
+#navbar {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+
+    width: 100%;
+    background-color: var(--navbarbg);
+}
+
+nav ul {
+    margin: 0px;
+    padding: 5px 0px 5px 30px;
+}
+
+nav li {
+    display: inline;
+    margin-right: 20px;
+}
+
+a:link, a:visited {
+    color: var(--hyperlinkText);
+    font-weight: bold;
+}
+
+a:hover {
+    color: var(--hyperlinkHover);
+}
+
+.btn {
+    background-color: var(--buttonBackground);
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.btn:hover {
+    background-color: var(--buttonBackgroundHover);
+}
+
+@media screen and (min-width: 40em){
+    
+}
+
+@media screen and (min-width: 70em) {}
+
+footer {
+    padding-top: 20px;
+    color: #459c45;
+    margin-top: solid var(--navbarbg) 5px;
+}
