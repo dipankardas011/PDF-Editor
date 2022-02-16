@@ -4,8 +4,16 @@ website that can merge PDFs
 ## Inital build
 [Package Used](https://www.npmjs.com/package/pdf-merger-js)
 
-### Status
-figuring out tech stack and other pieces
+### Tech Stack
+* GO
+* JS / TS
+* Docker
+* HTML
+* redis DB
+
+## Currently Worked on by
+@umgbhalla
+@dipankardas011
 
 ### Links
 
