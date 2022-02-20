@@ -51,3 +51,23 @@ flowchart LR;
 ```
 
 Going by Type1
+
+# How to Run
+
+```bash
+./Runner.sh
+```
+
+## connect to the redis db
+
+```bash
+docker ps
+docker exec it <container id> bash
+redis-cli
+```
+
+## connect to the frontend
+
+```url
+localhost:8080
+```
