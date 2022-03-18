@@ -1,7 +1,6 @@
 matrix:
 - name: Markdown
-  sources:
-  - 'content/en/*.md'
+  sources: ['frontEnd', 'backEnd', 'db', 'README.md']
   default_encoding: utf-8
   aspell:
     lang: en
