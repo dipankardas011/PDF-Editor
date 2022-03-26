@@ -1,5 +1,5 @@
 FROM node:latest
-FROM go:latest
+# FROM go:latest
 FROM redis:latest
 
 COPY . /app
