@@ -1,5 +1,8 @@
-# Merge PDF
-website that can merge PDFs
+# Online PDF Editor 🥳
+
+website that can edit PDF's
+
+[![Spellcheck CI](https://github.com/dipankardas011/PDF-Editor/actions/workflows/spellcheck.yml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/spellcheck.yml) [![pages-build-deployment](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment)
 
 ## Inital build
 [Package Used](https://www.npmjs.com/package/pdf-merger-js)
