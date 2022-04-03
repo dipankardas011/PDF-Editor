@@ -1,5 +1,7 @@
 FROM golang:latest
-
+RUN apt-get update && \
+    apt-get -y upgrade
+RUN apt install qpdf -y
 RUN mkdir /app 
 ADD . /app
 WORKDIR /app
