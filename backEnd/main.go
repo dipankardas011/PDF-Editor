@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os/exec"
 	"text/template"
 	"time"
 )
@@ -45,9 +46,17 @@ func Home(w http.ResponseWriter, req *http.Request) {
 	render(w, "index.html", pageVars)
 }
 
+func MergePdf() {
+	cmd := exec.Command("qpdf", "--empty", "--pages", "01.pdf", "02.pdf", "--", "../home/newDocker.pdf")
+	err := cmd.Run()
+	if err != nil {
+		log.Fatal("Error in MergePDF", err)
+	}
+}
+
 func main() {
+	MergePdf()
 	http.HandleFunc("/greet", greet)
-	// http.ListenAndServe(":8080", nil)
 	http.HandleFunc("/", Home)
 	http.ListenAndServe(getPort(), nil)
 }
