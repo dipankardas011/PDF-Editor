@@ -18,6 +18,11 @@ website that can edit PDF's
 @umgbhalla
 @dipankardas011
 
+## Compile it
+```bash
+
+```
+
 ### Links
 
 [GO REDIS](https://github.com/gomodule/redigo)
