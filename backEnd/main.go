@@ -29,6 +29,7 @@ func MergePdf() {
 func main() {
 	MergePdf()
 	http.HandleFunc("/greet", greet)
+	http.HandleFunc("/upload", uploadHandler)
 	http.HandleFunc("/", html)
 	http.ListenAndServe(":8080", nil)
 }
