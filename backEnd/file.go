@@ -7,33 +7,46 @@ import (
 	"os"
 )
 
-// // Compile templates on start of the application
-// var templates = template.Must(template.ParseFiles("web.index.html"))
-
-// // Display the named template
-// func display(w http.ResponseWriter, page string, data interface{}) {
-// 	templates.ExecuteTemplate(w, page+".html", data)
-// }
+var (
+	numberOfFilesUploaded int
+)
 
 func uploadFile(w http.ResponseWriter, r *http.Request) {
+
+	if numberOfFilesUploaded == 2 {
+		fmt.Fprintf(w, "File upload limit exceded !!!\n")
+		return
+	}
+
+	// detectedFileType := http.DetectContentType(fileBytes)
+	// switch detectedFileType {
+	// case "image/jpeg", "image/jpg":
+	// case "image/gif", "image/png":
+	// case "application/pdf":
+	// 		break
+	// default:
+	// 		renderError(w, "INVALID_FILE_TYPE", http.StatusBadRequest)
+	// 		return
+	// }
 	// Maximum upload of 10 MB files
 	r.ParseMultipartForm(10 << 20)
+	numberOfFilesUploaded++
 
 	// Get handler for filename, size and headers
 	file, handler, err := r.FormFile("myFile")
 	if err != nil {
-		fmt.Println("Error Retrieving the File")
-		fmt.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	defer file.Close()
+
 	fmt.Printf("Uploaded File: %+v\n", handler.Filename)
 	fmt.Printf("File Size: %+v\n", handler.Size)
 	fmt.Printf("MIME Header: %+v\n", handler.Header)
 
 	// Create file
-	dst, err := os.Create(handler.Filename)
+	dst, err := os.Create(fmt.Sprintf("./uploads/0%d.pdf", numberOfFilesUploaded))
 	defer dst.Close()
 
 	if err != nil {
@@ -48,6 +61,9 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "Successfully Uploaded File\n")
+	if numberOfFilesUploaded == 2 {
+		MergePdf()
+	}
 }
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {

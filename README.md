@@ -9,19 +9,21 @@ website that can edit PDF's
 
 ### Tech Stack
 * GO
-* JS / TS
 * Docker
 * HTML
-* redis DB
+<!--  redis DB -->
 
-## Currently Worked on by
-@umgbhalla
+## People's at WORK 🚧
+
 @dipankardas011
 
-## Compile it
-```bash
+@umgbhalla
 
-```
+Work | Status
+-|-
+Backend | 🚧
+Database | ⚠️
+
 
 ### Links
 
@@ -31,7 +33,7 @@ website that can edit PDF's
 
 ![](./techStack.svg)
 
-# Flow of the program using Graphs
+# Flow of the program using Graphs` OUTDATED❕`
 ```mermaid
 flowchart LR;
     XX[START]-->web[website];
@@ -77,5 +79,5 @@ redis-cli
 ## connect to the frontend
 
 ```url
-localhost:8080
+localhost:80
 ```

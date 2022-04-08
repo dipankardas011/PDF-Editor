@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"os/exec"
 	"time"
 )
@@ -19,7 +20,7 @@ func html(w http.ResponseWriter, r *http.Request) {
 }
 
 func MergePdf() {
-	cmd := exec.Command("qpdf", "--empty", "--pages", "01.pdf", "02.pdf", "--", "../home/newDocker.pdf")
+	cmd := exec.Command("qpdf", "--empty", "--pages", "./uploads/01.pdf", "./uploads/02.pdf", "--", "resrelt.pdf")
 	err := cmd.Run()
 	if err != nil {
 		log.Fatal("Error in MergePDF", err)
@@ -27,9 +28,20 @@ func MergePdf() {
 }
 
 func main() {
-	MergePdf()
+	err := os.MkdirAll("./uploads", os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
 	http.HandleFunc("/greet", greet)
 	http.HandleFunc("/upload", uploadHandler)
+	http.HandleFunc("/downloads", DownloadFile)
 	http.HandleFunc("/", html)
+
 	http.ListenAndServe(":8080", nil)
+}
+
+func DownloadFile(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		http.ServeFile(w, r, "resrelt.pdf")
+	}
 }

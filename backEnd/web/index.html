@@ -22,17 +22,17 @@
 
   <main>
 
-    <form enctype="multipart/form-data" action="http://localhost:8080/upload" method="post">
+    <form enctype="multipart/form-data" action="/upload" method="POST">
       <caption>File 1</caption>
       <input type="file" name="myFile" />
       <input type="submit" value="upload" />
     </form>
 
-    <form enctype="multipart/form-data" action="http://localhost:8080/upload" method="post">
-      <caption>File 2</caption>
-      <input type="file" name="myFile" />
-      <input type="submit" value="upload" />
-    </form>
+    <a href="/downloads" download>
+      <button type="button">Download</button>
+      </a>
+   </form>
+   
   </main>
 
   <footer>
