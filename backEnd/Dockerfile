@@ -1,4 +1,4 @@
-FROM golang:latest as web
+FROM golang:latest
 RUN apt-get update && \
     apt-get -y upgrade
 RUN apt install qpdf -y
@@ -7,4 +7,4 @@ COPY . /app
 RUN go get -d
 RUN go build -o backend
 CMD ["./backend"]
-EXPOSE 8080
+EXPOSE 80

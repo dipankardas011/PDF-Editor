@@ -35,7 +35,7 @@ func main() {
 	http.HandleFunc("/css/styles", CSSFileAccess)
 	http.HandleFunc("/html/about", AboutHTMLAccess)
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":80", nil)
 }
 
 func CSSFileAccess(w http.ResponseWriter, r *http.Request) {
