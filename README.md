@@ -13,16 +13,18 @@ website that can edit PDF's
 * HTML
 <!--  redis DB -->
 
-## People's at WORK 🚧
 
-@dipankardas011
+# Website
+![](./coverpage.png)
 
-@umgbhalla
+# Website Link
+[Click Here](https://pdf-editor-tool.azurewebsites.net)
 
+## WORK 🚧
 Work | Status
 -|-
-Backend | 🚧
-Database | ⚠️
+Backend | ✅
+Database | 🚧
 
 
 ### Links
@@ -68,7 +70,7 @@ Going by Type1
 ./Runner.sh
 ```
 
-## connect to the redis db
+## connect to the redis db `UNDER DEVELOPMENT`
 
 ```bash
 docker ps
@@ -81,3 +83,5 @@ redis-cli
 ```url
 localhost:80
 ```
+
+Happy Coding 🥳

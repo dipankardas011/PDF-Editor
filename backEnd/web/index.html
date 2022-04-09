@@ -6,33 +6,51 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PDF merger</title>
-  <link rel="stylesheet" href="/app/web/style.css">
+  <link rel="stylesheet" href="/css/styles">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
-  <h1>Welcome to the PDF merger for FREE!!</h1>
+  <h1>Welcome to the PDF Editor for FREE!!</h1>
   <hr class="belowh1">
   <nav id="navbar">
     <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="/app/web/About.html">About</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/html/about">About</a></li>
     </ul>
   </nav>
 
   <main>
 
     <form enctype="multipart/form-data" action="/upload" method="POST">
-      <caption>File 1</caption>
+      <caption>File Uploader</caption>
       <input type="file" name="myFile" />
       <input type="submit" value="upload" />
     </form>
-
+    <a href="/pdf/clear">
+      <button type="button">CLEAR</button>
+    </a>
+    <br>
     <a href="/downloads" download>
-      <button type="button">Download</button>
-      </a>
-   </form>
-   
+      <button type="button">DOWNLOAD</button>
+    </a>
+    </form>
+    
+    <br>
+    <br>
+    
+    <div style="border: 1px solid red; color: tomato;">
+      BEWARE: after you have done please click CLEAR button to remove all the files you have uploaded
+    </div>
+    
+    <br>
+
+    <div style="border: 1px solid rgb(247, 0, 255); color: rgb(55, 160, 225);">
+      💡You need to comeback to home page after each pdf upload
+      <br> 💡 only 2 pdfs are allowed to be merged
+      <br> 💡 after you have done press download button to get merged pdf
+    </div>
+
   </main>
 
   <footer>

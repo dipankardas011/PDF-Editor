@@ -9,30 +9,16 @@ import (
 
 var (
 	numberOfFilesUploaded int
+	uploadedStat          bool
 )
+
+const NUMBEROFDOCS int = 2
 
 func uploadFile(w http.ResponseWriter, r *http.Request) {
 
-	if numberOfFilesUploaded == 2 {
-		fmt.Fprintf(w, "File upload limit exceded !!!\n")
-		return
-	}
-
-	// detectedFileType := http.DetectContentType(fileBytes)
-	// switch detectedFileType {
-	// case "image/jpeg", "image/jpg":
-	// case "image/gif", "image/png":
-	// case "application/pdf":
-	// 		break
-	// default:
-	// 		renderError(w, "INVALID_FILE_TYPE", http.StatusBadRequest)
-	// 		return
-	// }
 	// Maximum upload of 10 MB files
 	r.ParseMultipartForm(10 << 20)
-	numberOfFilesUploaded++
 
-	// Get handler for filename, size and headers
 	file, handler, err := r.FormFile("myFile")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -45,8 +31,16 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("File Size: %+v\n", handler.Size)
 	fmt.Printf("MIME Header: %+v\n", handler.Header)
 
-	// Create file
+	if handler.Header["Content-Type"][0] != "application/pdf" {
+		http.Error(w, "Invalid file format use PDF!!", http.StatusBadRequest)
+		return
+	}
+
 	dst, err := os.Create(fmt.Sprintf("./uploads/0%d.pdf", numberOfFilesUploaded))
+	if numberOfFilesUploaded == 1 {
+		uploadedStat = true
+	}
+	numberOfFilesUploaded = (numberOfFilesUploaded + 1) % NUMBEROFDOCS
 	defer dst.Close()
 
 	if err != nil {
@@ -61,16 +55,18 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "Successfully Uploaded File\n")
-	if numberOfFilesUploaded == 2 {
+	if uploadedStat {
 		MergePdf()
+		uploadedStat = false
+		//TODO: condition check to automatically delete the uploads/ by clearExistingpdfs(w, r)
 	}
 }
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
-	// case "GET":
-	// display(w, "upload", nil)
 	case "POST":
 		uploadFile(w, r)
+	default:
+		w.WriteHeader(http.StatusBadRequest)
 	}
 }
