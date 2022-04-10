@@ -1,3 +1,0 @@
-# CHANGELOG
-
-<!-- to be filled -->
