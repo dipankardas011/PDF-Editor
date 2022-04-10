@@ -58,6 +58,12 @@ localhost:80
 ```
 
 ```Heroku
+
+$ docker ps
+Now you can sign into Container Registry.
+
+$ heroku container:login
+
 $ heroku create
 Creating app... done, ⬢ mysterious-hamlet-46993
 https://mysterious-hamlet-46993.herokuapp.com/ | https://git.heroku.com/mysterious-hamlet-46993.git
