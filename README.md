@@ -69,6 +69,7 @@ Creating app... done, ⬢ mysterious-hamlet-46993
 https://mysterious-hamlet-46993.herokuapp.com/ | https://git.heroku.com/mysterious-hamlet-46993.git
 
 $ heroku container:push web -a mysterious-hamlet-46993
+$ heroku container:release web -a mysterious-hamlet-46993
 ```
 
 Happy Coding 🥳
