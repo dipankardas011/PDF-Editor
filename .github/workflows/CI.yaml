@@ -1,0 +1,43 @@
+name: Golang and Docker CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  docker_build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        cd backEnd/
+        port=8080
+        docker build . --file Dockerfile --tag pdf-editor:$(date +%s)
+
+  golang_build:
+    
+    needs: [docker_build]
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.17
+
+    - name: Build
+      run: |
+        cd backEnd/
+        go build -v ./...
+
+    # - name: Test
+    #   run: go test -v ./...
