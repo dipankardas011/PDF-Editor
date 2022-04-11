@@ -29,7 +29,7 @@ Backend | ✅
 Database | 🚧
 
 
-# Flow of the program using Graphs` OUTDATED❕`
+# Flow of the program using Graphs
 ```mermaid
 flowchart LR;
     XX[START]:::white-->web{Website};
