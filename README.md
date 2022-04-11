@@ -14,11 +14,13 @@ website that can edit PDF's
 <!--  redis DB -->
 
 
+## Current Deployment is on Heroku
+
 # Website
 ![](./coverpage.png)
 
 # Website Link
-[Click Here](https://pdf-editor-tool.azurewebsites.net)
+[Click Here](https://pdf-editor-tool.herokuapp.com/)
 
 ## WORK 🚧
 Work | Status
@@ -26,14 +28,7 @@ Work | Status
 Backend | ✅
 Database | 🚧
 
-
-### Links
-
-[GO REDIS](https://github.com/gomodule/redigo)
-
-[PDF search for go](https://pkg.go.dev/search?q=pdf)
-
-![](./techStack.svg)
+<!-- ![](./techStack.svg) -->
 
 # Flow of the program using Graphs` OUTDATED❕`
 ```mermaid
