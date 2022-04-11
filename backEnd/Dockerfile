@@ -7,4 +7,4 @@ COPY . /app
 RUN go get -d
 RUN go build -o backend
 CMD ["./backend"]
-EXPOSE 80
+EXPOSE ${PORT}
