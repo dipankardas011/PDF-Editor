@@ -15,4 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag pdf-editor:$(date +%s)
+      run: |
+        cd backEnd/
+        docker build . --file Dockerfile --tag pdf-editor:$(date +%s)

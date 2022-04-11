@@ -2,9 +2,9 @@ name: Go
 
 on:
   push:
-    branches: [ Heroku, main ]
+    branches: [ Heroku ]
   pull_request:
-    branches: [ main, Heroku ]
+    branches: [ Heroku ]
 
 jobs:
 
