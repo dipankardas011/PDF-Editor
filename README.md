@@ -2,7 +2,7 @@
 
 website that can edit PDF's
 
-[![Spellcheck CI](https://github.com/dipankardas011/PDF-Editor/actions/workflows/spellcheck.yml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/spellcheck.yml) [![pages-build-deployment](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment)
+[![Docker Image CI](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml) [![pages-build-deployment](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment)
 
 ## Kubernetes repo for this
 [`IAC repo`](https://github.com/dipankardas011/PDF-Editor-IAC)
