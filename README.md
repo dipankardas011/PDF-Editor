@@ -14,11 +14,13 @@ website that can edit PDF's
 <!--  redis DB -->
 
 
+## Current Deployment is on Heroku
+
 # Website
 ![](./coverpage.png)
 
 # Website Link
-[Click Here](https://pdf-editor-tool.azurewebsites.net)
+[Click Here](https://pdf-editor-tool.herokuapp.com/)
 
 ## WORK 🚧
 Work | Status
@@ -27,15 +29,25 @@ Backend | ✅
 Database | 🚧
 
 
-### Links
+# Flow of the program using Graphs
+```mermaid
+flowchart LR;
+    XX[START]:::white-->web{Website};
+    web{Website}-->B{file1 uploaded};
+    web{Website}-->C{file2 uploaded};
+    DD{Download Link}-->web{Website};
 
-[GO REDIS](https://github.com/gomodule/redigo)
+    classDef green color:#022e1f,fill:#00f500;
+    classDef red color:#022e1f,fill:#f11111;
+    classDef white color:#022e1f,fill:#fff;
+    classDef black color:#fff,fill:#000;
 
-[PDF search for go](https://pkg.go.dev/search?q=pdf)
+    B--upload 1-->S[GO Server]:::green;
+    C--upload 2-->S[GO Server]:::green;
 
-![](./techStack.svg)
+    S[GO server]-->DD{Download Link}
 
-Going by Type1
+```
 
 # How to Run
 
@@ -55,21 +67,6 @@ redis-cli
 
 ```url
 localhost:80
-```
-
-```Heroku
-
-$ docker ps
-Now you can sign into Container Registry.
-
-$ heroku container:login
-
-$ heroku create
-Creating app... done, ⬢ mysterious-hamlet-46993
-https://mysterious-hamlet-46993.herokuapp.com/ | https://git.heroku.com/mysterious-hamlet-46993.git
-
-$ heroku container:push web -a mysterious-hamlet-46993
-$ heroku container:release web -a mysterious-hamlet-46993
 ```
 
 Happy Coding 🥳
