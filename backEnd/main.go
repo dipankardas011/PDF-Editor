@@ -21,8 +21,15 @@ func MergePdf() {
 	}
 }
 
-func main() {
+func getPort() string {
 	path := os.Getenv("PORT")
+	if path == "" {
+		return ":8080"
+	}
+	return path
+}
+
+func main() {
 	uploadedStat = false
 	err := os.MkdirAll("./uploads", os.ModePerm)
 	if err != nil {
@@ -36,7 +43,7 @@ func main() {
 	http.HandleFunc("/css/styles", CSSFileAccess)
 	http.HandleFunc("/html/about", AboutHTMLAccess)
 
-	http.ListenAndServe(":"+path, nil)
+	http.ListenAndServe(getPort(), nil)
 }
 
 func CSSFileAccess(w http.ResponseWriter, r *http.Request) {

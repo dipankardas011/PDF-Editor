@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "pdf-editor-tool.fullname" . }}
+  labels:
+    {{- include "pdf-editor-tool.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "pdf-editor-tool.selectorLabels" . | nindent 4 }}
