@@ -16,8 +16,8 @@ spec:
 
     spec:
       containers:
-        - name: PDF-editor
-          image: dipugodocker/pdf-editor:0.1v
+        - name: pdf-editor
+          image: dipugodocker/pdf-editor:beta
           resources:
             requests:
                 memory: "50Mi"
@@ -31,4 +31,5 @@ spec:
               port: 8080
           ports:
             - containerPort: 8080
+          imagePullPolicy: Always
 ...
