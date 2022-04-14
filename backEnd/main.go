@@ -22,11 +22,12 @@ func MergePdf() {
 }
 
 func getPort() string {
-	path := os.Getenv("PORT")
-	if path == "" {
+	port := os.Getenv("PORT")
+	fmt.Printf("ENV{Port}: %v\n", port)
+	if port == "" {
 		return ":8080"
 	}
-	return path
+	return ":" + port
 }
 
 func main() {
