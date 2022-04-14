@@ -1,0 +1,4 @@
+bases:
+  - ../dev
+patches:
+  - app.yml
