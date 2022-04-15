@@ -23,12 +23,20 @@ Work | Status
 Backend | ✅
 Database | 🚧
 
-## Helm plugin
+# Kustomize install
+```bash
+cd cluster/pdf-editor-kustomize
+
+kubectl apply -k ./prod/ # or ./dev/
+
+```
+
+# Helm plugin
 ```bash
 cd cluster/
 kubectl create ns pdf
-helm install <Release Name> ./pdf-editor-tool
-helm uninstall <Release Name> ./pdf-editor-tool
+helm install <Release Name> ./pdf-editor-helm
+helm uninstall <Release Name> ./pdf-editor-helm
 ```
 
 # Flow of the program using Graphs
