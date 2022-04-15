@@ -1,61 +1,36 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "pdf-editor-tool.fullname" . }}
+  name: pdf-editor-web
+  namespace: {{ .Values.namespace.dev }}
   labels:
-    {{- include "pdf-editor-tool.labels" . | nindent 4 }}
+    web: pdf-editor
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: {{ .Values.replicaCount.dev }}
   selector:
     matchLabels:
-      {{- include "pdf-editor-tool.selectorLabels" . | nindent 6 }}
+      web: pdf-editor
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "pdf-editor-tool.selectorLabels" . | nindent 8 }}
+        web: pdf-editor
+
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "pdf-editor-tool.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
+        - name: pdf-editor
+          image: {{ .Values.image.repository }}{{ .Values.image.tag }}
+          resources:
+            requests:
+                memory: "50Mi"
+                cpu: "100m"
+            limits:
+              memory: "400Mi"
+              cpu: "500m"
           livenessProbe:
             httpGet:
               path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+              port: 8080 # as we are not specifiing the $PORT so default is 8080
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+...

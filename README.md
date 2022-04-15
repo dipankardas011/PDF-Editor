@@ -16,8 +16,6 @@ website that can edit PDF's
 # Website
 ![](./coverpage.png)
 
-# Website Link
-[Click Here](https://pdf-editor-tool.herokuapp.com/)
 
 ## WORK 🚧
 Work | Status
@@ -25,6 +23,13 @@ Work | Status
 Backend | ✅
 Database | 🚧
 
+## Helm plugin
+```bash
+cd cluster/
+kubectl create ns pdf
+helm install <Release Name> ./pdf-editor-tool
+helm uninstall <Release Name> ./pdf-editor-tool
+```
 
 # Flow of the program using Graphs
 ```mermaid
@@ -70,7 +75,7 @@ Happy Coding 🥳
 
 
 <a href = "https://github.com/dipankardas011/PDF-Editor/graphs/contributors">
-<img src = "https://contrib.rocks/image?repo = dipankardas011/PDF-Editor"/>
+<img src = "https://contrib.rocks/image?repo=dipankardas011/PDF-Editor"/>
 </a>
 Made with [contributors-img](https://contrib.rocks).
 

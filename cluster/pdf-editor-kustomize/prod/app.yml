@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: pdf-editor
-          image: dipugodocker/pdf-editor:beta
+          image: dipugodocker/pdf-editor:0.1v
           resources:
             requests:
                 memory: "50Mi"
