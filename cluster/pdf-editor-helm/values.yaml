@@ -7,7 +7,7 @@ replicaCount:
   prod: 5
 
 namespace:
-  dev: pdf11
+  dev: pdf
   prod: pdf-editor
 
 image:
