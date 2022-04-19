@@ -1,8 +1,9 @@
-# this is for the database 
-FROM redis:latest
+FROM python:alpine
 
-COPY . /db
-WORKDIR /db
+WORKDIR /app
 
-CMD [ "redis-server" ]
-# from here the redis server has been startred
+COPY . /app/
+
+RUN pip install redis
+
+CMD [ "python", "db.py" ]
