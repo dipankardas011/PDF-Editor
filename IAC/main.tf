@@ -1,15 +1,12 @@
 terraform {
   required_providers {
-    
+    heroku = {
+      source = "heroku/heroku"
+      version = "5.0.2"
+    }
   }
 }
 
-provider "docker" {}
-
-resource "docker.image" "pdf-editor:beta" {
-  
-}
-
-resource "docker_container" "pdf-editor-tool" {
-  
+provider "heroku" {
+  # Configuration options
 }
