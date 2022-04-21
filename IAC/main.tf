@@ -8,5 +8,11 @@ terraform {
 }
 
 provider "heroku" {
-  # Configuration options
+  email   = "ops@company.com"
+  api_key = var.heroku_api_key
+}
+
+# Create a new application
+resource "heroku_app" "default" {
+  # ...
 }
