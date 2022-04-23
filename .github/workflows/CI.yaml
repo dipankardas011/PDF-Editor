@@ -7,23 +7,8 @@ on:
     branches: [ main ]
 
 jobs:
-
-  docker_build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: |
-        cd backEnd/
-        port=8080
-        docker build . --file Dockerfile --tag pdf-editor:$(date +%s)
-
   golang_build:
-    
-    needs: [docker_build]
-    
+      
     runs-on: ubuntu-latest
     
     steps:
@@ -43,5 +28,32 @@ jobs:
       run: |
         cd backEnd/
         go test -v ./...
+
+  docker_build:
+
+    needs: [golang_build]
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        cd backEnd/
+        port=8080
+        docker build . --file Dockerfile --tag pdf-editor:$(date +%s)
+
+
+  preview:
+    needs: [docker_build]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Comment Checkout
+      uses: NejcZdovc/comment-pr@v1
+      with:
+        message: "Your can Preview the Website -> https://pdf-editor-beta.herokuapp.com/"
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
 
 # https://pdf-editor-beta.herokuapp.com/ for the beta release going to add a workflow
