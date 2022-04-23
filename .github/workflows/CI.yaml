@@ -43,3 +43,5 @@ jobs:
       run: |
         cd backEnd/
         go test -v ./...
+
+# https://pdf-editor-beta.herokuapp.com/ for the beta release going to add a workflow
