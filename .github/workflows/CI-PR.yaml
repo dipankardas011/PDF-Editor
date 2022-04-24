@@ -1,9 +1,8 @@
-name: Golang and Docker CI
+name: CI Checks 🤞🏼
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
-
 jobs:
   golang_build:
       
@@ -40,3 +39,18 @@ jobs:
         cd backEnd/
         port=8080
         docker build . --file Dockerfile --tag pdf-editor:$(date +%s)
+# heroku container:login
+# heroku create -a <Application name>
+# heroku container:push web -a <Application name>
+# heroku container:release web -a <Application name>
+  preview:
+    needs: [docker_build]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Comment Checkout
+      uses: NejcZdovc/comment-pr@v1
+      with:
+        file: "PRcommenter.md"
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
