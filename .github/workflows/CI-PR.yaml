@@ -39,7 +39,7 @@ jobs:
         cd backEnd/
         port=8080
         docker build . --file Dockerfile --tag pdf-editor:$(date +%s)
-    
+
   heroku-preview:
     runs-on: ubuntu-latest
     steps:
