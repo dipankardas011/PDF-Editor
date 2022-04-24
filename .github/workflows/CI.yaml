@@ -43,6 +43,10 @@ jobs:
         port=8080
         docker build . --file Dockerfile --tag pdf-editor:$(date +%s)
 
+# heroku container:login
+# heroku create -a <Application name>
+# heroku container:push web -a <Application name>
+# heroku container:release web -a <Application name>
 
   preview:
     needs: [docker_build]
@@ -51,9 +55,6 @@ jobs:
     - name: Comment Checkout
       uses: NejcZdovc/comment-pr@v1
       with:
-        message: "Your can Preview the Website -> https://pdf-editor-beta.herokuapp.com/"
+        file: "PRcommenter.md"
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-
-# https://pdf-editor-beta.herokuapp.com/ for the beta release going to add a workflow
