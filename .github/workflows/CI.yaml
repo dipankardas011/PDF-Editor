@@ -47,7 +47,11 @@ jobs:
 # heroku create -a <Application name>
 # heroku container:push web -a <Application name>
 # heroku container:release web -a <Application name>
-
+---
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
   preview:
     needs: [docker_build]
     runs-on: ubuntu-latest
