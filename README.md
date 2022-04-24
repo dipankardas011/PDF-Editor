@@ -79,7 +79,7 @@ redis-cli
 localhost:80
 ```
 
-Happy Coding 🥳
+Happy Coding 👍🏼🥳
 
 
 <a href = "https://github.com/dipankardas011/PDF-Editor/graphs/contributors">
