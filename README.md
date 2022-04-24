@@ -86,12 +86,3 @@ Happy Coding 👍🏼🥳
 <img src = "https://contrib.rocks/image?repo=dipankardas011/PDF-Editor"/>
 </a>
 Made with [contributors-img](https://contrib.rocks).
-
-
-
-<!-- ```bash
-heroku container:login
-heroku create -a <Application name>
-heroku container:push web -a <Application name>
-heroku container:release web -a <Application name>
-``` -->

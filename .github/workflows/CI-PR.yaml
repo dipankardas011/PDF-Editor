@@ -62,12 +62,8 @@ jobs:
         cd backEnd/
         heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web 
 
-# heroku container:login
-# heroku create -a <Application name>
-# heroku container:push web -a <Application name>
-# heroku container:release web -a <Application name>
   preview:
-    needs: [heroku-preview]
+    needs: [heroku-preview, docker_build, golang_build]
     runs-on: ubuntu-latest
     steps:
     - name: Comment Checkout
