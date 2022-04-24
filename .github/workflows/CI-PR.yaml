@@ -41,6 +41,7 @@ jobs:
         docker build . --file Dockerfile --tag pdf-editor:$(date +%s)
 
   heroku-preview:
+    needs: [docker_build]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -53,7 +54,6 @@ jobs:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: |
         cd backEnd/ 
-        heroku create -a ${{ secrets.HEROKU_APP_NAME }}
         heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web 
     - name: Release
       env:
@@ -67,7 +67,7 @@ jobs:
 # heroku container:push web -a <Application name>
 # heroku container:release web -a <Application name>
   preview:
-    needs: [docker_build]
+    needs: [heroku-preview]
     runs-on: ubuntu-latest
     steps:
     - name: Comment Checkout
