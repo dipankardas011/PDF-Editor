@@ -1,0 +1,4 @@
+IAC/AWS/.terraform
+IAC/AWS/.terraform.lock.hcl
+IAC/AWS/terraform.tfstate.backup
+IAC/AWS/terraform.tfstate
