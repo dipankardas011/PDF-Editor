@@ -1,7 +1,17 @@
+variable "access_key" {
+  description = "Enter your AWS Access Key: "
+  type = string
+}
+
+variable "secret_key" {
+  description = "Enter your AWS Secret Key: "
+  type = string
+}
+
 provider "aws" {
   region     = "us-east-1"
-  access_key = "AKIA2HRBFFHOGPU5AZFK"
-  secret_key = "y9kjOjGsvRGWvR5DIRrygX1OuTyjR6KxbAOvDZtK"
+  access_key = var.access_key
+  secret_key = var.secret_key
 }
 
 # vpc
@@ -142,5 +152,7 @@ resource "aws_instance" "prod-ec2" {
   key_name = "terraform-access-ec2"
 
   user_data = <<-EOF
+  #!/bin/bash
+  wget https://github.com/dipankardas011/PDF-Editor/raw/main/EC2.sh
   EOF
 }
