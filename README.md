@@ -3,7 +3,7 @@
 website that can edit PDF's
 
 [![Golang and Docker CI](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml/badge.svg?branch=main)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml) [![pages-build-deployment](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment)
-
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/pdf-editor-web)](https://artifacthub.io/packages/search?repo=pdf-editor-web)
 ### Tech Stack
 * GO
 * Docker
@@ -41,18 +41,21 @@ kubectl apply -k ./prod/ # or ./dev/
 Helm's [documentation](https://helm.sh/docs) to get started.
 
 Once Helm has been set up correctly, add the repo as follows:
+```
+helm repo add <alias> https://dipankardas011.github.io/PDF-Editor/
+helm install my-pdf-editor-helm pdf-editor-web/pdf-editor-helm --version 0.1.0
 
-  helm repo add <alias> https://dipankardas011.github.io/PDF-Editor/
-
+```
 If you had already added this repo earlier, run `helm repo update` to retrieve
 the latest versions of the packages.  You can then run `helm search repo
 <alias>` to see the charts.
 
 To install the <chart-name> chart:
-
-    helm repo add pdf-editor-web https://dipankardas011.github.io/PDF-Editor/
-    helm install my-pdf-editor-helm pdf-editor-web/pdf-editor-helm --version 0.1.0
-
+```
+kubectl create ns pdf
+helm repo add pdf-editor-web https://dipankardas011.github.io/PDF-Editor/
+helm install my-pdf-editor-helm pdf-editor-web/pdf-editor-helm --version 0.1.0
+```
 To uninstall the chart:
 
     helm delete my-pdf-editor-helm
