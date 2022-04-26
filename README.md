@@ -22,6 +22,8 @@ Work | Status
 -|-
 Backend | ✅
 Database | 🚧
+CI/CD | ✅
+AWS Terraform | ✅
 
 # Kustomize install
 ```bash
@@ -37,6 +39,17 @@ cd cluster/
 kubectl create ns pdf
 helm install <Release Name> ./pdf-editor-helm
 helm uninstall <Release Name> ./pdf-editor-helm
+```
+
+# AWS Terraform
+![](./coverpageAWS.png)
+```bash
+cd IAC/AWS
+terraform init
+terraform apply
+# here you have to provide your access key and secret key to the input
+# go to 
+<Elastic ip>:8080
 ```
 
 # Flow of the program using Graphs
