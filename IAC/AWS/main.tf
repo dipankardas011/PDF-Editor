@@ -152,9 +152,14 @@ resource "aws_instance" "prod-ec2" {
   key_name = "terraform-access-ec2"
 
   user_data = <<-EOF
-  #!/bin/bash
-  wget https://github.com/dipankardas011/PDF-Editor/raw/main/EC2.sh
-  chmod 700 EC2.sh
-  ./EC2.sh &
-  EOF
+    #!/bin/bash
+    cd /home/ubuntu
+
+    sudo wget https://github.com/dipankardas011/PDF-Editor/raw/main/EC2.sh
+    
+    sudo chmod 700 EC2.sh
+
+    sudo nohup ./EC2.sh &
+
+    EOF
 }
