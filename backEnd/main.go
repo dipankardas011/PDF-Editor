@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"html/template"
 	"net/http"
 	"os"
 	"os/exec"
@@ -13,12 +13,13 @@ func greet(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello World! 🐳☸️🚀👍🏼🥳✅ %s", time.Now())
 }
 
-func MergePdf() {
+func MergePdf() error {
 	cmd := exec.Command("qpdf", "--empty", "--pages", "./uploads/00.pdf", "./uploads/01.pdf", "--", "./uploads/resrelt.pdf")
 	err := cmd.Run()
 	if err != nil {
-		log.Fatal("Error in MergePDF", err)
+		fmt.Println("Error in MergePDF", err)
 	}
+	return err
 }
 
 func getPort() string {
@@ -68,14 +69,31 @@ func html(w http.ResponseWriter, r *http.Request) {
 }
 
 func clearExistingpdfs(w http.ResponseWriter, r *http.Request) {
-	cmd := exec.Command("rm", "-Rf", "./uploads/")
-	err := cmd.Run()
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	t, err := template.ParseFiles("./templates/upload.html")
+
+	var x templateStat
 	if err != nil {
-		log.Println("Error in deleting Existing PDFs", err)
+		x = templateStat{
+			Status: "Internal Server error 501 ⚠️",
+		}
+	}
+
+	cmd := exec.Command("rm", "-Rf", "./uploads/")
+	err = cmd.Run()
+
+	if err != nil {
+		x = templateStat{
+			Status: "CRITICAL ERROR 503 ❌",
+		}
 	}
 	err = os.MkdirAll("./uploads", os.ModePerm)
 	if err != nil {
 		panic(err)
+	} else {
+		x = templateStat{
+			Status: fmt.Sprintf("Cleared the data!!✅\t%s", time.Now()),
+		}
 	}
-	fmt.Fprintf(w, "Cleared the data!!✅\t%s", time.Now())
+	t.Execute(w, x)
 }

@@ -21,3 +21,11 @@ localhost:80
 # go to the root dir and run the shell script
 ./Runner.sh
 ```
+
+# Error codes
+
+Code | Description
+-|-
+501 | unable to load template html
+502 | merge error
+503 | unable to clean
