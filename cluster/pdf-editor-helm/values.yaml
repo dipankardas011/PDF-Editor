@@ -14,7 +14,7 @@ image:
   repository: dipugodocker/pdf-editor
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ":beta" # for the beta version
+  tag: ":latest" # for the latest version
 
 # imagePullSecrets: []
 # nameOverride: ""
