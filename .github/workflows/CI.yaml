@@ -54,9 +54,9 @@ jobs:
       run: |
         cd backEnd/
         docker login -u dipugodocker -p "$SUPER_SECRET"
-        docker build . --file Dockerfile --tag dipugodocker/pdf-editor:0.5v
+        docker build . --file Dockerfile --tag dipugodocker/pdf-editor:0.5-rc
         docker build . --file Dockerfile --tag dipugodocker/pdf-editor:latest
-        docker push dipugodocker/pdf-editor:0.5v
+        docker push dipugodocker/pdf-editor:0.5-rc
         docker push dipugodocker/pdf-editor:latest
 
   heroku-deploy:
