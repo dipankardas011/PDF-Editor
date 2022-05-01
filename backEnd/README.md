@@ -22,6 +22,13 @@ localhost:80
 ./Runner.sh
 ```
 
+# To check for the ports
+```bash
+cd backEnd/
+docker build -t xyz .
+docker run -it -e PORT=9000 -p 80:9000 xyz
+```
+
 # Error codes
 
 Code | Description
