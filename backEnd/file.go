@@ -37,7 +37,20 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("MIME Header: %+v\n", handler.Header)
 
 	if handler.Header["Content-Type"][0] != "application/pdf" {
-		http.Error(w, "Invalid file format use PDF!!", http.StatusBadRequest)
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		t, err := template.ParseFiles("./templates/upload.html")
+		var x templateStat
+		if err != nil {
+			x = templateStat{
+				Status: "Internal Server error 501 ⚠️",
+			}
+		} else {
+			x = templateStat{
+				Status: "Invalid file format error 415 ⚠️",
+			}
+		}
+
+		t.Execute(w, x)
 		return
 	}
 
@@ -59,7 +72,6 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// fmt.Fprintf(w, "Successfully Uploaded File\n")
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	t, err := template.ParseFiles("./templates/upload.html")
 
