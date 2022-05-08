@@ -5,7 +5,7 @@
 
 
 # export version="0.1v"
-export version="beta"
+export version="latest"
 export PORT=5000
 
 

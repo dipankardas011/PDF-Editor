@@ -17,7 +17,13 @@ spec:
     spec:
       containers:
         - name: pdf-editor
-          image: dipugodocker/pdf-editor
+          image: dipugodocker/pdf-editor:0.5v
+          env:
+          - name: PORT
+            valueFrom:
+              configMapKeyRef:
+                name: pdf-config
+                key: PORT
           resources:
             requests:
                 memory: "50Mi"
@@ -28,8 +34,8 @@ spec:
           livenessProbe:
             httpGet:
               path: /
-              port: 8080
+              port: 5680 # as we are not specifiing the $PORT so default is 8080
           ports:
-            - containerPort: 8080
+            - containerPort: 5680
           imagePullPolicy: Always
 ...

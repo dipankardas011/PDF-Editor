@@ -44,7 +44,7 @@ securityContext: {}
 
 service:
   type: NodePort
-  port: 9000
+  port: 10000
 
 # ingress:
 #   enabled: false

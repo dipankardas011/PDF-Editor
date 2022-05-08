@@ -7,6 +7,6 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: 8080
+      targetPort: 5680
   selector:
     web: pdf-editor
