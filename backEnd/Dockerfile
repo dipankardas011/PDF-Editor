@@ -9,3 +9,4 @@ RUN go get -d
 RUN go build -o backend
 CMD ["./backend"]
 EXPOSE ${PORT}
+# TODO: Multistaged for prod and dev
