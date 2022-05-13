@@ -4,12 +4,22 @@ website that can edit PDF's
 
 [![Golang and Docker CI](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml/badge.svg?branch=main)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml) [![pages-build-deployment](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment)
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/pdf-editor-web)](https://artifacthub.io/packages/search?repo=pdf-editor-web)
+
+Stage | Tags
+--|--
+Production | `0.5v`
+Beta | `latest` ; `0.(curr. Month + 1)-rc`
+
+> Release Cycle of 1 Month
+
 ### Tech Stack
 * GO
 * Docker
 * HTML
-<!--  redis DB -->
-
+* K8s
+* Helm
+* ArgoCD
+* Terraform
 
 ## Current Deployment is on Heroku
 
@@ -21,7 +31,6 @@ website that can edit PDF's
 Work | Status
 -|-
 Backend | ✅
-Database | 🚧
 CI/CD | ✅
 AWS Terraform | ✅
 
@@ -105,13 +114,13 @@ flowchart LR;
 ./Runner.sh
 ```
 
-## connect to the redis db `UNDER DEVELOPMENT`
+<!-- ## connect to the redis db `UNDER DEVELOPMENT`
 
 ```bash
 docker ps
 docker exec it <container id> bash
 redis-cli
-```
+``` -->
 
 ## connect to the frontend
 

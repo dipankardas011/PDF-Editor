@@ -54,13 +54,13 @@ jobs:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: |
         cd backEnd/ 
-        heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web 
+        heroku container:push -a ${{ secrets.HEROKU_APP_NAME_PR }} web 
     - name: Release
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: |
         cd backEnd/
-        heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web 
+        heroku container:release -a ${{ secrets.HEROKU_APP_NAME_PR }} web 
 
   preview:
     needs: [heroku-preview, docker_build, golang_build]
@@ -74,7 +74,7 @@ jobs:
           📱🚀🥳
           Provider | Status | Link
           -|-|-
-          ![Heroku](https://img.shields.io/badge/heroku-%23430098.svg?style=for-the-badge&logo=heroku&logoColor=white) | ✅ | https://pdf-editor-beta.herokuapp.com/
+          ![Heroku](https://img.shields.io/badge/heroku-%23430098.svg?style=for-the-badge&logo=heroku&logoColor=white) | ✅ | https://pdf-editor.herokuapp.com/
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
