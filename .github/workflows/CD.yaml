@@ -24,8 +24,8 @@ jobs:
       run: |
         cd backEnd/
         docker login -u dipugodocker -p "$SUPER_SECRET"
-        docker build . --file Dockerfile --tag dipugodocker/pdf-editor:0.$(($(date +%m) + 0))
-        docker push dipugodocker/pdf-editor:0.$(($(date +%m) + 0))
+        docker build . --file Dockerfile --tag dipugodocker/pdf-editor:0.$(($(date +%m) + 0))v
+        docker push dipugodocker/pdf-editor:0.$(($(date +%m) + 0))v
 
 
   heroku-deploy:
