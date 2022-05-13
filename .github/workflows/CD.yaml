@@ -1,0 +1,45 @@
+name: Continuous-Deployment
+
+on:
+  schedule:
+    # Monthly release at 12'o clock
+    - cron: "0 12 1 * *"
+
+jobs:
+  
+  docker_new_release:
+    
+    runs-on: ubuntu-latest
+    env:
+      SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
+    steps:
+    - uses: actions/checkout@v3
+    - name: Publish the Docker image
+      run: |
+        cd backEnd/
+        docker login -u dipugodocker -p "$SUPER_SECRET"
+        docker build . --file Dockerfile --tag dipugodocker/pdf-editor:0.$(($(date +%m) + 0))
+        docker push dipugodocker/pdf-editor:0.$(($(date +%m) + 0))
+
+
+  heroku-deploy:
+    needs: [docker_new_release]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Login to Heroku Container registry
+      env: 
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: heroku container:login 
+    - name: Build and push
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: |
+        cd backEnd/ 
+        heroku container:push -a ${{ secrets.HEROKU_APP_PROD_NAME }} web 
+    - name: Release
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: |
+        cd backEnd/
+        heroku container:release -a ${{ secrets.HEROKU_APP_PROD_NAME }} web 
