@@ -5,10 +5,10 @@ website that can edit PDF's
 [![Golang and Docker CI](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml/badge.svg?branch=main)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml) [![pages-build-deployment](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment)
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/pdf-editor-web)](https://artifacthub.io/packages/search?repo=pdf-editor-web)
 
-Stage | Tags
---|--
-Production | `0.5v`
-Beta | `latest` ; `0.(curr. Month + 1)-rc`
+Stage | Tags | Link
+--|--|--
+Production | `0.5v` | https://pdf-editor-tool.herokuapp.com/
+Beta | `latest` ; `0.(curr. Month + 1)-rc` | https://pdf-editor-beta.herokuapp.com/
 
 > Release Cycle of 1 Month
 
