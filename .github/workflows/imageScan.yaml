@@ -1,4 +1,4 @@
-name: ImageScanning
+name: ImageScan [Aqua Trivy]
 
 on:
   pull_request:
@@ -9,9 +9,12 @@ on:
 jobs:
   scanDockerImages:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v3
-    - name: ImageScan
+    - name: Build the Docker image
       run: |
         cd backEnd/
-        ls -la
+        port=8080
+        docker build . --tag imagescan
+        docker run aquasec/trivy image imagescan
