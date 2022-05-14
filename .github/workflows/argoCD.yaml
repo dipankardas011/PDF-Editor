@@ -23,13 +23,22 @@ jobs:
           path: 'cluster/CD.yaml'
           cliArguments: '--only-k8s-files -p Argo'
 
-  HelmPolicyCheck:
+  # HelmPolicyCheck:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Run Datree Policy Check
+  #       uses: datreeio/action-datree@main
+  #       with:
+  #         path: 'cluster/pdf-editor-helm/'
+  #         cliArguments: ''
+  #         isHelmChart: true
+  #         helmArguments: '--values values.yaml'
+  KcustomizePolicyCheck:
     runs-on: ubuntu-latest
     steps:
       - name: Run Datree Policy Check
         uses: datreeio/action-datree@main
         with:
-          path: 'cluster/pdf-editor-helm'
-          cliArguments: ''
-          isHelmChart: true
-          helmArguments: '--values values.yaml'
+          path: 'cluster/pdf-editor-kustomize/dev/'
+          isKustomization: true
+          
