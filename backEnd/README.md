@@ -1,32 +1,35 @@
-# How to Make
+# How to Make [*Dev*]
 
-[**STATUS**]
-`Alpha`
+Use the two PDFs `01.pdf` and `02.pdf` from testFiles/ for testing purposes
 
-Place 2 pdf `01.pdf` and `02.pdf` from testFiles/ for testing purposes
-
-```shell
+```sh
 cd backEnd/
 
-docker build -t backend .
+docker build --target=dev -t <image> .
 
-docker run -it --rm -p 80:8080 -v ${PWD}:/app backend
-docker run -it --rm -p 80:8080 backend
+docker run -it --rm --publish 80:8080 -v ${PWD}:/app <image>
 
 # then go 
 localhost:80
-
-# OR
-
-# go to the root dir and run the shell script
-./Runner.sh
 ```
+
+# For Testing
+```sh
+cd backEnd/
+
+docker build --target=test -t <image> .
+
+docker run -it --rm <image>
+
+```
+
+> ⚠️**NOTE** : Before you commit remove any executable generated during you testing and development
 
 # To check for the ports
 ```bash
 cd backEnd/
 docker build -t xyz .
-docker run -it -e PORT=9000 -p 80:9000 xyz
+docker run -it -e PORT=9000 --publish 80:9000 xyz
 ```
 
 # Error codes
