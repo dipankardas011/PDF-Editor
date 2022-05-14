@@ -1,4 +1,4 @@
-name: argoCD-datree
+name: Datree-policy-Checks
 
 on:
   push:
@@ -10,7 +10,7 @@ env:
   DATREE_TOKEN: ${{ secrets.DATREE_TOKEN }} 
 
 jobs:
-  k8sPolicyCheck:
+  ArgoCDPolicyCheck:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,3 +22,14 @@ jobs:
         with:
           path: 'cluster/CD.yaml'
           cliArguments: '--only-k8s-files -p Argo'
+
+  HelmPolicyCheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Datree Policy Check
+        uses: datreeio/action-datree@main
+        with:
+          path: 'cluster/pdf-editor-helm'
+          cliArguments: ''
+          isHelmChart: true
+          helmArguments: '--values values.yaml'
