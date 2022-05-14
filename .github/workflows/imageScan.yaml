@@ -1,4 +1,4 @@
-name: ImageScanning
+name: ImageScan [Aqua Trivy]
 
 on:
   pull_request:
@@ -6,12 +6,37 @@ on:
   push:
     branches: [ main ]
 
+
+permissions:
+  contents: read
+
 jobs:
-  scanDockerImages:
-    runs-on: ubuntu-latest
+  build:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+
+    name: Build
+    runs-on: "ubuntu-18.04"
     steps:
-    - uses: actions/checkout@v3
-    - name: ImageScan
-      run: |
-        cd backEnd/
-        ls -la
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build an image from Dockerfile
+        run: |
+          cd backEnd/
+          docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@2a2157eb22c08c9a1fac99263430307b8d1bc7a2
+        with:
+          image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
