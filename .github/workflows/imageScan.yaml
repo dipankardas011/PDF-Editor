@@ -1,0 +1,17 @@
+name: ImageScanning
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  scanDockerImages:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: ImageScan
+      run: |
+        cd backEnd/
+        ls -la
