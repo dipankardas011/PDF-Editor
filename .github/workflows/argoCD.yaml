@@ -34,7 +34,7 @@ jobs:
           path: 'cluster/pdf-editor-helm/'
           cliArguments: ''
           isHelmChart: true
-          helmArguments: '--values values.yaml'
+          helmArguments: '--values cluster/pdf-editor-helm/values.yaml'
   KcustomizePolicyCheck:
     runs-on: ubuntu-latest
     steps:
