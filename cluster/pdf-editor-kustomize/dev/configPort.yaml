@@ -2,6 +2,6 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: pdf-config
-  namespace: pdf
+  namespace: pdf-editor
 data:
   PORT: '5680'

@@ -16,8 +16,8 @@ policies:
         messageOnFailure: Missing property object `limits.cpu` - value should be within the accepted boundaries recommended by the organization
       - identifier: INGRESS_INCORRECT_HOST_VALUE_PERMISSIVE
         messageOnFailure: Incorrect value for key `host` - specify host instead of using a wildcard character ("*")
-      - identifier: SERVICE_INCORRECT_TYPE_VALUE_NODEPORT
-        messageOnFailure: Incorrect value for key `type` - `NodePort` will open a port on all nodes where it can be reached by the network external to the cluster
+      # - identifier: SERVICE_INCORRECT_TYPE_VALUE_NODEPORT
+        # messageOnFailure: Incorrect value for key `type` - `NodePort` will open a port on all nodes where it can be reached by the network external to the cluster
       - identifier: CRONJOB_INVALID_SCHEDULE_VALUE
         messageOnFailure: 'Incorrect value for key `schedule` - the (cron) schedule expressions is not valid and, therefore, will not work as expected'
       - identifier: WORKLOAD_INVALID_LABELS_VALUE

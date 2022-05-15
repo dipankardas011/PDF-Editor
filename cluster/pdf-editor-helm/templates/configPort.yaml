@@ -4,4 +4,4 @@ metadata:
   name: pdf-config
   namespace: pdf
 data:
-  PORT: '5680'
+  PORT: !str {{ .Values.portContainer }}
