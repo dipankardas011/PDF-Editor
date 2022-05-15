@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: pdf-editor
-          image: {{ .Values.image.repository }}{{ .Values.image.tag }}
+          image: {{ .Values.image.repository }}
           env:
           - name: PORT
             valueFrom:
@@ -33,10 +33,16 @@ spec:
               memory: "400Mi"
               cpu: "500m"
           livenessProbe:
-            httpGet:
-              path: /
-              port: 5680 # as we are not specifiing the $PORT so default is 8080
+            tcpSocket:
+              port: {{ .Values.portContainer }}
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.portContainer }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
           ports:
-            - containerPort: 5680
+            - containerPort: {{ .Values.portContainer }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
 ...

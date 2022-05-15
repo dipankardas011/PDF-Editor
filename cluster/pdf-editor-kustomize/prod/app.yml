@@ -4,6 +4,7 @@ metadata:
   name: pdf-editor-web
   labels:
     web: pdf-editor
+  namespace: pdf-editor
 spec:
   replicas: 5
   selector:
@@ -17,7 +18,7 @@ spec:
     spec:
       containers:
         - name: pdf-editor
-          image: dipugodocker/pdf-editor:0.5v
+          image: dipugodocker/pdf-editor:0.5v@sha256:f854d0e98f486466ef808f2e42e15a2cd1db942c270a6a70c2c911c2599a9b25
           env:
           - name: PORT
             valueFrom:
@@ -32,9 +33,15 @@ spec:
               memory: "400Mi"
               cpu: "500m"
           livenessProbe:
-            httpGet:
-              path: /
-              port: 5680 # as we are not specifiing the $PORT so default is 8080
+            tcpSocket:
+              port: 5680
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            tcpSocket:
+              port: 5680
+            initialDelaySeconds: 5
+            periodSeconds: 10
           ports:
             - containerPort: 5680
           imagePullPolicy: Always

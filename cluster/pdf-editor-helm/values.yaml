@@ -10,11 +10,13 @@ namespace:
   dev: pdf
   prod: pdf-editor
 
+portContainer: 5680
+
+
 image:
-  repository: dipugodocker/pdf-editor
+  repository: dipugodocker/pdf-editor:latest@sha256:98dcd4e0f9a1f8e52037d8c482053482a4a3d66a5c665358aebc8b4589fcbda1
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ":latest" # for the latest version
 
 # imagePullSecrets: []
 # nameOverride: ""
