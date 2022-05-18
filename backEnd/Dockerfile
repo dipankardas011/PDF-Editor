@@ -1,10 +1,10 @@
-FROM golang:1.18.2-buster as dev
+FROM golang:1.18-bullseye as dev
 RUN apt update
 RUN apt install qpdf -y
 WORKDIR /app
 
 
-FROM golang:1.18.2-buster as test
+FROM golang:1.18-bullseye as test
 RUN apt-get update
 RUN apt install qpdf -y
 WORKDIR /app
@@ -12,7 +12,7 @@ COPY . /app
 RUN go get -d
 ENTRYPOINT ["go", "test", "."]
 
-FROM golang:1.18.2-buster as prod
+FROM golang:1.18-bullseye as prod
 RUN apt-get update && \
     apt-get -y upgrade
 RUN apt install qpdf -y
