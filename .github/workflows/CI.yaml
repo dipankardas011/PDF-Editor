@@ -57,10 +57,12 @@ jobs:
       run: |
         cd backEnd/
         docker login -u dipugodocker -p "$SUPER_SECRET"
-        docker build . --file Dockerfile --tag dipugodocker/pdf-editor:0.$(($(date +%m) + 1))-rc
+        docker build . --file Dockerfile --tag dipugodocker/pdf-editor:0.6-rc
         docker build . --file Dockerfile --tag dipugodocker/pdf-editor:latest
-        docker push dipugodocker/pdf-editor:0.$(($(date +%m) + 1))-rc
+        docker push dipugodocker/pdf-editor:0.6-rc
         docker push dipugodocker/pdf-editor:latest
+# docker build . --file Dockerfile --tag dipugodocker/pdf-editor:0.$(($(date +%m) + 1))-rc
+# docker push dipugodocker/pdf-editor:0.$(($(date +%m) + 1))-rc
   heroku-preview:
     needs: [docker_build]
     runs-on: ubuntu-latest
