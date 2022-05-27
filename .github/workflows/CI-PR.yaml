@@ -7,6 +7,7 @@ jobs:
   golang_build:
       
     runs-on: ubuntu-latest
+    environment: pdf-editor-tool
     
     steps:
     - uses: actions/checkout@v3
@@ -31,6 +32,7 @@ jobs:
     needs: [golang_build]
 
     runs-on: ubuntu-latest
+    environment: pdf-editor-tool
 
     steps:
     - uses: actions/checkout@v3
@@ -43,6 +45,7 @@ jobs:
   heroku-preview:
     needs: [docker_build]
     runs-on: ubuntu-latest
+    environment: pdf-editor-tool
     steps:
     - uses: actions/checkout@v1
     - name: Login to Heroku Container registry
@@ -65,6 +68,7 @@ jobs:
   preview:
     needs: [heroku-preview, docker_build, golang_build]
     runs-on: ubuntu-latest
+    environment: pdf-editor-tool
     steps:
     - name: Comment Checkout
       uses: NejcZdovc/comment-pr@v1

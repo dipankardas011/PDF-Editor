@@ -8,6 +8,7 @@ jobs:
   golang_build:
       
     runs-on: ubuntu-latest
+    environment: pdf-editor-tool
     
     steps:
     - uses: actions/checkout@v3
@@ -32,6 +33,7 @@ jobs:
     needs: [golang_build]
 
     runs-on: ubuntu-latest
+    environment: pdf-editor-tool
 
     steps:
     - uses: actions/checkout@v3
@@ -46,6 +48,7 @@ jobs:
     needs: [docker_build]
 
     runs-on: ubuntu-latest
+    environment: pdf-editor-tool
     env:
       SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
     steps:
@@ -61,6 +64,7 @@ jobs:
   heroku-preview:
     needs: [docker_build]
     runs-on: ubuntu-latest
+    environment: pdf-editor-tool
     steps:
     - uses: actions/checkout@v1
     - name: Login to Heroku Container registry
