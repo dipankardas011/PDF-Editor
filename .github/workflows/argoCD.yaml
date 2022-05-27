@@ -12,7 +12,6 @@ env:
 jobs:
   ArgoCDPolicyCheck:
     runs-on: ubuntu-latest
-    environment: pdf-editor-tool
 
     steps:
       - name: Checkout
@@ -26,7 +25,6 @@ jobs:
 
   HelmPolicyCheck:
     runs-on: ubuntu-latest
-    environment: pdf-editor-tool
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -39,7 +37,6 @@ jobs:
           helmArguments: '--values cluster/pdf-editor-helm/values.yaml'
   KcustomizePolicyCheck:
     runs-on: ubuntu-latest
-    environment: pdf-editor-tool
     steps:
       - name: Checkout
         uses: actions/checkout@v2

@@ -16,7 +16,7 @@ jobs:
   docker_new_release:
     
     runs-on: ubuntu-latest
-    environment: pdf-editor-tool
+    environment: deploy
     env:
       SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
     steps:
@@ -31,7 +31,7 @@ jobs:
 
   heroku-deploy:
     needs: [docker_new_release]
-    environment: pdf-editor-tool
+    environment: deploy
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
