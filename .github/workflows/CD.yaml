@@ -28,25 +28,25 @@ jobs:
         docker build . --file Dockerfile --tag dipugodocker/pdf-editor:0.$(($(date +%m) + 0))v
         docker push dipugodocker/pdf-editor:0.$(($(date +%m) + 0))v
 
-  heroku-deploy:
-    needs: [docker_new_release]
-    environment: deploy
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Login to Heroku Container registry
-      env: 
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku container:login 
-    - name: Build and push
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: |
-        cd backEnd/ 
-        heroku container:push -a ${{ secrets.HEROKU_APP_PROD_NAME }} web 
-    - name: Release
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: |
-        cd backEnd/
-        heroku container:release -a ${{ secrets.HEROKU_APP_PROD_NAME }} web 
+  # heroku-deploy:
+  #   needs: [docker_new_release]
+  #   environment: deploy
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #   - name: Login to Heroku Container registry
+  #     env: 
+  #       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  #     run: heroku container:login 
+  #   - name: Build and push
+  #     env:
+  #       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  #     run: |
+  #       cd backEnd/ 
+  #       heroku container:push -a ${{ secrets.HEROKU_APP_PROD_NAME }} web 
+  #   - name: Release
+  #     env:
+  #       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  #     run: |
+  #       cd backEnd/
+  #       heroku container:release -a ${{ secrets.HEROKU_APP_PROD_NAME }} web 
