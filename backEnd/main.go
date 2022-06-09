@@ -68,6 +68,11 @@ func html(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func helperCleaner() (err error) {
+	cmd := exec.Command("rm", "-Rf", "./uploads/")
+	return cmd.Run()
+}
+
 func clearExistingpdfs(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	t, err := template.ParseFiles("./templates/upload.html")
@@ -79,8 +84,7 @@ func clearExistingpdfs(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	cmd := exec.Command("rm", "-Rf", "./uploads/")
-	err = cmd.Run()
+	err = helperCleaner()
 
 	if err != nil {
 		x = templateStat{
