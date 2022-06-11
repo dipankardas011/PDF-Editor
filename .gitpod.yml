@@ -1,0 +1,8 @@
+tasks:
+  - init: |
+      cd backEnd
+      sudo apt install qpdf -y
+      go get && go build -o backend && go test ./...
+    command: |
+      cd backEnd
+      ./backend
