@@ -7,6 +7,8 @@ import (
 	"os"
 	"os/exec"
 	"time"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func greet(w http.ResponseWriter, r *http.Request) {
@@ -44,6 +46,9 @@ func main() {
 	http.HandleFunc("/pdf/clear", clearExistingpdfs)
 	http.HandleFunc("/css/styles", CSSFileAccess)
 	http.HandleFunc("/html/about", AboutHTMLAccess)
+
+	// prometheus metrics
+	http.Handle("/metrics", promhttp.Handler())
 
 	http.ListenAndServe(getPort(), nil)
 }
