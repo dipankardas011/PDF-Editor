@@ -3,13 +3,13 @@ pipeline {
     docker { image 'golang:1.18-bullseye' }
   }
   stages {
-    stage('Git Checkout') {
+    stage('Git-Checkout') {
       steps {
         git branch: 'main', url: 'https://github.com/dipankardas011/PDF-Editor.git'
       }
     }
 
-    stage('Get Packages') {
+    stage('Get-Packages') {
       steps {
         sh 'apt install qpdf -y'
       }
