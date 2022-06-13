@@ -1,6 +1,7 @@
 pipeline {
   agent {
-    docker { image 'golang:1.18-bullseye' }
+    // docker { image 'golang:1.18-bullseye' }
+    label 'worker'
   }
   stages {
     stage('Git-Checkout') {
@@ -9,11 +10,11 @@ pipeline {
       }
     }
 
-    stage('Get-Packages') {
-      steps {
-        sh 'apt install qpdf -y'
-      }
-    }
+    // stage('Get-Packages') {
+      // steps {
+        // sh 'apt install qpdf -y'
+      // }
+    // }
 
     stage('Build') {
       steps{ 
