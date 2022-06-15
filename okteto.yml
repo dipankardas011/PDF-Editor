@@ -1,0 +1,51 @@
+name: pdf-editor
+
+# The build section defines how to build the images of your development environment
+# More info: https://www.okteto.com/docs/reference/manifest/#build
+# build:
+
+#   # You can use the following env vars to refer to this image in your deploy commands:
+#   #  - OKTETO_BUILD_BACKEND_REGISTRY: image registry
+#   #  - OKTETO_BUILD_BACKEND_REPOSITORY: image repo
+#   #  - OKTETO_BUILD_BACKEND_IMAGE: image name
+#   #  - OKTETO_BUILD_BACKEND_TAG: image tag
+#   backEnd:
+#     context: backEnd
+#     dockerfile: backEnd/Dockerfile
+
+# The deploy section defines how to deploy your development environment
+# More info: https://www.okteto.com/docs/reference/manifest/#deploy
+deploy:
+  commands:
+  - name: Deploy
+    command: |
+      cd cluster/pdf-editor-kustomize
+      kubectl apply -k okteto/
+
+
+# The dependencies section defines other git repositories to be deployed as part of your development environment
+# More info: https://www.okteto.com/docs/reference/manifest/#dependencies
+# dependencies:
+#   - https://github.com/okteto/sample
+
+
+# The dev section defines how to activate a development container
+# More info: https://www.okteto.com/docs/reference/manifest/#dev
+dev:
+  merge-pdf:
+    image: okteto/golang:1
+    command: bash
+    securityContext:
+      capabilities:
+        add:
+          - SYS_PTRACE
+    sync:
+      - .:/usr/src/app
+    forward:
+      - 2345:2345
+      - 8080:8080
+    autocreate: true
+    volumes:
+      - /go/pkg/
+      - /root/.cache/go-build/
+

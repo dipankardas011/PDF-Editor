@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf-editor-web
+  labels:
+    web: pdf-editor
+  namespace: dipankardas011
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      web: pdf-editor
+  template:
+    metadata:
+      labels:
+        web: pdf-editor
+
+    spec:
+      containers:
+        - name: pdf-editor
+          image: dipugodocker/pdf-editor:0.5v@sha256:f854d0e98f486466ef808f2e42e15a2cd1db942c270a6a70c2c911c2599a9b25
+          env:
+          - name: PORT
+            valueFrom:
+              configMapKeyRef:
+                name: pdf-config
+                key: PORT
+          resources:
+            requests:
+                memory: "50Mi"
+                cpu: "100m"
+            limits:
+              memory: "400Mi"
+              cpu: "500m"
+          livenessProbe:
+            tcpSocket:
+              port: 5680
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            tcpSocket:
+              port: 5680
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          ports:
+            - containerPort: 5680
+          imagePullPolicy: Always
+...
