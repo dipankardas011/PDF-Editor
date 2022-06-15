@@ -1,0 +1,21 @@
+version: 2.1
+
+jobs:
+  scan-application-yaml:
+    docker:
+      - image: quay.io/armosec/kubescape:latest
+    steps:
+      - checkout
+      - run:
+          name: "Scan YAML"
+          command: kubescape scan framework nsa *.yaml -f junit -o results.xml    
+      - store_artifacts:
+          path: results.xml
+          destination: TestResults
+      - store_test_results:
+          path: results.xml
+      
+workflows:
+  application-delivery:
+    jobs:
+      - scan-application-yaml
