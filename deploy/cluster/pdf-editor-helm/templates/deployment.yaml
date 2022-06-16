@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf-editor-web
+  namespace: {{ .Values.namespace.dev }}
+  labels:
+    web: pdf-editor
+spec:
+  replicas: {{ .Values.replicaCount.dev }}
+  selector:
+    matchLabels:
+      web: pdf-editor
+  template:
+    metadata:
+      labels:
+        web: pdf-editor
+
+    spec:
+      containers:
+        - name: pdf-editor
+          image: {{ .Values.image.repository }}
+          env:
+          - name: PORT
+            valueFrom:
+              configMapKeyRef:
+                name: pdf-config
+                key: PORT
+          resources:
+            requests:
+                memory: "50Mi"
+                cpu: "100m"
+            limits:
+              memory: "400Mi"
+              cpu: "500m"
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.portContainer }}
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.portContainer }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          ports:
+            - containerPort: {{ .Values.portContainer }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+...
