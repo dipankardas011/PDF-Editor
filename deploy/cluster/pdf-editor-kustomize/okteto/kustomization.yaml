@@ -1,4 +1,0 @@
-resources:
-  - app.yml
-  - nodeport.yml
-  - configPort.yaml

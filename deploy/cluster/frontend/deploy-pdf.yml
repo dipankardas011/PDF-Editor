@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf-editor-frontend
+  labels:
+    app: pdf
+    frontend: main
+  namespace: pdf-editor-ns
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend-pdf
+  template:
+    metadata:
+      labels:
+        app: frontend-pdf
+    spec:
+      containers:
+      - name: pdf-editor-frontend
+        image: docker.io/dipugodocker/pdf-editor:frontend@sha256:de877024b06475f39215fa5e2393d2cc85bc6d251316951f96557b5619b1c309
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          name: web-port-exposed

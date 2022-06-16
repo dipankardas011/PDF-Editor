@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: pdf-editor-backend
+  labels:
+    app: pdf
+    backend: main
+  namespace: pdf-editor-ns
+spec:
+  selector:
+    matchLabels:
+      app: backend-main
+  serviceName: backend-service
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: backend-main
+    spec:
+      containers:
+      - name: backend
+        image: docker.io/dipugodocker/pdf-editor:backend@sha256:eabf3275d593b34d6dce5615064cd45382e18dfb1a2aea2e7a18e697f9c566cc
+        ports:
+        - containerPort: 80
+          name: backend-port-exposed
+        livenessProbe:
+          httpGet:
+            port: 80
+            path: /greet
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: backend
+          mountPath: /app
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+      volumes:
+      - name: backend
+        persistentVolumeClaim:
+          claimName: pdf-editor-pvc

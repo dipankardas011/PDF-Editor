@@ -15,7 +15,7 @@ func TestPortNumber(t *testing.T) {
 	}
 	os.Unsetenv("PORT")
 	w = getPort()
-	if w != ":8080" {
+	if w != ":80" {
 		t.Fatalf("Port number assigned was `incorrect`\n")
 	}
 }

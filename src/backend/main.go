@@ -28,7 +28,7 @@ func getPort() string {
 	port := os.Getenv("PORT")
 	fmt.Printf("ENV{Port}: %v\n", port)
 	if port == "" {
-		return ":8080"
+		return ":80"
 	}
 	return ":" + port
 }
@@ -42,10 +42,7 @@ func main() {
 	http.HandleFunc("/greet", greet)
 	http.HandleFunc("/upload", uploadHandler)
 	http.HandleFunc("/downloads", DownloadFile)
-	http.HandleFunc("/", html)
 	http.HandleFunc("/pdf/clear", clearExistingpdfs)
-	http.HandleFunc("/css/styles", CSSFileAccess)
-	http.HandleFunc("/html/about", AboutHTMLAccess)
 
 	// prometheus metrics
 	http.Handle("/metrics", promhttp.Handler())
@@ -53,23 +50,9 @@ func main() {
 	http.ListenAndServe(getPort(), nil)
 }
 
-func CSSFileAccess(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "web/style.css")
-}
-
-func AboutHTMLAccess(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "web/About.html")
-}
-
 func DownloadFile(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		http.ServeFile(w, r, "uploads/resrelt.pdf")
-	}
-}
-
-func html(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
-		http.ServeFile(w, r, "web/index.html")
 	}
 }
 

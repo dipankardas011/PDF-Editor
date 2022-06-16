@@ -1,0 +1,5 @@
+resources:
+- namespace.yml
+- pv.yml
+- staf-pdf.yml
+- svc.yml

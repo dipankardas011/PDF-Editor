@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-lb
+  namespace: pdf-editor-ns
+spec:
+  selector:
+    app: backend-main
+  clusterIP: None
+  ports:
+  - port: 80
+    targetPort: backend-port-exposed
