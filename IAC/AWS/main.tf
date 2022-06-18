@@ -136,7 +136,7 @@ resource "aws_network_interface" "prod-nic" {
 
 # ec2
 resource "aws_instance" "prod-ec2" {
-  ami           = "ami-04505e74c0741db8d" 
+  ami           = "ami-0cff7528ff583bf9a" 
   instance_type = "t2.micro"
   availability_zone = "us-east-1a"
 
@@ -153,13 +153,19 @@ resource "aws_instance" "prod-ec2" {
 
   user_data = <<-EOF
     #!/bin/bash
-    cd /home/ubuntu
-
-    sudo wget https://github.com/dipankardas011/PDF-Editor/raw/main/EC2.sh
+    yum install -y git qpdf
     
-    sudo chmod 700 EC2.sh
+    cd /home/ec2-user
 
-    sudo nohup ./EC2.sh &
+    git clone https://github.com/dipankardas011/PDF-Editor.git
+    
+    cd PDF-Editor
+    
+    cp -v pdf-editor.service /etc/systemd/system
+
+    systemctl daemon-reload
+
+    systemctl start pdf-editor.service
 
     EOF
 }
