@@ -28,6 +28,7 @@ func getPort() string {
 	port := os.Getenv("PORT")
 	fmt.Printf("ENV{Port}: %v\n", port)
 	if port == "" {
+		fmt.Println("ENV{Port}: 8080")
 		return ":8080"
 	}
 	return ":" + port
