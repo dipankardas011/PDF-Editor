@@ -1,0 +1,27 @@
+version: 'alpha:1.5'
+services:
+  backend:
+    image: backend:pdf
+    container_name: backend
+    ports:
+      - "8080:8080"
+    networks:
+      - pdf-editor
+    volumes:
+      - db_data:/app/
+
+  frontend:
+    depends_on:
+      - backend
+    image: frontend:pdf
+    container_name: frontend
+    ports:
+      - "9091:80"
+    networks:
+      - pdf-editor
+
+networks:
+  pdf-editor:
+
+volumes:
+  db_data:

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-lb
+  name: backend
   namespace: pdf-editor-ns
 spec:
   selector:

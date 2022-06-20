@@ -1,4 +1,4 @@
-FROM nginx:alpine as prod
+FROM nginx:alpine
 
 LABEL MAINTAINER="dipankar das <dipsonu10@hotmail.com>"
 

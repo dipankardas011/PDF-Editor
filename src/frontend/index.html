@@ -22,16 +22,16 @@
 
   <main>
 
-    <form enctype="multipart/form-data" action="backend-lb:8080/upload" method="POST">
+    <form enctype="multipart/form-data" action="http://localhost:8080/upload" method="POST">
       <caption>File Uploader</caption>
       <input type="file" name="myFile" />
       <input type="submit" value="upload" />
     </form>
-    <a href="backend-lb:8080/pdf/clear">
+    <a href="http://localhost:8080/pdf/clear">
       <button type="button">CLEAR</button>
     </a>
     <br>
-    <a href="backend-lb:8080/downloads" download>
+    <a href="http://localhost:8080/downloads" download>
       <button type="button">DOWNLOAD</button>
     </a>
     </form>
