@@ -1,4 +1,5 @@
 resources:
+  - namespace.yml
   - app.yml
   - nodeport.yml
   - configPort.yaml
