@@ -1,7 +1,5 @@
-FROM golang:1.18-bullseye
-RUN apt-get update && apt-get -y upgrade
-RUN apt install qpdf -y
-RUN apt auto-remove curl -y
+FROM golang:1.18-alpine
+RUN apk add qpdf
 WORKDIR /app
 COPY . /app
 RUN go get -d

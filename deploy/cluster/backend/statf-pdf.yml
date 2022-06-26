@@ -19,7 +19,8 @@ spec:
     spec:
       containers:
       - name: backend
-        image: docker.io/dipugodocker/pdf-editor:backend@sha256:eabf3275d593b34d6dce5615064cd45382e18dfb1a2aea2e7a18e697f9c566cc
+        image: backend
+        # image: docker.io/dipugodocker/pdf-editor:backend@sha256:eabf3275d593b34d6dce5615064cd45382e18dfb1a2aea2e7a18e697f9c566cc
         ports:
         - containerPort: 80
           name: backend-port-exposed
@@ -35,6 +36,9 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
+          requests:
+            memory: "50Mi"
+            cpu: "10m"
       volumes:
       - name: backend
         persistentVolumeClaim:

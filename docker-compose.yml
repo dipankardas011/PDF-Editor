@@ -4,7 +4,7 @@ services:
     image: backend:pdf
     container_name: backend
     ports:
-      - "8080:8080"
+      - "8080"
     networks:
       - pdf-editor
     volumes:
@@ -16,7 +16,7 @@ services:
     image: frontend:pdf
     container_name: frontend
     ports:
-      - "9091:80"
+      - "80:80"
     networks:
       - pdf-editor
 
@@ -25,3 +25,4 @@ networks:
 
 volumes:
   db_data:
+# You need to change the index.html where it has HTTP call to the backend =>> http://localhost:10001/....

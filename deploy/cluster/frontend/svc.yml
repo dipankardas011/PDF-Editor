@@ -6,7 +6,8 @@ metadata:
 spec:
   selector:
     app: frontend-pdf
-  type: ClusterIP
+  type: NodePort
   ports:
   - port: 80
     targetPort: web-port-exposed
+    protocol: TCP
