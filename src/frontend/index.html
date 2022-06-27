@@ -6,11 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PDF merger</title>
-  <link rel="stylesheet" href="/styles">
+  <!-- <link rel="stylesheet" href="/styles"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 
-<body>
+<body class="container">
   <h1>Welcome to the PDF Editor for FREE!!</h1>
   <hr class="belowh1">
   <nav id="navbar">
@@ -22,28 +24,31 @@
 
   <main>
 
-    <form enctype="multipart/form-data" action="/upload" method="POST">
-      <caption>File Uploader</caption>
-      <input type="file" name="myFile" />
-      <input type="submit" value="upload" />
+    <form id="form" class="card m-5 mx-auto p-5" enctype="multipart/form-data" action="/upload" method="POST">
+      <div class="mb-3">
+        <caption>File Uploader</caption>
+        <input id="myFile" class="form-control" type="file" onchange="return fileValidation()" name="myFile" />
+      </div>
+      <input type="submit" class="btn btn-primary" value="upload" />
     </form>
     <a href="/pdf/clear">
       <!-- Calling BACKEND -->
-      <button type="button">CLEAR</button>
+      <button class="btn btn-primary" type="button">CLEAR</button>
     </a>
+    <br>
     <br>
     <a href="/download" download>
-      <button type="button">DOWNLOAD</button>
+      <button class="btn btn-primary" type="button">DOWNLOAD</button>
     </a>
     </form>
-    
+
     <br>
     <br>
-    
+
     <div style="border: 1px solid red; color: tomato;">
       BEWARE: after you have done please click CLEAR button to remove all the files you have uploaded
     </div>
-    
+
     <br>
 
     <div style="border: 1px solid rgb(247, 0, 255); color: rgb(55, 160, 225);">
@@ -57,6 +62,39 @@
   <footer>
     Thanks for visiting to our page
   </footer>
+  <script>
+    function fileValidation() {
+      var fileInput =
+        document.getElementById('myFile');
+
+      var filePath = fileInput.value;
+
+      // Allowing file type
+      var allowedExtensions =
+        /(\.pdf)$/i;
+
+      if (!allowedExtensions.exec(filePath)) {
+        alert('Invalid file type');
+        fileInput.value = '';
+        return false;
+      }
+      else {
+
+        // Image preview
+        if (fileInput.files && fileInput.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById(
+              'imagePreview').innerHTML =
+              '<img src="' + e.target.result
+              + '"/>';
+          };
+
+          reader.readAsDataURL(fileInput.files[0]);
+        }
+      }
+    }
+  </script>
 </body>
 
 </html>

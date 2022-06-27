@@ -25,4 +25,4 @@ networks:
 
 volumes:
   db_data:
-# You need to change the index.html where it has HTTP call to the backend =>> http://localhost:10001/....
+EOF

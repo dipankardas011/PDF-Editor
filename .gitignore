@@ -1,4 +1,2 @@
-IAC/AWS/.terraform
-IAC/AWS/.terraform.lock.hcl
-IAC/AWS/terraform.tfstate.backup
-IAC/AWS/terraform.tfstate
+src/frontend/node_modules
+src/frontend/package-lock.json
