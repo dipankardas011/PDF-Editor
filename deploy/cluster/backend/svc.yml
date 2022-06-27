@@ -8,6 +8,6 @@ spec:
     app: backend-main
   clusterIP: None
   ports:
-  - port: 80
-    targetPort: backend-port-exposed
+  - port: 8080
+    targetPort: backend-port
     protocol: TCP

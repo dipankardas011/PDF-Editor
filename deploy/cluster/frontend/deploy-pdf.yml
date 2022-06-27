@@ -18,13 +18,12 @@ spec:
     spec:
       containers:
       - name: pdf-editor-frontend
-        image: frontend
-        # image: docker.io/dipugodocker/pdf-editor:frontend@sha256:de877024b06475f39215fa5e2393d2cc85bc6d251316951f96557b5619b1c309
+        image: docker.io/dipugodocker/pdf-editor:frontend@sha256:ee062a2a1a85fad2989ae746e473735ba2e7d81347a9bf1fbb8ab34c56072fe0
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
-          name: web-port-exposed
+          name: web-port

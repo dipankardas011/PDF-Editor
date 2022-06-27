@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PDF merger</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/styles">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
@@ -15,24 +15,24 @@
   <hr class="belowh1">
   <nav id="navbar">
     <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="About.html">About</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
     </ul>
   </nav>
 
   <main>
 
-    <form enctype="multipart/form-data" action="http://backend.pdf-editor-ns/upload" method="POST">
+    <form enctype="multipart/form-data" action="/upload" method="POST">
       <caption>File Uploader</caption>
       <input type="file" name="myFile" />
       <input type="submit" value="upload" />
     </form>
-    <a href="http://backend.pdf-editor-ns/pdf/clear">
+    <a href="/pdf/clear">
       <!-- Calling BACKEND -->
       <button type="button">CLEAR</button>
     </a>
     <br>
-    <a href="http://backend.pdf-editor-ns/downloads" download>
+    <a href="/download" download>
       <button type="button">DOWNLOAD</button>
     </a>
     </form>

@@ -2,11 +2,11 @@
 
 # building the docker images
 backend_docker_build() {
-  cd src/backend && docker build -t backend:pdf . --no-cache
+  cd src/backend && docker build -t dipugodocker/pdf-editor:backend . --no-cache
 }
 
 frontend_docker_build() {
-  cd ../frontend && docker build -t frontend:pdf . --no-cache
+  cd ../frontend && docker build -t dipugodocker/pdf-editor:frontend . --no-cache
 }
 
 backend_docker_build

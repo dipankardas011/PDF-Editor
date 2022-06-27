@@ -26,10 +26,11 @@ func MergePdf() error {
 
 func getPort() string {
 	port := os.Getenv("PORT")
-	fmt.Printf("ENV{Port}: %v\n", port)
+
 	if port == "" {
-		return ":8080"
+		port = "8080"
 	}
+	fmt.Printf("ENV{Port}: %v\n", port)
 	return ":" + port
 }
 

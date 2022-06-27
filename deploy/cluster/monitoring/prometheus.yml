@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 10s
+scrape_configs:
+- job_name: pdf-editor-backend
+  static_configs:
+  - targets: ["backend.pdf-editor-ns.svc.cluster.local:8080"]
+- job_name: pdf-editor-frontend
+  static_configs:
+  - targets: ["frontend.pdf-editor-ns.svc.cluster.local"]
