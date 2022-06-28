@@ -11,7 +11,7 @@ spec:
     matchLabels:
       app: backend-main
   serviceName: backend-service
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
