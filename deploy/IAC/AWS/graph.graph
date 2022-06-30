@@ -1,0 +1,44 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] aws_eip.bar (expand)" [label = "aws_eip.bar", shape = "box"]
+		"[root] aws_instance.prod-ec2 (expand)" [label = "aws_instance.prod-ec2", shape = "box"]
+		"[root] aws_internet_gateway.gw (expand)" [label = "aws_internet_gateway.gw", shape = "box"]
+		"[root] aws_network_interface.prod-nic (expand)" [label = "aws_network_interface.prod-nic", shape = "box"]
+		"[root] aws_route_table.prod-rt (expand)" [label = "aws_route_table.prod-rt", shape = "box"]
+		"[root] aws_route_table_association.a (expand)" [label = "aws_route_table_association.a", shape = "box"]
+		"[root] aws_security_group.allow_http (expand)" [label = "aws_security_group.allow_http", shape = "box"]
+		"[root] aws_subnet.prod-subnet (expand)" [label = "aws_subnet.prod-subnet", shape = "box"]
+		"[root] aws_vpc.prod-vpc (expand)" [label = "aws_vpc.prod-vpc", shape = "box"]
+		"[root] output.server_public_ip" [label = "output.server_public_ip", shape = "note"]
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"]" [label = "provider[\"registry.terraform.io/hashicorp/aws\"]", shape = "diamond"]
+		"[root] var.accessPort" [label = "var.accessPort", shape = "note"]
+		"[root] var.access_key" [label = "var.access_key", shape = "note"]
+		"[root] var.client-ip-access" [label = "var.client-ip-access", shape = "note"]
+		"[root] var.secret_key" [label = "var.secret_key", shape = "note"]
+		"[root] aws_eip.bar (expand)" -> "[root] aws_internet_gateway.gw (expand)"
+		"[root] aws_eip.bar (expand)" -> "[root] aws_network_interface.prod-nic (expand)"
+		"[root] aws_instance.prod-ec2 (expand)" -> "[root] aws_network_interface.prod-nic (expand)"
+		"[root] aws_internet_gateway.gw (expand)" -> "[root] aws_vpc.prod-vpc (expand)"
+		"[root] aws_network_interface.prod-nic (expand)" -> "[root] aws_security_group.allow_http (expand)"
+		"[root] aws_network_interface.prod-nic (expand)" -> "[root] aws_subnet.prod-subnet (expand)"
+		"[root] aws_route_table.prod-rt (expand)" -> "[root] aws_internet_gateway.gw (expand)"
+		"[root] aws_route_table_association.a (expand)" -> "[root] aws_route_table.prod-rt (expand)"
+		"[root] aws_route_table_association.a (expand)" -> "[root] aws_subnet.prod-subnet (expand)"
+		"[root] aws_security_group.allow_http (expand)" -> "[root] aws_vpc.prod-vpc (expand)"
+		"[root] aws_security_group.allow_http (expand)" -> "[root] var.accessPort"
+		"[root] aws_security_group.allow_http (expand)" -> "[root] var.client-ip-access"
+		"[root] aws_subnet.prod-subnet (expand)" -> "[root] aws_vpc.prod-vpc (expand)"
+		"[root] aws_vpc.prod-vpc (expand)" -> "[root] provider[\"registry.terraform.io/hashicorp/aws\"]"
+		"[root] output.server_public_ip" -> "[root] aws_eip.bar (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)" -> "[root] aws_eip.bar (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)" -> "[root] aws_instance.prod-ec2 (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)" -> "[root] aws_route_table_association.a (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"]" -> "[root] var.access_key"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"]" -> "[root] var.secret_key"
+		"[root] root" -> "[root] output.server_public_ip"
+		"[root] root" -> "[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)"
+	}
+}
+

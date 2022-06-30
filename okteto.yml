@@ -19,8 +19,8 @@ deploy:
   commands:
   - name: Deploy
     command: |
-      cd cluster/pdf-editor-kustomize
-      kubectl apply -k okteto/
+      kubectl apply -k deploy/cluster/backend
+      kubectl apply -k deploy/cluster/frontend
 
 
 # The dependencies section defines other git repositories to be deployed as part of your development environment

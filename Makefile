@@ -4,5 +4,12 @@ testing:
 	./backend.sh
 
 clean:
-	cd src/backend/ && \
-	rm backend
+	sudo docker compose down
+
+build:
+	chmod +x build.sh && \
+	./build.sh
+
+run:
+	sudo docker compose up -d
+	docker ps

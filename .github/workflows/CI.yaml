@@ -1,0 +1,87 @@
+name: Golang and Docker CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  golang_build:
+      
+    runs-on: ubuntu-latest
+    environment: testing
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.17
+
+    - name: Build
+      run: |
+        cd backEnd/
+        go build -v ./...
+
+    - name: Test
+      run: |
+        cd backEnd/
+        go test -v ./...
+
+  docker_build:
+
+    needs: [golang_build]
+
+    runs-on: ubuntu-latest
+    environment: testing
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        cd backEnd/
+        port=8080
+        docker build . --file Dockerfile --tag pdf-editor:$(date +%s)
+
+  docker_new_release:
+    
+    needs: [docker_build]
+
+    runs-on: ubuntu-latest
+    environment: preview
+    env:
+      SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
+    steps:
+    - uses: actions/checkout@v3
+    - name: Publish the Docker image
+      run: |
+        cd backEnd/
+        docker login -u dipugodocker -p "$SUPER_SECRET"
+        docker build . --file Dockerfile --tag dipugodocker/pdf-editor:0.6-rc
+        docker build . --file Dockerfile --tag dipugodocker/pdf-editor:latest
+        docker push dipugodocker/pdf-editor:0.6-rc
+        docker push dipugodocker/pdf-editor:latest
+# docker build . --file Dockerfile --tag dipugodocker/pdf-editor:0.$(($(date +%m) + 1))-rc
+# docker push dipugodocker/pdf-editor:0.$(($(date +%m) + 1))-rc
+  heroku-preview:
+    needs: [docker_build]
+    runs-on: ubuntu-latest
+    environment: preview
+    steps:
+    - uses: actions/checkout@v1
+    - name: Login to Heroku Container registry
+      env: 
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: heroku container:login 
+    - name: Build and push
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: |
+        cd backEnd/ 
+        heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web 
+    - name: Release
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: |
+        cd backEnd/
+        heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web 

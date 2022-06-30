@@ -1,0 +1,20 @@
+# UPDATE NEEDED!!!!
+
+build:
+  docker:
+    web: pdf-editor-tool-testing
+    release:
+       dockerfile: .\backEnd\Dockerfile
+       target: builder
+# release:
+#   command:
+#     - ./Runner.sh
+#   image: worker
+# run:
+#   web: bundle exec puma -C config/puma.rb
+#   worker: python myworker.py
+#   asset-syncer:
+#     command:
+#       - python asset-syncer.py
+#     image: worker
+
