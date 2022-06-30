@@ -11,6 +11,8 @@ import (
 	"os/exec"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -20,15 +22,32 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 )
 
+var requestsProcessed = promauto.NewCounter(prometheus.CounterOpts{
+	Name: "go_request_operations_total",
+	Help: "The total number of processed requests",
+})
+
+var requestsProcessedError = promauto.NewCounter(prometheus.CounterOpts{
+	Name: "go_request_operations_error_total",
+	Help: "The total number of HTTP requests Errors",
+})
+
+var requestsProcessedSuccess = promauto.NewCounter(prometheus.CounterOpts{
+	Name: "go_request_operations_success_total",
+	Help: "The total number of HTTP 200 requests",
+})
+
 const name = "pdf-editor-backend"
 
 var ctx = context.Background()
 
 func greet(w http.ResponseWriter, r *http.Request) {
 	_, span := otel.Tracer(name).Start(ctx, "Greet")
+	requestsProcessed.Inc()
 	defer span.End()
 
 	fmt.Fprintf(w, "Hello World! 🐳☸️🚀👍🏼🥳✅ %s", time.Now())
+	requestsProcessedSuccess.Inc()
 }
 
 func MergePdf() error {
@@ -36,7 +55,9 @@ func MergePdf() error {
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println("Error in MergePDF", err)
+		requestsProcessedError.Inc()
 	}
+	requestsProcessedSuccess.Inc()
 	return err
 }
 
@@ -121,8 +142,12 @@ func main() {
 }
 
 func DownloadFile(w http.ResponseWriter, r *http.Request) {
+	requestsProcessed.Inc()
 	if r.Method == "GET" {
 		http.ServeFile(w, r, "uploads/resrelt.pdf")
+		requestsProcessedSuccess.Inc()
+	} else {
+		requestsProcessedError.Inc()
 	}
 }
 
@@ -132,6 +157,7 @@ func helperCleaner() (err error) {
 }
 
 func clearExistingpdfs(w http.ResponseWriter, r *http.Request) {
+	requestsProcessed.Inc()
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	t, err := template.ParseFiles("./templates/upload.html")
 
@@ -141,6 +167,7 @@ func clearExistingpdfs(w http.ResponseWriter, r *http.Request) {
 			Header: "alert alert-danger",
 			Status: "Internal Server error 501 ⚠️",
 		}
+		requestsProcessedError.Inc()
 	}
 
 	err = helperCleaner()
@@ -150,15 +177,18 @@ func clearExistingpdfs(w http.ResponseWriter, r *http.Request) {
 			Header: "alert alert-danger",
 			Status: "CRITICAL ERROR 503 ❌",
 		}
+		requestsProcessedError.Inc()
 	}
 	err = os.MkdirAll("./uploads", os.ModePerm)
 	if err != nil {
+		requestsProcessedError.Inc()
 		panic(err)
 	} else {
 		x = templateStat{
 			Header: "alert alert-success",
 			Status: fmt.Sprintf("Cleared the data!!✅\t%s", time.Now()),
 		}
+		requestsProcessedSuccess.Inc()
 	}
 	t.Execute(w, x)
 }

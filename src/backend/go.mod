@@ -7,6 +7,7 @@ require github.com/prometheus/client_golang v1.12.2
 require (
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
+	go.opentelemetry.io/otel/sdk v1.7.0 // indirect
 	go.opentelemetry.io/otel/trace v1.7.0 // indirect
 )
 
@@ -19,6 +20,7 @@ require (
 	github.com/prometheus/common v0.35.0 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	go.opentelemetry.io/otel v1.7.0
+	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.7.0
 	golang.org/x/sys v0.0.0-20220627191245-f75cf1eec38b // indirect
 	google.golang.org/protobuf v1.26.0 // indirect
 )

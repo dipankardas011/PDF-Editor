@@ -28,6 +28,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	file, handler, err := r.FormFile("myFile")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		requestsProcessedError.Inc()
 		return
 	}
 
@@ -42,11 +43,13 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 				Header: "alert alert-danger",
 				Status: "Internal Server error 501 ⚠️",
 			}
+			requestsProcessedError.Inc()
 		} else {
 			x = templateStat{
 				Header: "alert alert-danger",
 				Status: "Invalid file format error 415 ⚠️",
 			}
+			requestsProcessedError.Inc()
 		}
 
 		t.Execute(w, x)
@@ -62,12 +65,14 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		requestsProcessedError.Inc()
 		return
 	}
 
 	// Copy the uploaded file to the created file on the filesystem
 	if _, err := io.Copy(dst, file); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		requestsProcessedError.Inc()
 		return
 	}
 
@@ -81,11 +86,13 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 			Header: "alert alert-danger",
 			Status: "Internal Server error 501 ⚠️",
 		}
+		requestsProcessedError.Inc()
 	} else {
 		x = templateStat{
 			Header: "alert alert-success",
 			Status: "Uploaded ✅",
 		}
+		requestsProcessedSuccess.Inc()
 	}
 
 	if uploadedStat {
@@ -96,6 +103,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 				Header: "alert alert-danger",
 				Status: "CRITICAL ERROR 502 ❌",
 			}
+			requestsProcessedError.Inc()
 		}
 		//TODO: condition check to automatically delete the uploads/ by clearExistingpdfs(w, r)
 	}
@@ -103,10 +111,12 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 }
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
+	requestsProcessed.Inc()
 	switch r.Method {
 	case "POST":
 		uploadFile(w, r)
 	default:
 		w.WriteHeader(http.StatusBadRequest)
+		requestsProcessedError.Inc()
 	}
 }
