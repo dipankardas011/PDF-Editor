@@ -1,9 +1,0 @@
-image: bash:latest
-stages:
-    - scan
-scan:
-  stage: scan
-  script:
-    - apk add curl
-    - curl -s https://raw.githubusercontent.com/armosec/kubescape/master/install.sh | bash 
-    - kubescape scan framework nsa release/*.yaml

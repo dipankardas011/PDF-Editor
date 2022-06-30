@@ -1,0 +1,3 @@
+resources:
+- deploy-pdf.yml
+- svc.yml

@@ -1,0 +1,5 @@
+resources:
+- namespace.yml
+- pv.yml
+- statf-pdf.yml
+- svc.yml

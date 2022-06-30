@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: special-config
+  namespace: monitoring
+data:
+  prometheus.yml: |-
+    global:
+      scrape_interval: 10s
+      evaluation_interval: 30s
+    scrape_configs:
+    - job_name: pdf-editor
+      static_configs:
+      - targets: ["backend.pdf-editor-ns.svc.cluster.local:8080", "frontend.pdf-editor-ns.svc.cluster.local"]
+
+  web.yml: |-
+    basic_auth_users:
+      admin: $2b$12$K6xJMsqJp7MZL6NN/OIUyuvoMTFJvFKYlK2NVbgwzPk83sQnLMON2
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+      - name: prometheus
+        image: prom/prometheus
+        args:
+          - '--web.config.file=/etc/prometheus/web.yml'
+          - '--config.file=/etc/prometheus/prometheus.yml'
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+          requests:
+            memory: "50Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 9090
+          name: prom-port
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/prometheus/
+      volumes:
+        - name: config-volume
+          configMap:
+            name: special-config
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-server
+  namespace: monitoring
+spec:
+  selector:
+    app: prometheus
+  type: LoadBalancer
+  ports:
+  - port: 9090
+    targetPort: prom-port
+
+...

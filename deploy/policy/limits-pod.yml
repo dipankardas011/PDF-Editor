@@ -1,0 +1,25 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-limits-and-requests
+spec:
+  background: false
+  validationFailureAction: audit 
+  rules:
+    - name: validate-resources
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate:
+        message: "You need to set request and limits in the manifest file"
+        pattern:
+          spec:
+            containers:
+              - resources:
+                  requests:
+                    memory: "?*"
+                    cpu: "?*"
+                  limits:
+                    memory: "?*"
+                    cpu: "?*"

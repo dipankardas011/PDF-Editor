@@ -8,44 +8,40 @@ website that can edit PDF's
 
 Stage | Tags | Link
 --|--|--
-Production | `0.5v` | https://pdf-editor-tool.herokuapp.com/
-Beta | `latest` ; `0.6-rc` | https://pdf-editor-beta.herokuapp.com/
+Production | `N/A` | N/A
+Beta | `latest` ; `N/A` | N/A
 
 > Release Cycle of 1 Month
 
 ### Tech Stack
 * GO
-* Docker
+* Docker & Docker-Compose
 * HTML
 * K8s
 * Helm
 * ArgoCD
 * Terraform
-
-## Current Deployment is on Heroku
+* Flux
+* Prometheus
 
 # Website
 ![](./coverpage.png)
 
 
-## WORK 🚧
-Work | Status
--|-
-Backend | ✅
-CI/CD | ✅
-AWS Terraform | ✅
+# How to Run
 
-# Kustomize install
+## Kustomize install
 ```bash
-cd cluster/pdf-editor-kustomize
-
-kubectl apply -k ./prod/ # or ./dev/
-
+kubectl apply -k deploy/cluster/backend
+kubectl apply -k deploy/cluster/frontend
 ```
 
-# Helm plugin
+---
 
-## Usage
+## Helm plugin (**NEED UPDATE!!**)
+
+### Usage
+
 
 [Helm](https://helm.sh) must be installed to use the charts.  Please refer to
 Helm's [documentation](https://helm.sh/docs) to get started.
@@ -70,12 +66,31 @@ To uninstall the chart:
 
     helm delete my-pdf-editor-helm
 
+---
+
 ## From Source Code
 ```bash
-cd cluster/
+cd deploy/cluster/
 kubectl create ns pdf
 helm install <Release Name> ./pdf-editor-helm
 helm uninstall <Release Name> ./pdf-editor-helm
+```
+
+---
+
+# How to Run
+
+```bash
+chmod +x build.sh
+./build.sh
+sudo docker compose up -d
+```
+
+
+# To View the page visit
+
+```url
+http://localhost
 ```
 
 # AWS Terraform
@@ -109,30 +124,11 @@ flowchart LR;
 
 ```
 
-# How to Run
-
-```bash
-./Runner.sh
-```
-
-<!-- ## connect to the redis db `UNDER DEVELOPMENT`
-
-```bash
-docker ps
-docker exec it <container id> bash
-redis-cli
-``` -->
-
-## connect to the frontend
-
-```url
-localhost:80
-```
+[**Changelog link**](./CHANGELOG.md)
 
 Happy Coding 👍🏼🥳
 
 
-<a href = "https://github.com/dipankardas011/PDF-Editor/graphs/contributors">
-<img src = "https://contrib.rocks/image?repo=dipankardas011/PDF-Editor"/>
-</a>
+<a href = "https://github.com/dipankardas011/PDF-Editor/graphs/contributors"><img src = "https://contrib.rocks/image?repo=dipankardas011/PDF-Editor"/></a>
+
 Made with [contributors-img](https://contrib.rocks).

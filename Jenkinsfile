@@ -18,13 +18,13 @@ pipeline {
 
     stage('Build') {
       steps{ 
-        sh 'cd backEnd/ && go build -v ./...'
+        sh 'cd src/backend/ && go build -v ./... && cd ../frontend/ && npm install'
       }
     }
 
     stage('Test') {
       steps {
-        sh 'cd backEnd/ && go test -v ./...'
+        sh 'cd src/backend/ && go test -v ./...'
       }
     }
   }

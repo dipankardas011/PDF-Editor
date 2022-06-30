@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pdf-editor
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/dipankardas011/PDF-Editor/'
+    path: cluster/pdf-editor-kustomize/prod
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: pdf-editor
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true      # to create the namaspace if not exsists
+    automated:
+      prune: true
+      selfHeal: true

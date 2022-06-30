@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Version 0.6
+* New UI
+* Microservice Architecture
+  * backend server
+  * frontend server
+* Metrics
+* Docker compose
+
 ## Version 0.5
 * AWS EC2 deploy method using Terraform
 * Helm plugin
