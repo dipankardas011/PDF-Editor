@@ -14,6 +14,7 @@ var (
 )
 
 type templateStat struct {
+	Header string `json:"Header"`
 	Status string `json:"Status"`
 }
 
@@ -38,10 +39,12 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		var x templateStat
 		if err != nil {
 			x = templateStat{
+				Header: "alert alert-danger",
 				Status: "Internal Server error 501 ⚠️",
 			}
 		} else {
 			x = templateStat{
+				Header: "alert alert-danger",
 				Status: "Invalid file format error 415 ⚠️",
 			}
 		}
@@ -75,10 +78,12 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		x = templateStat{
+			Header: "alert alert-danger",
 			Status: "Internal Server error 501 ⚠️",
 		}
 	} else {
 		x = templateStat{
+			Header: "alert alert-success",
 			Status: "Uploaded ✅",
 		}
 	}
@@ -88,6 +93,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 			uploadedStat = false
 		} else {
 			x = templateStat{
+				Header: "alert alert-danger",
 				Status: "CRITICAL ERROR 502 ❌",
 			}
 		}

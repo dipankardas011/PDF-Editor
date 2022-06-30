@@ -69,6 +69,7 @@ func clearExistingpdfs(w http.ResponseWriter, r *http.Request) {
 	var x templateStat
 	if err != nil {
 		x = templateStat{
+			Header: "alert alert-danger",
 			Status: "Internal Server error 501 ⚠️",
 		}
 	}
@@ -77,6 +78,7 @@ func clearExistingpdfs(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		x = templateStat{
+			Header: "alert alert-danger",
 			Status: "CRITICAL ERROR 503 ❌",
 		}
 	}
@@ -85,6 +87,7 @@ func clearExistingpdfs(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	} else {
 		x = templateStat{
+			Header: "alert alert-success",
 			Status: fmt.Sprintf("Cleared the data!!✅\t%s", time.Now()),
 		}
 	}

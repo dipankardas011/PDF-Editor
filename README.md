@@ -9,6 +9,7 @@ Beta | `latest` ; `0.6-rc` | https://pdf-editor-beta.herokuapp.com/
 
 > Release Cycle of N/A Month
 
+![CoverPage](./coverpage.png)
 
 Happy Coding 👍🏼🥳
 
