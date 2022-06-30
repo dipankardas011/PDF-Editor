@@ -1,4 +1,4 @@
-version: '1.0'
+version: '3'
 services:
   backend:
     image: docker.io/dipugodocker/pdf-editor:backend
@@ -25,4 +25,3 @@ networks:
 
 volumes:
   db_data:
-EOF
