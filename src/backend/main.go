@@ -67,7 +67,7 @@ func newResource() *resource.Resource {
 		resource.Default(),
 		resource.NewWithAttributes(
 			semconv.SchemaURL,
-			semconv.ServiceNameKey.String("fib"),
+			semconv.ServiceNameKey.String("pdf-editor-backend"),
 			semconv.ServiceVersionKey.String("v0.1.0"),
 			attribute.String("environment", "demo"),
 		),
