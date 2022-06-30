@@ -18,7 +18,7 @@ const upload = multer({ dest: "uploads/" });
 
 
 // -------BACKEND----------
-app.get('/pdf/clear', (_, res) => {
+app.get('/clear', (_, res) => {
   // res.send('hello world')
   const output = execSync("curl -X GET backend:8080/pdf/clear", { encoding: "utf-8" });
   res.status(200).send(output)
@@ -50,9 +50,9 @@ app.get('/about', (_, res) => {
   res.status(200).sendFile(path.join(__dirname, '/About.html'));
 })
 
-app.get('/styles', (_, res) => {
-  res.status(200).sendFile(path.join(__dirname, '/style.css'));
-})
+// app.get('/styles', (_, res) => {
+//   res.status(200).sendFile(path.join(__dirname, '/style.css'));
+// })
 
 const PORT = process.env.PORT || 80
 app.listen(PORT)

@@ -6,7 +6,6 @@ metadata:
 spec:
   selector:
     app: backend-main
-  clusterIP: None
   ports:
   - port: 8080
     targetPort: backend-port

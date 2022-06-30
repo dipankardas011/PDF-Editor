@@ -1,4 +1,5 @@
 FROM golang:1.18-alpine
+LABEL MAINTAINER="Dipankar Das <dipankardas0115@gmail.com>"
 RUN apk add qpdf
 WORKDIR /go/src
 COPY . .

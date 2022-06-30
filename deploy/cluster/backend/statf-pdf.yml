@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: pdf-editor-backend
   labels:
@@ -10,8 +10,7 @@ spec:
   selector:
     matchLabels:
       app: backend-main
-  serviceName: backend-service
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -31,6 +30,8 @@ spec:
         volumeMounts:
         - name: backend
           mountPath: /app
+        securityContext:
+          runAsNonRoot: true
         resources:
           limits:
             memory: "128Mi"

@@ -20,6 +20,10 @@ data:
       static_configs:
       - targets: ["backend.pdf-editor-ns.svc.cluster.local:8080", "frontend.pdf-editor-ns.svc.cluster.local"]
 
+  web.yml: |-
+    basic_auth_users:
+      admin: $2b$12$K6xJMsqJp7MZL6NN/OIUyuvoMTFJvFKYlK2NVbgwzPk83sQnLMON2
+
 ---
 
 apiVersion: apps/v1
@@ -27,6 +31,8 @@ kind: Deployment
 metadata:
   name: prometheus
   namespace: monitoring
+  labels:
+    app.kubernetes.io/name: prometheus
 spec:
   selector:
     matchLabels:
@@ -39,10 +45,16 @@ spec:
       containers:
       - name: prometheus
         image: prom/prometheus
+        args:
+          - '--web.config.file=/etc/prometheus/web.yml'
+          - '--config.file=/etc/prometheus/prometheus.yml'
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
+          requests:
+            memory: "50Mi"
+            cpu: "100m"
         ports:
         - containerPort: 9090
           name: prom-port
@@ -52,8 +64,6 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            # Provide the name of the ConfigMap containing the files you want
-            # to add to the container
             name: special-config
 ---
 
@@ -65,6 +75,7 @@ metadata:
 spec:
   selector:
     app: prometheus
+  type: LoadBalancer
   ports:
   - port: 9090
     targetPort: prom-port
