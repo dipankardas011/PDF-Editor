@@ -15,7 +15,7 @@ stages:
 - stage: Build
   displayName: Build
   jobs:
-  - job: Build
+  - job: Build-back
     displayName: Build
     pool:
       vmImage: ubuntu-latest
@@ -27,7 +27,7 @@ stages:
         dockerfile: '$(Build.SourcesDirectory)/src/backend/Dockerfile'
         tags: |
           $(tag)
-  - job: Build
+  - job: Build-front
     displayName: Build Frontend
     pool:
       vmImage: ubuntu-latest
