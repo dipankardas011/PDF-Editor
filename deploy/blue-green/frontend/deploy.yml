@@ -28,7 +28,7 @@ metadata:
     frontend: main
   namespace: pdf-editor-ns
 spec:
-  replicas: 2
+  replicas: 4
   strategy:
     blueGreen:
       # activeService specifies the service to update with the new template hash at time of promotion.
