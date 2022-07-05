@@ -4,6 +4,70 @@ metadata:
   name: pdf-editor-ns
 
 ---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-lb
+  namespace: pdf-editor-ns
+spec:
+  selector:
+    app: frontend-pdf
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: web-port
+    protocol: TCP
+
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: pdf-editor-frontend
+  labels:
+    app: pdf
+    frontend: main
+  namespace: pdf-editor-ns
+spec:
+  replicas: 4
+  strategy:
+    blueGreen:
+      # activeService specifies the service to update with the new template hash at time of promotion.
+      # This field is mandatory for the blueGreen update strategy.
+      activeService: frontend-lb
+      # previewService specifies the service to update with the new template hash before promotion.
+      # This allows the preview stack to be reachable without serving production traffic.
+      # This field is optional.
+      previewService: frontend-lb-preview
+      # autoPromotionEnabled disables automated promotion of the new stack by pausing the rollout
+      # immediately before the promotion. If omitted, the default behavior is to promote the new
+      # stack as soon as the ReplicaSet are completely ready/available.
+      # Rollouts can be resumed using: `kubectl argo rollouts promote ROLLOUT`
+      autoPromotionEnabled: true
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: frontend-pdf
+  template:
+    metadata:
+      labels:
+        app: frontend-pdf
+    spec:
+      containers:
+      - name: pdf-editor-frontend
+        image: docker.io/dipugodocker/pdf-editor:0.6-frontend
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          name: web-port
+
+---
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -18,7 +82,9 @@ spec:
   resources:
     requests:
       storage: 50Mi
+
 ---
+
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
@@ -42,7 +108,7 @@ spec:
       # immediately before the promotion. If omitted, the default behavior is to promote the new
       # stack as soon as the ReplicaSet are completely ready/available.
       # Rollouts can be resumed using: `kubectl argo rollouts promote ROLLOUT`
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
   revisionHistoryLimit: 2
   selector:
     matchLabels:
