@@ -13,10 +13,24 @@ metadata:
 spec:
   selector:
     app: frontend-pdf
-  type: NodePort
   ports:
   - port: 80
     targetPort: web-port
+    protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: pdf-editor-ns
+spec:
+  selector:
+    app: backend-main
+  ports:
+  - port: 8080
+    targetPort: backend-port
     protocol: TCP
 
 ---
@@ -88,11 +102,11 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: pdf-backend-rollout
+  name: pdf-editor-backend
   namespace: pdf-editor-ns
   labels:
     app: pdf
-    backend: main-preview
+    backend: main
 spec:
   replicas: 2
   strategy:

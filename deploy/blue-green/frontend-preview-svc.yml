@@ -3,10 +3,11 @@ kind: Service
 metadata:
   name: frontend-lb-preview
   namespace: pdf-editor-ns
+  annotations:
+    blue-green: 'true'
 spec:
   selector:
     app: frontend-pdf
-  type: NodePort
   ports:
   - port: 5001
     targetPort: web-port
