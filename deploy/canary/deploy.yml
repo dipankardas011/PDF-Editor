@@ -20,18 +20,23 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: Service
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
 metadata:
-  name: backend
+  name: primary-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
   namespace: pdf-editor-ns
 spec:
-  selector:
-    app: backend-main
-  ports:
-  - port: 8080
-    targetPort: backend-port
-    protocol: TCP
+  rules:
+  - host: pdf-editor
+    http:
+      paths:
+      - path: /
+        backend:
+          # Reference to a Service name, also specified in the Rollout spec.strategy.canary.stableService field
+          serviceName: frontend-lb
+          servicePort: 80
 
 ---
 
@@ -45,34 +50,24 @@ metadata:
   namespace: pdf-editor-ns
 spec:
   replicas: 4
-  # strategy:
-  #   blueGreen:
-  #     # activeService specifies the service to update with the new template hash at time of promotion.
-  #     # This field is mandatory for the blueGreen update strategy.
-  #     activeService: frontend-lb
-  #     # previewService specifies the service to update with the new template hash before promotion.
-  #     # This allows the preview stack to be reachable without serving production traffic.
-  #     # This field is optional.
-  #     previewService: frontend-lb-preview
-  #     # autoPromotionEnabled disables automated promotion of the new stack by pausing the rollout
-  #     # immediately before the promotion. If omitted, the default behavior is to promote the new
-  #     # stack as soon as the ReplicaSet are completely ready/available.
-  #     # Rollouts can be resumed using: `kubectl argo rollouts promote ROLLOUT`
-  #     autoPromotionEnabled: true
-
-
   minReadySeconds: 30
   revisionHistoryLimit: 3
   strategy:
-    canary: #Indicates that the rollout should use the Canary strategy
-      maxSurge: "25%"
+    canary:
+      # maxSurge: "25%"
       maxUnavailable: 0
+      stableService: frontend-lb
+      canaryService: frontend-lb-canary
+      trafficRouting:
+        nginx:
+          stableIngress: primary-ingress
       steps:
-      - setWeight: 10
-      - pause:
-          duration: 2m
-      - setWeight: 20
-      - pause: {} # pause indefinitely
+      - setWeight: 30
+      - pause: {}
+      - setWeight: 60
+      - pause: {}
+      - setWeight: 100
+      - pause: {}
 
   selector:
     matchLabels:
@@ -84,7 +79,7 @@ spec:
     spec:
       containers:
       - name: pdf-editor-frontend
-        image: docker.io/dipugodocker/pdf-editor:0.7-frontend
+        image: docker.io/dipugodocker/pdf-editor:0.6-frontend
         resources:
           limits:
             memory: "128Mi"
@@ -94,77 +89,79 @@ spec:
         - containerPort: 80
           name: web-port
 
----
 
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pdf-editor-pvc
-  labels:
-    pvc: pdf
-  namespace: pdf-editor-ns
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: standard
-  resources:
-    requests:
-      storage: 50Mi
+# Canary is not good for API Testing (I guess)
+# ---
 
----
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: pdf-editor-pvc
+#   labels:
+#     pvc: pdf
+#   namespace: pdf-editor-ns
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   storageClassName: standard
+#   resources:
+#     requests:
+#       storage: 50Mi
 
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout
-metadata:
-  name: pdf-editor-backend
-  namespace: pdf-editor-ns
-  labels:
-    app: pdf
-    backend: main
-spec:
-  replicas: 2
-  minReadySeconds: 30
-  revisionHistoryLimit: 3
-  strategy:
-    canary: #Indicates that the rollout should use the Canary strategy
-      maxSurge: "25%"
-      maxUnavailable: 0
-      steps:
-      - setWeight: 10
-      - pause:
-          duration: 1m
-      - setWeight: 20
-      - pause: {} # pause indefinitely
-  selector:
-    matchLabels:
-      app: backend-main
-  template:
-    metadata:
-      labels:
-        app: backend-main
-    spec:
-      containers:
-      - name: backend
-        image: docker.io/dipugodocker/pdf-editor:0.6-backend
-        ports:
-        - containerPort: 8080
-          name: backend-port
-        livenessProbe:
-          httpGet:
-            port: 8080
-            path: /greet
-        imagePullPolicy: Always
-        volumeMounts:
-        - name: backend
-          mountPath: /app
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
-          requests:
-            memory: "50Mi"
-            cpu: "10m"
-      volumes:
-      - name: backend
-        persistentVolumeClaim:
-          claimName: pdf-editor-pvc
+# ---
+
+# apiVersion: argoproj.io/v1alpha1
+# kind: Rollout
+# metadata:
+#   name: pdf-editor-backend
+#   namespace: pdf-editor-ns
+#   labels:
+#     app: pdf
+#     backend: main
+# spec:
+#   replicas: 2
+#   minReadySeconds: 30
+#   revisionHistoryLimit: 3
+#   strategy:
+#     canary: #Indicates that the rollout should use the Canary strategy
+#       maxSurge: "25%"
+#       maxUnavailable: 0
+#       steps:
+#       - setWeight: 10
+#       - pause:
+#           duration: 1m
+#       - setWeight: 20
+#       - pause: {} # pause indefinitely
+#   selector:
+#     matchLabels:
+#       app: backend-main
+#   template:
+#     metadata:
+#       labels:
+#         app: backend-main
+#     spec:
+#       containers:
+#       - name: backend
+#         image: docker.io/dipugodocker/pdf-editor:0.6-backend
+#         ports:
+#         - containerPort: 8080
+#           name: backend-port
+#         livenessProbe:
+#           httpGet:
+#             port: 8080
+#             path: /greet
+#         imagePullPolicy: Always
+#         volumeMounts:
+#         - name: backend
+#           mountPath: /app
+#         resources:
+#           limits:
+#             memory: "128Mi"
+#             cpu: "500m"
+#           requests:
+#             memory: "50Mi"
+#             cpu: "10m"
+#       volumes:
+#       - name: backend
+#         persistentVolumeClaim:
+#           claimName: pdf-editor-pvc
