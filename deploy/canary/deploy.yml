@@ -34,7 +34,7 @@ spec:
   - host: pdf-editor
     http:
       paths:
-      - pathType: prefix
+      - pathType: Prefix
         path: "/"
         backend:
           service:
