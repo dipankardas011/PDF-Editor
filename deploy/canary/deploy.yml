@@ -20,10 +20,12 @@ spec:
 
 ---
 
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: primary-ingress
+  labels:
+    name: primary-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
   namespace: pdf-editor-ns
@@ -32,11 +34,13 @@ spec:
   - host: pdf-editor
     http:
       paths:
-      - path: /
+      - pathType: prefix
+        path: "/"
         backend:
-          # Reference to a Service name, also specified in the Rollout spec.strategy.canary.stableService field
-          serviceName: frontend-lb
-          servicePort: 80
+          service:
+            name: frontend-lb
+            port:
+              number: 80
 
 ---
 
