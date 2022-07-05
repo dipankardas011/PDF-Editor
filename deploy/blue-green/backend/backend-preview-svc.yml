@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-preview
+  namespace: pdf-editor-ns
+spec:
+  selector:
+    app: backend-main
+  ports:
+  - port: 8080
+    targetPort: backend-port
+    protocol: TCP
