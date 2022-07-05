@@ -30,8 +30,8 @@ spec:
         volumeMounts:
         - name: backend
           mountPath: /app
-        securityContext:
-          runAsNonRoot: true
+        #securityContext:
+         # runAsNonRoot: true
         resources:
           limits:
             memory: "128Mi"
