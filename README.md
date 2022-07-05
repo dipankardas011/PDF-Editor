@@ -2,7 +2,7 @@
 
 website that can edit PDF's
 
-[![Golang and Docker CI](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml/badge.svg?branch=main)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml) [![pages-build-deployment](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment) 
+[![Golang and Docker CI](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml/badge.svg?branch=main)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml) [![pages-build-deployment](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment)
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/pdf-editor-web)](https://artifacthub.io/packages/search?repo=pdf-editor-web) [![CodeQL](https://github.com/dipankardas011/PDF-Editor/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/codeql-analysis.yml)[![Continuous-Deployment](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD.yaml) [![Datree-policy-Checks](https://github.com/dipankardas011/PDF-Editor/actions/workflows/argoCD.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/argoCD.yaml) [![ImageScan [Aqua Trivy]](https://github.com/dipankardas011/PDF-Editor/actions/workflows/imageScan.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/imageScan.yaml)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/dipankardas011/PDF-Editor)
 
@@ -78,12 +78,16 @@ helm uninstall <Release Name> ./pdf-editor-helm
 
 ---
 
+## ArgoRollouts
+```sh
+deploy the path deploy/blue-green to argo-cd UI
+```
+
 # How to Run
 
 ```bash
-chmod +x build.sh
-./build.sh
-sudo docker compose up -d
+make build
+make run
 ```
 
 
@@ -100,7 +104,7 @@ cd IAC/AWS
 terraform init
 terraform apply
 # here you have to provide your access key and secret key to the input
-# go to 
+# go to
 <Elastic ip>:8080
 ```
 
