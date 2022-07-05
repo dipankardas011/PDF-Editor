@@ -137,6 +137,8 @@ func main() {
 
 	// prometheus metrics
 	http.Handle("/metrics", promhttp.Handler())
+	// http.Handle("/traces", _)
+	// http.Handle("/logs", _)
 
 	http.ListenAndServe(getPort(), nil)
 }

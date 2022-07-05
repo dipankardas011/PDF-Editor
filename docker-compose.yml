@@ -19,6 +19,17 @@ services:
       - "80:80"
     networks:
       - pdf-editor
+  trace:
+    depends_on:
+      - backend
+      - frontend
+    image: jaegertracing/all-in-one
+    container_name: jaeger
+    ports:
+      - "16686:16686"
+      - "6831:6831"
+    networks:
+      - pdf-editor
 
 networks:
   pdf-editor:

@@ -21,4 +21,4 @@ RUN apk add curl
 WORKDIR /app
 COPY package.json .
 COPY . .
-RUN npm test
+#RUN npm test
