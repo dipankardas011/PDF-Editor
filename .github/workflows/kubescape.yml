@@ -1,11 +1,11 @@
-name: Kubescape 
+name: Kubescape
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
-   
+    branches: [ main ]
+
 jobs:
   nsa-security-check:
     runs-on: ubuntu-latest
@@ -16,6 +16,6 @@ jobs:
 
       - name: Install Kubescape
         run: curl -s https://raw.githubusercontent.com/armosec/kubescape/master/install.sh | /bin/bash
-        
+
       - name: Scan YAML files
-        run: kubescape scan framework nsa *.yaml
+        run: kubescape scan --submit --account=7da566e7-82eb-42f9-a25c-9d3b63726ca8
