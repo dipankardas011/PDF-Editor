@@ -132,27 +132,42 @@ spec:
       labels:
         app: backend-main
     spec:
+      initContainers:
+        - name: pdf-files
+          image: docker.io/dipugodocker/pdf-editor:0.7-backend
+          volumeMounts:
+          - name: backend
+            mountPath: /mnt
+          command: ["cp", "-vR", ".", "/mnt"]
+
       containers:
-      - name: backend
-        image: docker.io/dipugodocker/pdf-editor:0.6-backend
-        ports:
-        - containerPort: 8080
-          name: backend-port
-        livenessProbe:
-          httpGet:
-            port: 8080
-            path: /greet
-        imagePullPolicy: Always
-        volumeMounts:
-        - name: backend
-          mountPath: /app
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
-          requests:
-            memory: "50Mi"
-            cpu: "10m"
+        - name: pdf-editor
+          image: docker.io/dipugodocker/pdf-editor:0.7-backend
+          volumeMounts:
+          - name: backend
+            mountPath: /go/src/
+          resources:
+            requests:
+                memory: "50Mi"
+                cpu: "10m"
+            limits:
+              memory: "500Mi"
+              cpu: "100m"
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /greet
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /greet
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          ports:
+            - containerPort: 8080
+              name: backend-port
       volumes:
       - name: backend
         persistentVolumeClaim:

@@ -5,9 +5,9 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-    
+
 env:
-  DATREE_TOKEN: ${{ secrets.DATREE_TOKEN }} 
+  DATREE_TOKEN: ${{ secrets.DATREE_TOKEN }}
 
 jobs:
   ArgoCDPolicyCheck:
@@ -16,11 +16,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
+
       - name: Run Datree Policy Check
         uses: datreeio/action-datree@main
         with:
-          path: 'cluster/CD.yaml'
+          path: 'deploy/cluster/argoCD.yaml'
           cliArguments: '--only-k8s-files -p Argo'
 
   HelmPolicyCheck:
@@ -31,18 +31,23 @@ jobs:
       - name: Run Datree Policy Check
         uses: datreeio/action-datree@main
         with:
-          path: 'cluster/pdf-editor-helm/'
+          path: 'deploy/cluster/pdf-editor-helm'
           cliArguments: ''
           isHelmChart: true
-          helmArguments: '--values cluster/pdf-editor-helm/values.yaml'
+          helmArguments: '--values deploy/cluster/pdf-editor-helm/values.yaml'
+
   KcustomizePolicyCheck:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Run Datree Policy Check
+      - name: Datree Policy Check on backend
         uses: datreeio/action-datree@main
         with:
-          path: 'cluster/pdf-editor-kustomize/dev/'
+          path: 'deploy/cluster/backend'
           isKustomization: true
-          
+      - name: Datree Policy Check on frontend
+        uses: datreeio/action-datree@main
+        with:
+          path: 'deploy/cluster/frontend'
+          isKustomization: true

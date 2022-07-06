@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pdf-editor-web
-  namespace: {{ .Values.namespace.dev }}
+  name: pdf-editor-backend
+  namespace: {{ .Values.namespace }}
   labels:
     web: pdf-editor
 spec:
-  replicas: {{ .Values.replicaCount.dev }}
+  replicas: {{ .Values.replicaCount.backend }}
   selector:
     matchLabels:
       web: pdf-editor
@@ -16,33 +16,88 @@ spec:
         web: pdf-editor
 
     spec:
+      volumes:
+      - name: backend
+        persistentVolumeClaim:
+          claimName: pdf-editor-pvc
+      initContainers:
+        - name: pdf-files
+          image: docker.io/dipugodocker/pdf-editor:{{ .Chart.AppVersion }}-backend
+          volumeMounts:
+          - name: backend
+            mountPath: /mnt
+          command: ["cp", "-vR", ".", "/mnt"]
+
       containers:
         - name: pdf-editor
-          image: {{ .Values.image.repository }}
-          env:
-          - name: PORT
-            valueFrom:
-              configMapKeyRef:
-                name: pdf-config
-                key: PORT
+          image: docker.io/dipugodocker/pdf-editor:{{ .Chart.AppVersion }}-backend
+          volumeMounts:
+          - name: backend
+            mountPath: /go/src/
           resources:
             requests:
                 memory: "50Mi"
-                cpu: "100m"
+                cpu: "10m"
             limits:
-              memory: "400Mi"
-              cpu: "500m"
+              memory: "500Mi"
+              cpu: "100m"
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /greet
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /greet
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf-editor-frontend
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: frontend-pdf
+spec:
+  replicas: {{ .Values.replicaCount.frontend }}
+  selector:
+    matchLabels:
+      app: frontend-pdf
+  template:
+    metadata:
+      labels:
+        app: frontend-pdf
+    spec:
+      containers:
+        - name: pdf-editor
+          image: docker.io/dipugodocker/pdf-editor:{{ .Chart.AppVersion }}-frontend
+          resources:
+            requests:
+                memory: "50Mi"
+                cpu: "10m"
+            limits:
+              memory: "500Mi"
+              cpu: "100m"
           livenessProbe:
             tcpSocket:
-              port: {{ .Values.portContainer }}
+              port: 80
             initialDelaySeconds: 15
             periodSeconds: 20
           readinessProbe:
             tcpSocket:
-              port: {{ .Values.portContainer }}
+              port: 80
             initialDelaySeconds: 5
             periodSeconds: 10
           ports:
-            - containerPort: {{ .Values.portContainer }}
+            - containerPort: 80
+              name: web-port
           imagePullPolicy: {{ .Values.image.pullPolicy }}
 ...

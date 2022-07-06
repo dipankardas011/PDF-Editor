@@ -24,13 +24,24 @@ jobs:
 
       - name: Build an image from Dockerfile
         run: |
-          cd backEnd/
+          cd src/backend
           docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
+          cd ../frontend
+          docker build -t docker.io/my-organization/my-appf:${{ github.sha }} .
 
-      - name: Run Trivy vulnerability scanner
+      - name: Run Trivy vulnerability scanner(backend)
         uses: aquasecurity/trivy-action@4b9b6fb4ef28b31450391a93ade098bb00de584e
         with:
           image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Run Trivy vulnerability scanner(frontend)
+        uses: aquasecurity/trivy-action@4b9b6fb4ef28b31450391a93ade098bb00de584e
+        with:
+          image-ref: 'docker.io/my-organization/my-appf:${{ github.sha }}'
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'
