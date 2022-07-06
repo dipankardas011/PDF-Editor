@@ -1,11 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"html/template"
 	"io"
 	"net/http"
 	"os"
+
+	"go.opentelemetry.io/otel"
 )
 
 var (
@@ -20,7 +23,10 @@ type templateStat struct {
 
 const NUMBEROFDOCS int = 2
 
-func uploadFile(w http.ResponseWriter, r *http.Request) {
+func uploadFile(w http.ResponseWriter, r *http.Request, ctx context.Context) {
+	tr := otel.Tracer("uploadFile")
+	ctxinn, span := tr.Start(ctx, "uploading")
+	defer span.End()
 
 	// Maximum upload of 10 MB files
 	r.ParseMultipartForm(10 << 20)
@@ -28,6 +34,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	file, handler, err := r.FormFile("myFile")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		requestsProcessedError.Inc()
 		return
 	}
 
@@ -42,11 +49,13 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 				Header: "alert alert-danger",
 				Status: "Internal Server error 501 ⚠️",
 			}
+			requestsProcessedError.Inc()
 		} else {
 			x = templateStat{
 				Header: "alert alert-danger",
 				Status: "Invalid file format error 415 ⚠️",
 			}
+			requestsProcessedError.Inc()
 		}
 
 		t.Execute(w, x)
@@ -62,12 +71,14 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		requestsProcessedError.Inc()
 		return
 	}
 
 	// Copy the uploaded file to the created file on the filesystem
 	if _, err := io.Copy(dst, file); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		requestsProcessedError.Inc()
 		return
 	}
 
@@ -81,21 +92,24 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 			Header: "alert alert-danger",
 			Status: "Internal Server error 501 ⚠️",
 		}
+		requestsProcessedError.Inc()
 	} else {
 		x = templateStat{
 			Header: "alert alert-success",
 			Status: "Uploaded ✅",
 		}
+		requestsProcessedSuccess.Inc()
 	}
 
 	if uploadedStat {
-		if MergePdf() == nil {
+		if MergePdf(ctxinn) == nil {
 			uploadedStat = false
 		} else {
 			x = templateStat{
 				Header: "alert alert-danger",
 				Status: "CRITICAL ERROR 502 ❌",
 			}
+			requestsProcessedError.Inc()
 		}
 		//TODO: condition check to automatically delete the uploads/ by clearExistingpdfs(w, r)
 	}
@@ -103,10 +117,18 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 }
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	tr := tp.Tracer("uploadingMain")
+	ctxIn, span := tr.Start(ctx, "mainBlock")
+	defer span.End()
+
+	requestsProcessed.Inc()
 	switch r.Method {
 	case "POST":
-		uploadFile(w, r)
+		uploadFile(w, r, ctxIn)
 	default:
 		w.WriteHeader(http.StatusBadRequest)
+		requestsProcessedError.Inc()
 	}
 }

@@ -2,6 +2,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"os"
 	"testing"
@@ -36,7 +37,8 @@ func TestCleaner(t *testing.T) {
 			log.Fatal("Couldn't create a folder")
 		}
 	}
-	_ = helperCleaner()
+	ctx := context.Background()
+	_ = helperCleaner(ctx)
 	_, err = os.Stat("uploads")
 	if os.IsNotExist(err) == false {
 		log.Fatal("CRITICAL ❌ uploads/ exist")

@@ -1,7 +1,7 @@
-version: '1.0'
+version: '3'
 services:
   backend:
-    image: docker.io/dipugodocker/pdf-editor:backend
+    image: docker.io/dipugodocker/pdf-editor:0.7-backend
     container_name: backend
     ports:
       - "8080"
@@ -13,10 +13,29 @@ services:
   frontend:
     depends_on:
       - backend
-    image: docker.io/dipugodocker/pdf-editor:frontend
+    image: docker.io/dipugodocker/pdf-editor:0.7-frontend
     container_name: frontend
     ports:
       - "80:80"
+    networks:
+      - pdf-editor
+  trace:
+    depends_on:
+      - backend
+      - frontend
+    image: jaegertracing/all-in-one
+    container_name: jaeger
+    ports:
+    - "6831"
+    - "6832"
+    - "5778"
+    - "16686:16686"
+    - "4317"
+    - "4318"
+    - "14250"
+    - "14268"
+    - "14269"
+    - "9411"
     networks:
       - pdf-editor
 
@@ -25,4 +44,3 @@ networks:
 
 volumes:
   db_data:
-# You need to change the index.html where it has HTTP call to the backend =>> http://localhost:10001/....

@@ -13,3 +13,7 @@ build:
 run:
 	sudo docker compose up -d
 	docker ps
+
+publish:
+	docker push dipugodocker/pdf-editor:frontend
+	docker push dipugodocker/pdf-editor:backend

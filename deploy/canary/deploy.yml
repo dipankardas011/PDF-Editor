@@ -1,0 +1,175 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pdf-editor-ns
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-lb
+  namespace: pdf-editor-ns
+spec:
+  selector:
+    app: frontend-pdf
+  ports:
+  - port: 80
+    targetPort: web-port
+    protocol: TCP
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: primary-ingress
+  labels:
+    name: primary-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  namespace: pdf-editor-ns
+spec:
+  rules:
+  - host: pdf-editor
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: frontend-lb
+            port:
+              number: 80
+
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: pdf-editor-frontend
+  labels:
+    app: pdf
+    frontend: main
+  namespace: pdf-editor-ns
+spec:
+  replicas: 4
+  minReadySeconds: 30
+  revisionHistoryLimit: 3
+  strategy:
+    canary:
+      # maxSurge: "25%"
+      maxUnavailable: 0
+      stableService: frontend-lb
+      canaryService: frontend-lb-canary
+      trafficRouting:
+        nginx:
+          stableIngress: primary-ingress
+      steps:
+      - setWeight: 30
+      - pause: {}
+      - setWeight: 60
+      - pause: {}
+      - setWeight: 100
+      - pause: {}
+
+  selector:
+    matchLabels:
+      app: frontend-pdf
+  template:
+    metadata:
+      labels:
+        app: frontend-pdf
+    spec:
+      containers:
+      - name: pdf-editor-frontend
+        image: docker.io/dipugodocker/pdf-editor:0.6-frontend
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          name: web-port
+
+
+# Canary is not good for API Testing (I guess)
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pdf-editor-pvc
+  labels:
+    pvc: pdf
+  namespace: pdf-editor-ns
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 50Mi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf-editor-backend
+  namespace: pdf-editor-ns
+  labels:
+    app: pdf
+    backend: main
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-main
+  template:
+    metadata:
+      labels:
+        app: backend-main
+    spec:
+      containers:
+      - name: backend
+        image: docker.io/dipugodocker/pdf-editor:0.6-backend
+        ports:
+        - containerPort: 8080
+          name: backend-port
+        livenessProbe:
+          httpGet:
+            port: 8080
+            path: /greet
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: backend
+          mountPath: /app
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+          requests:
+            memory: "50Mi"
+            cpu: "10m"
+      volumes:
+      - name: backend
+        persistentVolumeClaim:
+          claimName: pdf-editor-pvc
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: pdf-editor-ns
+spec:
+  selector:
+    app: backend-main
+  ports:
+  - port: 8080
+    targetPort: backend-port
+    protocol: TCP
+
+...
