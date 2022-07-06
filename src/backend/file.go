@@ -1,11 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"html/template"
 	"io"
 	"net/http"
 	"os"
+
+	"go.opentelemetry.io/otel"
 )
 
 var (
@@ -20,7 +23,10 @@ type templateStat struct {
 
 const NUMBEROFDOCS int = 2
 
-func uploadFile(w http.ResponseWriter, r *http.Request) {
+func uploadFile(w http.ResponseWriter, r *http.Request, ctx context.Context) {
+	tr := otel.Tracer("uploadFile")
+	ctxinn, span := tr.Start(ctx, "uploading")
+	defer span.End()
 
 	// Maximum upload of 10 MB files
 	r.ParseMultipartForm(10 << 20)
@@ -96,7 +102,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if uploadedStat {
-		if MergePdf() == nil {
+		if MergePdf(ctxinn) == nil {
 			uploadedStat = false
 		} else {
 			x = templateStat{
@@ -111,10 +117,16 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 }
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	tr := tp.Tracer("uploadingMain")
+	ctxIn, span := tr.Start(ctx, "mainBlock")
+	defer span.End()
+
 	requestsProcessed.Inc()
 	switch r.Method {
 	case "POST":
-		uploadFile(w, r)
+		uploadFile(w, r, ctxIn)
 	default:
 		w.WriteHeader(http.StatusBadRequest)
 		requestsProcessedError.Inc()

@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"html/template"
-	"io"
 	"log"
 	"net/http"
 	"os"
@@ -16,11 +15,50 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
+	"go.opentelemetry.io/otel/exporters/jaeger"
 	"go.opentelemetry.io/otel/sdk/resource"
-	"go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
+	tracesdk "go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.10.0"
 )
+
+const (
+	service     = "PDF Editor tracing"
+	environment = "production"
+	id          = 1
+)
+
+var (
+	tp *tracesdk.TracerProvider
+)
+
+func tracerProvider(url string) (*tracesdk.TracerProvider, error) {
+	// Create the Jaeger exporter
+	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(url)))
+	if err != nil {
+		return nil, err
+	}
+	tp := tracesdk.NewTracerProvider(
+		// Always be sure to batch in production.
+		tracesdk.WithBatcher(exp),
+		// Record information about this application in a Resource.
+		tracesdk.WithResource(resource.NewWithAttributes(
+			semconv.SchemaURL,
+			semconv.ServiceNameKey.String(service),
+			attribute.String("environment", environment),
+			attribute.Int64("ID", id),
+		)),
+	)
+	return tp, nil
+}
+
+func loadConfigsTracing() {
+	var err error
+	tp, err = tracerProvider("http://trace:14268/api/traces")
+	if err != nil {
+		log.Fatal(err)
+	}
+	otel.SetTracerProvider(tp)
+}
 
 var requestsProcessed = promauto.NewCounter(prometheus.CounterOpts{
 	Name: "go_request_operations_total",
@@ -37,20 +75,23 @@ var requestsProcessedSuccess = promauto.NewCounter(prometheus.CounterOpts{
 	Help: "The total number of HTTP 200 requests",
 })
 
-const name = "pdf-editor-backend"
-
-var ctx = context.Background()
-
 func greet(w http.ResponseWriter, r *http.Request) {
-	_, span := otel.Tracer(name).Start(ctx, "Greet")
-	requestsProcessed.Inc()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	tr := tp.Tracer("/greet")
+	_, span := tr.Start(ctx, "have a nice day!")
 	defer span.End()
 
+	requestsProcessed.Inc()
 	fmt.Fprintf(w, "Hello World! 🐳☸️🚀👍🏼🥳✅ %s", time.Now())
 	requestsProcessedSuccess.Inc()
 }
 
-func MergePdf() error {
+func MergePdf(ctx context.Context) error {
+	tr := otel.Tracer("Merge")
+	_, span := tr.Start(ctx, "merging")
+	defer span.End()
+
 	cmd := exec.Command("qpdf", "--empty", "--pages", "./uploads/00.pdf", "./uploads/01.pdf", "--", "./uploads/resrelt.pdf")
 	err := cmd.Run()
 	if err != nil {
@@ -71,62 +112,10 @@ func getPort() string {
 	return ":" + port
 }
 
-// ---------------------------------------------------------------
-func newExporter(w io.Writer) (trace.SpanExporter, error) {
-	return stdouttrace.New(
-		stdouttrace.WithWriter(w),
-		// Use human-readable output.
-		stdouttrace.WithPrettyPrint(),
-		// Do not print timestamps for the demo.
-		stdouttrace.WithoutTimestamps(),
-	)
-}
-
-// newResource returns a resource describing this application.
-func newResource() *resource.Resource {
-	r, _ := resource.Merge(
-		resource.Default(),
-		resource.NewWithAttributes(
-			semconv.SchemaURL,
-			semconv.ServiceNameKey.String("pdf-editor-backend"),
-			semconv.ServiceVersionKey.String("v0.1.0"),
-			attribute.String("environment", "demo"),
-		),
-	)
-	return r
-}
-
-// ---------------------------------------------------------------
-
 func main() {
-	// ---------------------------------------------------------------
-
-	l := log.New(os.Stdout, "", 0)
-	f, err := os.Create("traces.json")
-	if err != nil {
-		l.Fatal(err)
-	}
-	defer f.Close()
-
-	exp, err := newExporter(f)
-	if err != nil {
-		l.Fatal(err)
-	}
-
-	tp := trace.NewTracerProvider(
-		trace.WithBatcher(exp),
-		trace.WithResource(newResource()),
-	)
-	defer func() {
-		if err := tp.Shutdown(context.Background()); err != nil {
-			l.Fatal(err)
-		}
-	}()
-	otel.SetTracerProvider(tp)
-	// ---------------------------------------------------------------
-
+	loadConfigsTracing()
 	uploadedStat = false
-	err = os.MkdirAll("./uploads", os.ModePerm)
+	err := os.MkdirAll("./uploads", os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
@@ -137,13 +126,17 @@ func main() {
 
 	// prometheus metrics
 	http.Handle("/metrics", promhttp.Handler())
-	// http.Handle("/traces", _)
-	// http.Handle("/logs", _)
 
 	http.ListenAndServe(getPort(), nil)
 }
 
 func DownloadFile(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	tr := tp.Tracer("PDF download time")
+	_, span := tr.Start(ctx, "Download")
+	defer span.End()
+
 	requestsProcessed.Inc()
 	if r.Method == "GET" {
 		http.ServeFile(w, r, "uploads/resrelt.pdf")
@@ -153,12 +146,22 @@ func DownloadFile(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func helperCleaner() (err error) {
+func helperCleaner(ctx context.Context) (err error) {
+	tr := otel.Tracer("Clean Helper")
+	_, span := tr.Start(ctx, "helpCleaner")
+	defer span.End()
+
 	cmd := exec.Command("rm", "-Rf", "./uploads/")
 	return cmd.Run()
 }
 
 func clearExistingpdfs(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	tr := tp.Tracer("Clearing PDF's")
+	ctxIn, span := tr.Start(ctx, "Clearing")
+	defer span.End()
+
 	requestsProcessed.Inc()
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	t, err := template.ParseFiles("./templates/upload.html")
@@ -172,7 +175,7 @@ func clearExistingpdfs(w http.ResponseWriter, r *http.Request) {
 		requestsProcessedError.Inc()
 	}
 
-	err = helperCleaner()
+	err = helperCleaner(ctxIn)
 
 	if err != nil {
 		x = templateStat{
