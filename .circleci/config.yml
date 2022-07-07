@@ -11,8 +11,13 @@ jobs:
           command: |
             echo 'testing go'
       - run:
-          name: check go version
+          name: Build go backend
           command: |
-            go version
-            ls -la
+            cd src/backend
+            go build -o backend
+      - run:
+          name: Testing backend
+          command: |
+            cd src/backend
+            go test -v .
             
