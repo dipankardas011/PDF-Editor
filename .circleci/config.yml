@@ -8,9 +8,10 @@ jobs:
       - run:
           name: Simple debug
           command: |
-            echo 'Hello World!'
-            echo 'This is the delivery pipeline'
+            echo 'testing go'
       - run:
           name: check go version
           command: |
             go version
+            ls -la
+            
