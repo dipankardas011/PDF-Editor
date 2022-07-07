@@ -6,10 +6,10 @@ website that can edit PDF's
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/pdf-editor-web)](https://artifacthub.io/packages/search?repo=pdf-editor-web) [![CodeQL](https://github.com/dipankardas011/PDF-Editor/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/codeql-analysis.yml)[![Continuous-Deployment](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD.yaml) [![Datree-policy-Checks](https://github.com/dipankardas011/PDF-Editor/actions/workflows/Datree-CD.yaml/badge.svg?branch=main)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/Datree-CD.yaml) [![ImageScan [Aqua Trivy]](https://github.com/dipankardas011/PDF-Editor/actions/workflows/imageScan.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/imageScan.yaml)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/dipankardas011/PDF-Editor)
 
-Stage | Tags | Link
---|--|--
-Production | `N/A` | N/A
-Beta | `latest` ; `N/A` | N/A
+Stage | Tags
+--|--
+Production | `0.6`
+Beta | `latest` ; `0.7`
 
 > Release Cycle of 1 Month
 
