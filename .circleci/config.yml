@@ -5,6 +5,7 @@ jobs:
       image: ubuntu-2004:current
     resource_class: medium
     steps:
+      - checkout
       - run:
           name: Simple debug
           command: |
