@@ -61,7 +61,6 @@ jobs:
   #       docker build . --file Dockerfile --target prod --tag dipugodocker/pdf-editor:backend
   #       cd ../frontend
   #       docker build . --file Dockerfile --target prod --tag dipugodocker/pdf-editor:frontend
-
   test_cosign_action:
     needs: [docker_build]
 
