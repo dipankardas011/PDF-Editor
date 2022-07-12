@@ -59,6 +59,16 @@ jobs:
       - name: Check install!
         run: cosign version
 
+      - name: build
+        run: |
+          cd src/backend
+          docker build . -t docker.io/dipugodocker/pdf-editor:backend-$GITHUB_SHA
+
+      - name: sign
+        run: echo -n "${{secrets.COSIGNPASSWORD}}" | cosign sign --key cosign.key -a git_sha=$GITHUB_SHA docker.io/dipugodocker/pdf-editor:backend-$GITHUB_SHA
+
+      - name: verify
+        run: cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA docker.io/dipugodocker/pdf-editor:backend-$GITHUB_SHA
   # heroku-preview:
   #   needs: [docker_build]
   #   runs-on: ubuntu-latest
