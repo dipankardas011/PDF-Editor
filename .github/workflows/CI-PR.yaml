@@ -52,8 +52,8 @@ jobs:
     steps:
       - name: Install Cosign
         uses: sigstore/cosign-installer@main
-        with:
-          cosign-release: main
+        # with:
+        #   cosign-release: main
       - name: Check install!
         run: cosign version
 
