@@ -43,6 +43,20 @@ jobs:
         cd ../frontend
         docker build . --file Dockerfile --tag pdf-editor:$(date +%s)
 
+  test_cosign_action:
+    runs-on: ubuntu-latest
+
+    permissions: {}
+
+    name: Install Cosign and test presence in path
+    steps:
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@main
+        with:
+          cosign-release: main
+      - name: Check install!
+        run: cosign version
+
   # heroku-preview:
   #   needs: [docker_build]
   #   runs-on: ubuntu-latest
