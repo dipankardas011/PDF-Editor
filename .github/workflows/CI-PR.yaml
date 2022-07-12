@@ -43,47 +43,6 @@ jobs:
         cd ../frontend
         docker build . --file Dockerfile --tag pdf-editor:$(date +%s)
 
-  test_cosign_action:
-    runs-on: ubuntu-latest
-
-    env:
-      SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
-
-    name: Install Cosign and test presence in path
-    steps:
-      - uses: actions/checkout@v3
-
-
-      - name: Install Cosign
-        uses: sigstore/cosign-installer@main
-        # with:
-        #   cosign-release: main
-      - name: Check install!
-        run: |
-          cosign version
-          docker login -u dipugodocker -p "$SUPER_SECRET"
-
-      - name: build backend
-        run: |
-          cd src/backend
-          docker build --target prod -t docker.io/dipugodocker/pdf-editor:backend .
-
-      - name: build frontend
-        run: |
-          cd src/frontend
-          docker build --target prod -t docker.io/dipugodocker/pdf-editor:frontend .
-
-      - name: sign
-        run: |
-          echo -n "${{secrets.COSIGNPASSWORD}}" | cosign sign --key cosign.key -a git_sha=$GITHUB_SHA docker.io/dipugodocker/pdf-editor:frontend
-          echo -n "${{secrets.COSIGNPASSWORD}}" | cosign sign --key cosign.key -a git_sha=$GITHUB_SHA docker.io/dipugodocker/pdf-editor:backend
-
-      - name: verify
-        run: |
-          echo "Frontend Verify"
-          cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA docker.io/dipugodocker/pdf-editor:frontend | jq .
-          echo "Backend Verify"
-          cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA docker.io/dipugodocker/pdf-editor:backend | jq .
   # heroku-preview:
   #   needs: [docker_build]
   #   runs-on: ubuntu-latest
