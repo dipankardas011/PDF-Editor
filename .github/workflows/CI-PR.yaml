@@ -46,29 +46,33 @@ jobs:
   test_cosign_action:
     runs-on: ubuntu-latest
 
-    permissions: {}
+    env:
+      SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
 
     name: Install Cosign and test presence in path
     steps:
       - uses: actions/checkout@v3
+
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@main
         # with:
         #   cosign-release: main
       - name: Check install!
-        run: cosign version
+        run: |
+          cosign version
+          docker login -u dipugodocker -p "$SUPER_SECRET"
 
       - name: build
         run: |
           cd src/backend
-          docker build . -t docker.io/dipugodocker/pdf-editor:backend-$GITHUB_SHA
+          docker build --target prod -t docker.io/dipugodocker/pdf-editor:backend .
 
       - name: sign
-        run: echo -n "${{secrets.COSIGNPASSWORD}}" | cosign sign --key cosign.key -a git_sha=$GITHUB_SHA docker.io/dipugodocker/pdf-editor:backend-$GITHUB_SHA
+        run: echo -n "${{secrets.COSIGNPASSWORD}}" | cosign sign --key cosign.key -a git_sha=$GITHUB_SHA docker.io/dipugodocker/pdf-editor:backend
 
       - name: verify
-        run: cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA docker.io/dipugodocker/pdf-editor:backend-$GITHUB_SHA
+        run: cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA docker.io/dipugodocker/pdf-editor:backend
   # heroku-preview:
   #   needs: [docker_build]
   #   runs-on: ubuntu-latest
