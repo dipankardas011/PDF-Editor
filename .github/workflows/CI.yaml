@@ -45,9 +45,11 @@ jobs:
         npm install
 
     - name: testing
+      env:
+        PORT: 8080
       run: |
         cd src/frontend
-        node run test
+        npm run test
 
   docker_build:
 
