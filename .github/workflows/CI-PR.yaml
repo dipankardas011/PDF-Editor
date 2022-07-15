@@ -46,7 +46,7 @@ jobs:
     - name: testing
       run: |
         cd src/frontend
-        npm run test
+        sudo npm run test
 
   docker_build:
 
