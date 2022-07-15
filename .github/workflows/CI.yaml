@@ -63,9 +63,9 @@ jobs:
     - name: Build the Docker image
       run: |
         cd src/backend
-        docker build . --file Dockerfile --tag pdf-editor:$(date +%s)
+        docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)
         cd ../frontend
-        docker build . --file Dockerfile --tag pdf-editor:$(date +%s)
+        docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)
 
   # docker_new_release:
 
