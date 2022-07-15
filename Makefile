@@ -17,3 +17,7 @@ run:
 publish:
 	docker push dipugodocker/pdf-editor:frontend
 	docker push dipugodocker/pdf-editor:backend
+
+push_docker:
+	docker push dipugodocker/pdf-editor:0.8-frontend
+	docker push dipugodocker/pdf-editor:0.8-backend
