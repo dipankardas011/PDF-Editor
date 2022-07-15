@@ -10,7 +10,7 @@ spec:
         #!/bin/sh
         cd /home
         apk add curl git
-        git clone https://github.com/dipankardas011/PDF-Editor.git
+        git clone https://github.com/dipankardas011/PDF-Editor.git -b tekton
         cd PDF-Editor/src/frontend
         npm install
         echo "Testing.."
