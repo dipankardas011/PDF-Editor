@@ -46,7 +46,7 @@ jobs:
     - name: testing
       run: |
         cd src/frontend
-        node run test
+        npm run test
 
   docker_build:
 
