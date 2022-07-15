@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: backend
+spec:
+  steps:
+    - name: backend
+      image: golang:1.18
+      script: |
+        #!/bin/sh
+        apt install qpdf git
+        git clone https://github.com/dipankardas011/PDF-Editor.git -b main
+        cd PDF-Editor/src/backend
+        echo "Building.."
+        go build -v .
+        echo "Testing.."
+        go test -v .

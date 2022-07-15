@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: frontend
+spec:
+  steps:
+    - name: frontend
+      image: node:18-alpine3.15
+      script: |
+        #!/bin/sh
+        cd /home
+        apk add curl git
+        git clone https://github.com/dipankardas011/PDF-Editor.git -b main
+        cd PDF-Editor/src/frontend
+        npm install
+        echo "Testing.."
+        npm run test

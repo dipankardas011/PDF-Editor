@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pdf-pipeline
+spec:
+  tasks:
+    - name: backend-test-build
+      taskRef:
+        name: backend
+    - name: frontend-test-build
+      taskRef:
+        name: frontend

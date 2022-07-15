@@ -57,3 +57,5 @@ app.get('/about', (_, res) => {
 const PORT = process.env.PORT || 80
 app.listen(PORT)
 console.log(`Listening to PORT: ${PORT}`)
+
+module.exports = app;
