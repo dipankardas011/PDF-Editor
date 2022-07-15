@@ -28,9 +28,30 @@ jobs:
         cd src/backend
         go test -v ./...
 
+  npm_build:
+
+    runs-on: ubuntu-latest
+    environment: testing
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: installing dependencies
+      run: |
+        cd src/frontend
+        npm install
+
+    - name: testing
+      run: |
+        cd src/frontend
+        node run test
+
   docker_build:
 
-    needs: [golang_build]
+    needs: [golang_build,npm_build]
 
     runs-on: ubuntu-latest
     environment: testing

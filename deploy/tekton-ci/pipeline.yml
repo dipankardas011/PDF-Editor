@@ -3,11 +3,10 @@ kind: Pipeline
 metadata:
   name: pdf-pipeline
 spec:
-
   tasks:
-    - name: backend-pipe
+    - name: backend-test-build
       taskRef:
         name: backend
-    - name: frontend-pipe
+    - name: frontend-test-build
       taskRef:
         name: frontend
