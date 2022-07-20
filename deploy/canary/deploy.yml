@@ -83,7 +83,7 @@ spec:
     spec:
       containers:
       - name: pdf-editor-frontend
-        image: docker.io/dipugodocker/pdf-editor:0.6-frontend
+        image: docker.io/dipugodocker/pdf-editor:0.8-frontend
         resources:
           limits:
             memory: "128Mi"
@@ -134,7 +134,7 @@ spec:
     spec:
       initContainers:
         - name: pdf-files
-          image: docker.io/dipugodocker/pdf-editor:0.7-backend
+          image: docker.io/dipugodocker/pdf-editor:0.8-backend
           volumeMounts:
           - name: backend
             mountPath: /mnt
@@ -142,7 +142,7 @@ spec:
 
       containers:
         - name: pdf-editor
-          image: docker.io/dipugodocker/pdf-editor:0.7-backend
+          image: docker.io/dipugodocker/pdf-editor:0.8-backend
           volumeMounts:
           - name: backend
             mountPath: /go/src/
