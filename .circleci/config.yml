@@ -35,34 +35,3 @@ jobs:
             export PORT=8080
             cd src/frontend
             npm run test
-
-  plan-apply:
-    docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-    steps:
-      - checkout
-      - run:
-          name: terraform init & plan & apply
-          command: |
-            cd deploy/IAC/ansible-terraform
-            terraform init -input=false
-            terraform plan -out tfapply
-            terraform apply -auto-approve tfapply
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-
-
-# Orchestrate our job run sequence
-workflows:
-  build_and_terraform:
-    jobs:
-      - build
-      - plan-apply:
-          type: approval
-          requires:
-            - build
-      - apply:
-          requires:
-            - plan-apply
