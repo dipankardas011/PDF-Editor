@@ -72,12 +72,15 @@ kind: Service
 metadata:
   name: prometheus-server
   namespace: monitoring
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port:   '9090'
+
 spec:
   selector:
     app: prometheus
-  type: LoadBalancer
+  type: ClusterIP
   ports:
   - port: 9090
-    targetPort: prom-port
-
+    targetPort: 9090
 ...
