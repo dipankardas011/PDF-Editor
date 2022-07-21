@@ -10,14 +10,27 @@ jobs:
           name: Simple debug
           command: |
             echo 'testing go'
+
+      - run:
+          name: Getting Dependencies
+          command: |
+            cd src/frontend
+            npm install
+
       - run:
           name: Build go backend
           command: |
             cd src/backend
             go build -o backend
+
       - run:
           name: Testing backend
           command: |
             cd src/backend
             go test -v .
-            
+
+      - run:
+          name: Testing frontend
+          command: |
+            cd /src/frontend
+            npm run test
