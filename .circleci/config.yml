@@ -32,5 +32,6 @@ jobs:
       - run:
           name: Testing frontend
           command: |
+            export PORT=8080
             cd src/frontend
             npm run test
