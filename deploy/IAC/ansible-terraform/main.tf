@@ -1,12 +1,15 @@
-backend "remote" {
-  # The name of your Terraform Cloud organization.
-  organization = "pdf-org"
-  # The name of the Terraform Cloud workspace to store Terraform state files in.
-  workspaces {
-     name = "PDF-Editor"
-  }
-}
 
+terraform {
+  backend "remote" {
+    # The name of your Terraform Cloud organization.
+    organization = "pdf-org"
+    # The name of the Terraform Cloud workspace to store Terraform state files in.
+    workspaces {
+     name = "PDF-Editor"
+    }
+  }
+
+}
 
 
 provider "aws" {
