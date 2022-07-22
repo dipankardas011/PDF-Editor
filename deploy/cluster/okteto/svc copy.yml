@@ -5,31 +5,8 @@ metadata:
 spec:
   selector:
     app: frontend-pdf
-  type: ClusterIP
+  type: NodePort
   ports:
   - port: 80
     targetPort: web-port
     protocol: TCP
-
----
-
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: pdf-editor-ig
-  labels:
-    name: pdf-editor-ig
-  annotations:
-    kubernetes.io/ingress.class: nginx
-spec:
-  rules:
-  - host: pdf-editor
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: frontend-lb
-            port:
-              number: 80
