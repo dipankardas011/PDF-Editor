@@ -5,7 +5,7 @@ terraform {
     organization = "pdf-org"
     # The name of the Terraform Cloud workspace to store Terraform state files in.
     workspaces {
-     name = "PDF-Editor"
+      name = "PDF-Editor"
     }
   }
 
@@ -13,7 +13,7 @@ terraform {
 
 
 provider "aws" {
-  region  = "us-east-1"
+  region = "us-east-1"
 }
 
 # $ export AWS_ACCESS_KEY_ID="<provide the keys>"
@@ -47,8 +47,8 @@ resource "aws_route_table" "prod-route-table" {
   }
 
   route {
-    ipv6_cidr_block        = "::/0"
-    gateway_id             = aws_internet_gateway.gw.id
+    ipv6_cidr_block = "::/0"
+    gateway_id      = aws_internet_gateway.gw.id
   }
 
   tags = {
@@ -81,34 +81,34 @@ resource "aws_security_group" "allow_web" {
   vpc_id      = aws_vpc.prod-vpc.id
 
   ingress {
-    description      = "HTTP"
-    from_port        = 80
-    to_port          = 80
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"] # so as to make anyone to reach the server
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # so as to make anyone to reach the server
   }
 
   ingress {
-    description      = "Tracing"
-    from_port        = 16686
-    to_port          = 16686
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"] # so as to make anyone to reach the server
+    description = "Tracing"
+    from_port   = 16686
+    to_port     = 16686
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # so as to make anyone to reach the server
   }
 
   ingress {
-    description      = "SSH"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"] # so as to make anyone to reach the server
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # so as to make anyone to reach the server
   }
 
   egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
@@ -133,19 +133,19 @@ resource "aws_eip" "one" {
   associate_with_private_ip = "10.0.1.50"
 }
 
-output "server_public_ip" {  # it will print when terrafrom apply
+output "server_public_ip" { # it will print when terrafrom apply
   value = aws_eip.one.public_ip
 }
 
 # 9. create ubuntu server
 
 resource "aws_instance" "web-server-ec2" {
-  ami = "ami-052efd3df9dad4825"
-  instance_type = "t2.micro"
+  ami               = "ami-052efd3df9dad4825"
+  instance_type     = "t2.micro"
   availability_zone = "us-east-1a" # it is hardcoded as aws will make different zones to subnet and ec2 creating error
-  key_name = "demo-key-pair"
+  key_name          = "demo-key-pair"
   network_interface {
-    device_index = 0
+    device_index         = 0
     network_interface_id = aws_network_interface.web-server-nic.id
   }
 
