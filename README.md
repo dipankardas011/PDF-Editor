@@ -8,8 +8,8 @@ website that can edit PDF's
 
 Stage | Tags
 --|--
-Production | `0.6`
-Beta | `latest` ; `0.7`
+Production | `0.7`
+Beta | `latest` ; `0.8`
 
 > Release Cycle of 1 Month
 
@@ -38,7 +38,7 @@ kubectl apply -k deploy/cluster/frontend
 
 ---
 
-## Helm plugin (**NEED UPDATE!!**)
+## Helm plugin
 
 ### Usage
 
