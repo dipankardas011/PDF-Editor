@@ -18,10 +18,7 @@ name: pdf-editor
 deploy:
   commands:
   - name: Deploy
-    command: |
-      kubectl apply -k deploy/cluster/backend
-      kubectl apply -k deploy/cluster/frontend
-
+    command: kubectl apply -f deploy/cluster/okteto
 
 # The dependencies section defines other git repositories to be deployed as part of your development environment
 # More info: https://www.okteto.com/docs/reference/manifest/#dependencies

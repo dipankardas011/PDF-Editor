@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf-editor-frontend
+  labels:
+    app: pdf
+    frontend: main
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend-pdf
+  template:
+    metadata:
+      labels:
+        app: frontend-pdf
+    spec:
+      containers:
+      - name: pdf-editor-frontend
+        image: docker.io/dipugodocker/pdf-editor:0.8-frontend
+        resources:
+          requests:
+              memory: "50Mi"
+              cpu: "10m"
+          limits:
+            memory: "500Mi"
+            cpu: "100m"
+        livenessProbe:
+          httpGet:
+            port: 80
+            path: /
+          initialDelaySeconds: 5
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            port: 80
+            path: /
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          name: web-port
