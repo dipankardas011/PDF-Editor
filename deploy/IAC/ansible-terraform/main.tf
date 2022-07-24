@@ -151,15 +151,30 @@ resource "aws_instance" "web-server-ec2" {
 
   user_data = <<-EOF
     #!/bin/bash
+    
+    cd /home/ubuntu
+
     sudo apt update -y
+
+    sudo apt install docker.io -y
+    
+    sudo usermod -aG docker ubuntu
+
+    sudo apt install docker-compose -y
+
+    git clone https://github.com/dipankardas011/PDF-Editor.git
+
+    cd PDF-Editor/
+    sudo docker-compose up -d
+
     EOF
 
   tags = {
     "Name" = "web-server"
   }
 
-  provisioner "local-exec" {
-    command = "sleep 120; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu --private-key ./demo-key-pair.pem -i '${aws_instance.web-server-ec2.public_ip},' ec2-cfg.yml && curl --head ${aws_instance.web-server-ec2.public_ip}"
-  }
+  #  provisioner "local-exec" {
+  # command = "sleep 120; apt update -y && apt install ansible -y  && ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu --private-key ./demo-key-pair.pem -i '${aws_instance.web-server-ec2.public_ip},' ec2-cfg.yml && curl --head ${aws_instance.web-server-ec2.public_ip}"
+  # }
 }
 
