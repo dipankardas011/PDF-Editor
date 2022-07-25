@@ -21,7 +21,7 @@ spec:
   maxReplicas: 6
   minReplicas: 2
   scaleTargetRef:
-    apiVersion: argoproj.io/v1alpha1
-    kind: Rollout
+    apiVersion: apps/v1
+    kind: Deployment
     name: pdf-editor-backend
   targetCPUUtilizationPercentage: 80
