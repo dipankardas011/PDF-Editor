@@ -1,7 +1,7 @@
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: hpa-rollout-example
+  name: hpa-rollout-frontend
   namespace: pdf-editor-ns
 spec:
   maxReplicas: 4 
@@ -15,7 +15,7 @@ spec:
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: hpa-rollout-example
+  name: hpa-rollout-backend
   namespace: pdf-editor-ns
 spec:
   maxReplicas: 6
