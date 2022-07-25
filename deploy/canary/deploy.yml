@@ -141,7 +141,7 @@ spec:
           command: ["cp", "-vR", ".", "/mnt"]
 
       containers:
-        - name: pdf-editor
+        - name: pdf-editor-backend
           image: docker.io/dipugodocker/pdf-editor:0.8-backend
           volumeMounts:
           - name: backend
