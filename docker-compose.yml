@@ -19,7 +19,7 @@ services:
       - "80:80"
     networks:
       - pdf-editor
-  jaeger.tracing:
+  trace:
     depends_on:
       - backend
       - frontend

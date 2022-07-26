@@ -151,13 +151,13 @@ resource "aws_instance" "web-server-ec2" {
 
   user_data = <<-EOF
     #!/bin/bash
-    
+
     cd /home/ubuntu
 
     sudo apt update -y
 
     sudo apt install docker.io -y
-    
+
     sudo usermod -aG docker ubuntu
 
     sudo apt install docker-compose -y
