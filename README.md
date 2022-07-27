@@ -6,12 +6,17 @@ website that can edit PDF's
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/pdf-editor-web)](https://artifacthub.io/packages/search?repo=pdf-editor-web) [![CodeQL](https://github.com/dipankardas011/PDF-Editor/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/codeql-analysis.yml)[![Continuous-Deployment](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD.yaml) [![Datree-policy-Checks](https://github.com/dipankardas011/PDF-Editor/actions/workflows/Datree-CD.yaml/badge.svg?branch=main)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/Datree-CD.yaml) [![ImageScan [Aqua Trivy]](https://github.com/dipankardas011/PDF-Editor/actions/workflows/imageScan.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/imageScan.yaml)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/dipankardas011/PDF-Editor)[![CircleCI](https://dl.circleci.com/status-badge/img/gh/dipankardas011/PDF-Editor/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/dipankardas011/PDF-Editor/tree/main)
 
+
+## Software Requirement Specification
+
+[Link](https://docs.google.com/document/d/e/2PACX-1vQvfAZFG0Tw9MAXtXXXDDGFZ6967Iz9CK1rTE9Gl-cR8fKF268qoggKPIUhKGD3fWszGFEUfwoKYC9D/pub)
+
 Stage | Tags
 --|--
 Production | `0.7`
 Beta | `latest` ; `0.8`
 
-> Release Cycle of 1 Month
+> Release Cycle of ~1 Month
 
 ### Tech Stack
 * GO
