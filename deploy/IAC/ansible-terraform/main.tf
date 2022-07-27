@@ -93,7 +93,7 @@ resource "aws_security_group" "allow_web" {
     from_port   = 16686
     to_port     = 16686
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # so as to make anyone to reach the server
+    cidr_blocks = ["157.41.138.48/32"] # so as to make anyone to reach the server
   }
 
   ingress {
@@ -101,7 +101,7 @@ resource "aws_security_group" "allow_web" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # so as to make anyone to reach the server
+    cidr_blocks = ["157.41.138.48/32"] # so as to make anyone to reach the server
   }
 
   egress {
@@ -174,7 +174,7 @@ resource "aws_instance" "web-server-ec2" {
   }
 
   #  provisioner "local-exec" {
-  # command = "sleep 120; apt update -y && apt install ansible -y  && ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu --private-key ./demo-key-pair.pem -i '${aws_instance.web-server-ec2.public_ip},' ec2-cfg.yml && curl --head ${aws_instance.web-server-ec2.public_ip}"
+  # command = "sleep 120; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu --private-key ./demo-key-pair.pem -i '${aws_instance.web-server-ec2.public_ip},' ec2-cfg.yml && curl --head ${aws_instance.web-server-ec2.public_ip}"
   # }
 }
 
