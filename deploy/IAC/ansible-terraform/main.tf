@@ -93,7 +93,7 @@ resource "aws_security_group" "allow_web" {
     from_port   = 16686
     to_port     = 16686
     protocol    = "tcp"
-    cidr_blocks = ["157.41.138.48/32"] # so as to make anyone to reach the server
+    cidr_blocks = ["0.0.0.0/0"] # so as to make anyone to reach the server
   }
 
   ingress {
@@ -101,7 +101,7 @@ resource "aws_security_group" "allow_web" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["157.41.138.48/32"] # so as to make anyone to reach the server
+    cidr_blocks = ["0.0.0.0/0"] # so as to make anyone to reach the server
   }
 
   egress {
