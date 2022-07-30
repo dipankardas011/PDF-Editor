@@ -7,35 +7,35 @@ FRONTEND='dipugodocker/pdf-editor:frontend'
 # building the docker images
 backend_docker_build_dev() {
   echo 'Building Dev [Backend]'
-  cd src/backend && docker build --target dev -t $BACKEND .
+  cd src/backend/merger && docker build --target dev -t $BACKEND .
 }
 
 frontend_docker_build_dev() {
   echo 'Building Dev [Frontend]'
-  cd ../frontend && docker build --target dev -t $FRONTEND .
+  cd ../../frontend && docker build --target dev -t $FRONTEND .
 }
 
 
 # building the docker images
 backend_docker_build_prod() {
   echo 'Building Prod [Backend]'
-  cd src/backend && docker build --target prod -t $BACKEND . --no-cache
+  cd src/backend/merger && docker build --target prod -t $BACKEND . --no-cache
 }
 
 frontend_docker_build_prod() {
   echo 'Building Prod [Frontend]'
-  cd ../frontend && docker build --target prod -t $FRONTEND . --no-cache
+  cd ../../frontend && docker build --target prod -t $FRONTEND . --no-cache
 }
 
 # building the docker images
 backend_docker_build_test() {
   echo 'Building Test [Backend]'
-  cd src/backend && docker build --target test -t $BACKEND . --no-cache
+  cd src/backend/merger && docker build --target test -t $BACKEND . --no-cache
 }
 
 frontend_docker_build_test() {
   echo 'Building Test [Frontend]'
-  cd ../frontend && docker build --target test -t $FRONTEND . --no-cache
+  cd ../../frontend && docker build --target test -t $FRONTEND . --no-cache
 }
 
 

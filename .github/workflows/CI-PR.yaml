@@ -19,12 +19,12 @@ jobs:
 
     - name: Build
       run: |
-        cd src/backend
+        cd src/backend/merger
         go build -v ./...
 
     - name: Test
       run: |
-        cd src/backend
+        cd src/backend/merger
         go test -v ./...
 
   npm_build:
@@ -61,9 +61,9 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: |
-        cd src/backend
+        cd src/backend/merger
         docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)
-        cd ../frontend
+        cd ../../frontend
         docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)
 
   # heroku-preview:

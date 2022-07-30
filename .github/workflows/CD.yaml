@@ -24,9 +24,9 @@ jobs:
     - name: Publish the Docker image
       run: |
         docker login -u dipugodocker -p "$SUPER_SECRET"
-        cd src/backend/
+        cd src/backend/merger
         docker build . --file Dockerfile --target prod --tag dipugodocker/pdf-editor:0.$(($(date +%m) + 0))-backend
-        cd ../frontend
+        cd ../../frontend
         docker build . --file Dockerfile --target prod --tag dipugodocker/pdf-editor:0.$(($(date +%m) + 0))-frontend
         docker push dipugodocker/pdf-editor:0.$(($(date +%m) + 0))-frontend
         docker push dipugodocker/pdf-editor:0.$(($(date +%m) + 0))-backend

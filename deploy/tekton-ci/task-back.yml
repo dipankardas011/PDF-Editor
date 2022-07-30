@@ -10,7 +10,7 @@ spec:
         #!/bin/sh
         apt install qpdf git
         git clone https://github.com/dipankardas011/PDF-Editor.git -b main
-        cd PDF-Editor/src/backend
+        cd PDF-Editor/src/backend/merger
         echo "Building.."
         go build -v .
         echo "Testing.."

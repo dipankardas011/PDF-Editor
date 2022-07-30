@@ -20,13 +20,13 @@ jobs:
       - run:
           name: Build go backend
           command: |
-            cd src/backend
+            cd src/backend/merger
             go build -o backend
 
       - run:
           name: Testing backend
           command: |
-            cd src/backend
+            cd src/backend/merger
             go test -v .
 
       - run:

@@ -20,12 +20,12 @@ jobs:
 
     - name: Build
       run: |
-        cd src/backend
+        cd src/backend/merger
         go build -v ./...
 
     - name: Test
       run: |
-        cd src/backend
+        cd src/backend/merger
         go test -v ./...
 
   npm_build:
@@ -62,9 +62,9 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: |
-        cd src/backend
+        cd src/backend/merger
         docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)
-        cd ../frontend
+        cd ../../frontend
         docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)
 
   # docker_new_release:
@@ -80,9 +80,9 @@ jobs:
   #   - name: Publish the Docker image
   #     run: |
   #       docker login -u dipugodocker -p "$SUPER_SECRET"
-  #       cd src/backend
+  #       cd src/backend/merger
   #       docker build . --file Dockerfile --target prod --tag dipugodocker/pdf-editor:backend
-  #       cd ../frontend
+  #       cd ../../frontend
   #       docker build . --file Dockerfile --target prod --tag dipugodocker/pdf-editor:frontend
   test_cosign_action:
     needs: [docker_build]
@@ -109,7 +109,7 @@ jobs:
 
       - name: build backend
         run: |
-          cd src/backend
+          cd src/backend/merger
           docker build --target prod -t docker.io/dipugodocker/pdf-editor:backend .
 
       - name: build frontend
