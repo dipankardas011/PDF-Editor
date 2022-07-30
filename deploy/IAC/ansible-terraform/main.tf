@@ -164,7 +164,7 @@ resource "aws_instance" "web-server-ec2" {
 
     git clone https://github.com/dipankardas011/PDF-Editor.git
 
-    cd PDF-Editor/
+    cd PDF-Editor/deploy/IAC/ansible-terraform
     sudo docker-compose up -d
 
     EOF

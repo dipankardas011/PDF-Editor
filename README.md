@@ -9,12 +9,16 @@ website that can edit PDF's
 
 ## Software Requirement Specification
 
-[Link](https://docs.google.com/document/d/e/2PACX-1vQvfAZFG0Tw9MAXtXXXDDGFZ6967Iz9CK1rTE9Gl-cR8fKF268qoggKPIUhKGD3fWszGFEUfwoKYC9D/pub)
+[Link for entire Documentation about this project](https://docs.google.com/document/d/e/2PACX-1vQvfAZFG0Tw9MAXtXXXDDGFZ6967Iz9CK1rTE9Gl-cR8fKF268qoggKPIUhKGD3fWszGFEUfwoKYC9D/pub)
 
-Stage | Tags
---|--
-Production | `0.7`
-Beta | `latest` ; `0.8`
+[Project Board For Current Status](https://github.com/users/dipankardas011/projects/2/views/1)
+
+Stage | Tags | Links
+--|--|--
+Production | `0.7` | https://pdf-web-editor.azurewebsites.net/
+Beta | `latest` ; `0.8` | 34.238.111.206
+
+> A Humble request! 🙏 don't expoit the resources I have used here 
 
 > Release Cycle of ~1 Month
 
