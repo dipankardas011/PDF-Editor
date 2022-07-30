@@ -96,13 +96,13 @@ resource "aws_security_group" "allow_web" {
     cidr_blocks = ["0.0.0.0/0"] # so as to make anyone to reach the server
   }
 
-  ingress {
-    description = "SSH"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # so as to make anyone to reach the server
-  }
+  # ingress {
+  #   description = "SSH"
+  #   from_port   = 22
+  #   to_port     = 22
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"] # so as to make anyone to reach the server
+  # }
 
   egress {
     from_port   = 0
@@ -143,7 +143,7 @@ resource "aws_instance" "web-server-ec2" {
   ami                  = "ami-052efd3df9dad4825"
   instance_type        = "t2.micro"
   availability_zone    = "us-east-1a" # it is hardcoded as aws will make different zones to subnet and ec2 creating error
-  key_name             = "demo-key-pair"
+  # key_name             = "demo-key-pair"
   iam_instance_profile = "my-ssm-ec2-role"
   network_interface {
     device_index         = 0
