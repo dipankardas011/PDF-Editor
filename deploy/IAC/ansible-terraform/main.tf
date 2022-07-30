@@ -140,10 +140,11 @@ output "server_public_ip" { # it will print when terrafrom apply
 # 9. create ubuntu server
 
 resource "aws_instance" "web-server-ec2" {
-  ami               = "ami-052efd3df9dad4825"
-  instance_type     = "t2.micro"
-  availability_zone = "us-east-1a" # it is hardcoded as aws will make different zones to subnet and ec2 creating error
-  key_name          = "demo-key-pair"
+  ami                  = "ami-052efd3df9dad4825"
+  instance_type        = "t2.micro"
+  availability_zone    = "us-east-1a" # it is hardcoded as aws will make different zones to subnet and ec2 creating error
+  key_name             = "demo-key-pair"
+  iam_instance_profile = "my-ssm-ec2-role"
   network_interface {
     device_index         = 0
     network_interface_id = aws_network_interface.web-server-nic.id
