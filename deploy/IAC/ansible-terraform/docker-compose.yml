@@ -45,7 +45,6 @@ services:
 
   trace:
     depends_on:
-      - backend
       - frontend
     image: jaegertracing/all-in-one
     container_name: jaeger-tracing-pdf
