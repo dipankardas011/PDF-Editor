@@ -1,4 +1,4 @@
-name: CI Checks 🤞🏼
+name: PR Checks 🤞🏼
 
 on:
   pull_request:
@@ -22,7 +22,7 @@ jobs:
         cd src/backend/merger
         go build -v ./...
 
-    - name: Test merger
+    - name: 🧪 backend Merger
       run: |
         cd src/backend/merger
         go test -v ./...
@@ -43,7 +43,7 @@ jobs:
         cd src/frontend
         npm install
 
-    - name: testing
+    - name: 🧪 frontend
       env:
         PORT: 8080
       run: |

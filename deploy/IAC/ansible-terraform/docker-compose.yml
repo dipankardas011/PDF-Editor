@@ -1,24 +1,48 @@
 version: '3'
 services:
-  backend:
-    image: docker.io/dipugodocker/pdf-editor:backend
-    container_name: backend-merge-pdf
+  backend-merge:
+    depends_on:
+      - backend-db
+    image: docker.io/dipugodocker/pdf-editor:backend-merge
+    container_name: backend-merger
     ports:
       - "8080"
     networks:
       - pdf-editor
     volumes:
-      - db_data:/go/src
+      - app_data:/go/src
+
+  backend-rotate:
+    depends_on:
+      - backend-db
+    image: docker.io/dipugodocker/pdf-editor:backend-rotate
+    container_name: backend-rotator
+    ports:
+      - "8081"
+    networks:
+      - pdf-editor
+
+  backend-db:
+    image: docker.io/dipugodocker/pdf-editor:backend-db
+    container_name: backend-database
+    ports:
+      - "6379"
+    networks:
+      - pdf-editor
+    volumes:
+      - db_data:/data
 
   frontend:
     depends_on:
-      - backend
+      - backend-merge
+      - backend-rotate
     image: docker.io/dipugodocker/pdf-editor:frontend
-    container_name: frontend-usr-pdf
+    container_name: frontend-merger-pdf
     ports:
       - "80:80"
     networks:
       - pdf-editor
+
   trace:
     depends_on:
       - backend
@@ -44,3 +68,4 @@ networks:
 
 volumes:
   db_data:
+  app_data:

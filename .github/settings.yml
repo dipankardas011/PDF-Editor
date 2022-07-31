@@ -3,14 +3,14 @@ repository:
   # See https://developer.github.com/v3/repos/#edit for all available settings.
 
   # The name of the repository. Changing this will rename the repository
-  name: pdf-online-tool
+  name: PDF-Editor
 
   # A short description of the repository that will show up on GitHub
-  description: PDF Tool
+  description: PDF Editor
 
   # A URL with more information about the repository
   # homepage: %^%$
-  
+
   # Collaborators: give specific users access to this repository.
   # see /governance/roles.md for details on write access policy
   # note that the permissions below may provide wider access than needed for
