@@ -10,8 +10,8 @@ FROM alpine:3.16.1 as prod
 RUN apk add qpdf
 LABEL MAINTAINER="Dipankar Das <dipankardas0115@gmail.com>"
 WORKDIR /go/src
-COPY --from=prod-stage1 /go/src/templates .
-COPY --from=prod-stage1 /go/src/rotator-executable .
+COPY --from=prod-stage1 /go/src .
+RUN rm -f go.mod main.go Dockerfile .dockerignore
 CMD ["./rotator-executable"]
 EXPOSE 8081
 

@@ -18,25 +18,25 @@ const upload = multer({ dest: "uploads/" });
 
 
 // -------BACKEND----------
-app.get('/clear', (_, res) => {
+app.get('merge/clear', (_, res) => {
   // res.send('hello world')
-  const output = execSync("curl -X GET backend-merge:8080/pdf/clear", { encoding: "utf-8" });
+  const output = execSync("curl -X GET http://backend-merge:8080/pdf/clear", { encoding: "utf-8" });
   res.status(200).send(output)
 })
 
 
-app.post('/upload', upload.single('myFile'), (req, res) => {
+app.post('merge/upload', upload.single('myFile'), (req, res) => {
   _ = execSync(`cd /app/uploads && mv ${req.file.filename} ${req.file.filename}.pdf`)
   var file = "/app/" + req.file.path + ".pdf"
 
-  ccc = execSync(`curl --raw -X POST --form "myFile=@${file}" backend-merge:8080/upload`, { encoding: "utf-8" })
+  ccc = execSync(`curl --raw -X POST --form "myFile=@${file}" http://backend-merge:8080/upload`, { encoding: "utf-8" })
   res.send(ccc)
   _ = execSync(`cd /app/uploads && rm -rf *`) // perodic clean up
 })
 
 
-app.get('/download', (req, res) => {
-  const output = execSync("curl -X GET backend-merge:8080/downloads");
+app.get('merge/download', (req, res) => {
+  const output = execSync("curl -X GET http://backend-merge:8080/downloads");
   res.send(output)
 })
 
@@ -50,9 +50,13 @@ app.get('/about', (_, res) => {
   res.status(200).sendFile(path.join(__dirname, '/About.html'));
 })
 
-// app.get('/styles', (_, res) => {
-//   res.status(200).sendFile(path.join(__dirname, '/style.css'));
-// })
+app.get('/merger', (_, res) => {
+  res.status(200).sendFile(path.join(__dirname, '/index-merge.html'));
+})
+
+app.get('/rotator', (_, res) => {
+  res.status(200).sendFile(path.join(__dirname, '/index-rotate.html'));
+})
 
 const PORT = process.env.PORT || 80
 app.listen(PORT)
