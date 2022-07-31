@@ -85,5 +85,5 @@ jobs:
     - name: Terraform Format
       run: |
         cd deploy/IAC/ansible-terraform
-        terraform fmt --check
+        terraform fmt -check
 ...
