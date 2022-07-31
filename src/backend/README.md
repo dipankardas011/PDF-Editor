@@ -1,3 +1,5 @@
+# OUTDATED FROM `31-7-22`
+
 # How to Make [*Dev*]
 
 Use the two PDFs `01.pdf` and `02.pdf` from testFiles/ for testing purposes
@@ -9,7 +11,7 @@ docker build --target=dev -t <image> .
 
 docker run -it --rm --publish 80:8080 -v ${PWD}:/app <image>
 
-# then go 
+# then go
 localhost:80
 ```
 

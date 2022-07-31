@@ -24,9 +24,9 @@ jobs:
 
       - name: Build an image from Dockerfile
         run: |
-          cd src/backend
+          cd src/backend/merger
           docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
-          cd ../frontend
+          cd ../../frontend
           docker build -t docker.io/my-organization/my-appf:${{ github.sha }} .
 
       - name: Run Trivy vulnerability scanner(backend)

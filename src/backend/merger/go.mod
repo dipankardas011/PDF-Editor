@@ -1,4 +1,4 @@
-module backend
+module github.com/dipankardas011/Merge-PDF/src/backend/merger
 
 go 1.17
 

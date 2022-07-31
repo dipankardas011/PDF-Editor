@@ -1,15 +1,15 @@
-name: Continuous-Deployment
+name: Stable Docker Image Release
 
 on:
-  schedule:
-    # Monthly release at 12'o clock
-    - cron: "0 12 1 * *"
+  # schedule:
+  #   # Monthly release at 12'o clock
+  #   - cron: "0 12 1 * *"
   workflow_dispatch:
-    inputs:
-      version:
-        description: Version(Optional)
-        default: v1.0.0
-        required: false
+    # inputs:
+    #   version:
+    #     description: Version(Optional)
+    #     default: v1.0.0
+    #     required: false
 
 jobs:
 
@@ -19,17 +19,21 @@ jobs:
     environment: deploy
     env:
       SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
+      BACKEND_MERGE: dipugodocker/pdf-editor:backend-merge
+      BACKEND_DATABASE: dipugodocker/pdf-editor:backend-db
+      BACKEND_ROTATE: dipugodocker/pdf-editor:backend-rotate
+      FRONTEND: dipugodocker/pdf-editor:frontend
     steps:
     - uses: actions/checkout@v3
     - name: Publish the Docker image
       run: |
         docker login -u dipugodocker -p "$SUPER_SECRET"
-        cd src/backend/
-        docker build . --file Dockerfile --target prod --tag dipugodocker/pdf-editor:0.$(($(date +%m) + 0))-backend
-        cd ../frontend
-        docker build . --file Dockerfile --target prod --tag dipugodocker/pdf-editor:0.$(($(date +%m) + 0))-frontend
-        docker push dipugodocker/pdf-editor:0.$(($(date +%m) + 0))-frontend
-        docker push dipugodocker/pdf-editor:0.$(($(date +%m) + 0))-backend
+        cd src/backend/merger
+        docker build . --file Dockerfile --target prod --tag $BACKEND_MERGE
+        cd ../../frontend
+        docker build . --file Dockerfile --target prod --tag $FRONTEND
+        docker push $FRONTEND
+        docker push $BACKEND_MERGE
 
   # heroku-deploy:
   #   needs: [docker_new_release]

@@ -17,7 +17,7 @@ spec:
     spec:
       initContainers:
         - name: pdf-files
-          image: docker.io/dipugodocker/pdf-editor:backend
+          image: docker.io/dipugodocker/pdf-editor:backend-merge
           volumeMounts:
           - name: backend
             mountPath: /mnt
@@ -25,7 +25,7 @@ spec:
 
       containers:
         - name: pdf-editor
-          image: docker.io/dipugodocker/pdf-editor:backend
+          image: docker.io/dipugodocker/pdf-editor:backend-merge
           volumeMounts:
           - name: backend
             mountPath: /go/src/

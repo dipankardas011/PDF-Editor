@@ -1,15 +1,19 @@
-FROM golang:1.18-alpine as prod
+FROM golang:1.18-alpine as prod-stage1
 LABEL MAINTAINER="Dipankar Das <dipankardas0115@gmail.com>"
-RUN apk add qpdf
 WORKDIR /go/src
 COPY . .
 RUN rm -rf uploads/
 RUN go get -d
-RUN go build -o backend
-CMD ["./backend"]
-# EXPOSE ${PORT}
-EXPOSE 8080
+RUN go build -o rotator-executable
 
+FROM alpine:3.16.1 as prod
+RUN apk add qpdf
+LABEL MAINTAINER="Dipankar Das <dipankardas0115@gmail.com>"
+WORKDIR /go/src
+COPY --from=prod-stage1 /go/src/templates .
+COPY --from=prod-stage1 /go/src/rotator-executable .
+CMD ["./rotator-executable"]
+EXPOSE 8081
 
 FROM golang:1.18-alpine as dev
 RUN apk update
