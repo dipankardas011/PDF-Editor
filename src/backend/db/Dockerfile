@@ -1,3 +1,8 @@
-FROM mongo as db-prod
+FROM redis:7.0.4-alpine as db-prod
 
-EXPOSE 27017
+COPY redis.conf /etc/redis/
+
+VOLUME [ "/data" ]
+
+CMD [ "redis-server", "/etc/redis/redis.conf" ]
+EXPOSE 6379

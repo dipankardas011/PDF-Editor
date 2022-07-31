@@ -83,7 +83,7 @@ func greet(w http.ResponseWriter, r *http.Request) {
 	defer span.End()
 
 	requestsProcessed.Inc()
-	fmt.Fprintf(w, "Hello World! 🐳☸️🚀👍🏼🥳✅ %s", time.Now())
+	fmt.Fprintf(w, "[ %s ] Hello from PDF-Merger", time.Now())
 	requestsProcessedSuccess.Inc()
 }
 

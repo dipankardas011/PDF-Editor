@@ -10,9 +10,9 @@ FROM alpine:3.16.1 as prod
 RUN apk add qpdf
 LABEL MAINTAINER="Dipankar Das <dipankardas0115@gmail.com>"
 WORKDIR /go/src
-COPY --from=prod-stage1 /go/src .
+COPY --from=prod-stage1 /go/src/templates .
+COPY --from=prod-stage1 /go/src/merger-executable .
 CMD ["./merger-executable"]
-# EXPOSE ${PORT}
 EXPOSE 8080
 
 FROM golang:1.18-alpine as dev

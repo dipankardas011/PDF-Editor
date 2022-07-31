@@ -17,12 +17,12 @@ jobs:
       with:
         go-version: 1.17
 
-    - name: Build
+    - name: Build merger
       run: |
         cd src/backend/merger
         go build -v ./...
 
-    - name: Test
+    - name: Test merger
       run: |
         cd src/backend/merger
         go test -v ./...
@@ -62,9 +62,13 @@ jobs:
     - name: Build the Docker image
       run: |
         cd src/backend/merger
-        docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)
+        docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)-merge
+        cd ../rotator
+        docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)-rotate
+        cd ../db
+        docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)-db
         cd ../../frontend
-        docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)
+        docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)-frontend
 
   # heroku-preview:
   #   needs: [docker_build]

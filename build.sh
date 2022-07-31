@@ -1,13 +1,20 @@
 #!/bin/sh
 
+# TODO: when removing the tag backend and frontend ensure all the are changed it used everywhere
 
-BACKEND='dipugodocker/pdf-editor:backend'
+BACKEND_MERGE='dipugodocker/pdf-editor:backend-merge'
+BACKEND_DATABASE='dipugodocker/pdf-editor:backend-db'
+BACKEND_ROTATE='dipugodocker/pdf-editor:backend-rotate'
 FRONTEND='dipugodocker/pdf-editor:frontend'
 
 # building the docker images
 backend_docker_build_dev() {
-  echo 'Building Dev [Backend]'
-  cd src/backend/merger && docker build --target dev -t $BACKEND .
+  echo '[🙂] Building for Devlopment [Backend-merger]'
+  cd src/backend/merger && docker build --target dev -t $BACKEND_MERGE .
+  echo '[🙂] Building for Devlopment [Backend-rotator]'
+  cd ../rotator && docker build --target dev -t $BACKEND_ROTATE .
+  echo '[🙂] Building for Devlopment [Backend-database]'
+  cd ../db && docker build --target db-prod -t $BACKEND_DATABASE .
 }
 
 frontend_docker_build_dev() {
@@ -18,8 +25,12 @@ frontend_docker_build_dev() {
 
 # building the docker images
 backend_docker_build_prod() {
-  echo 'Building Prod [Backend]'
-  cd src/backend/merger && docker build --target prod -t $BACKEND . --no-cache
+  echo '[🏭] Building for Production [Backend-merger]'
+  cd src/backend/merger && docker build --target prod -t $BACKEND_MERGE . --no-cache
+  echo '[🏭] Building for Production [Backend-rotator]'
+  cd ../rotator && docker build --target prod -t $BACKEND_ROTATE . --no-cache
+  echo '[🏭] Building for Production [Backend-database]'
+  cd ../db && docker build --target db-prod -t $BACKEND_DATABASE . --no-cache
 }
 
 frontend_docker_build_prod() {
@@ -29,8 +40,12 @@ frontend_docker_build_prod() {
 
 # building the docker images
 backend_docker_build_test() {
-  echo 'Building Test [Backend]'
-  cd src/backend/merger && docker build --target test -t $BACKEND . --no-cache
+  echo '[🧪] Building for Testing [Backend-merger]'
+  cd src/backend/merger && docker build --target test -t $BACKEND_MERGE . --no-cache
+  echo '[🧪] Building for Testing [Backend-rotator]'
+  cd ../rotator && docker build --target test -t $BACKEND_ROTATE . --no-cache
+  echo '[🧪] Building for Testing [Backend-database]'
+  cd ../db && docker build --target db-prod -t $BACKEND_DATABASE . --no-cache
 }
 
 frontend_docker_build_test() {
@@ -39,9 +54,21 @@ frontend_docker_build_test() {
 }
 
 
-echo 'Enter 0 for prod, 1 for dev, 2 for test'
+# echo 'Enter 0 for prod, 1 for dev, 2 for test'
 
-read choice
+# read choice
+
+if [ $# != 1 ]; then
+  echo -n "
+Help [1 argument required]
+0 Production
+1 Development
+2 Testing
+"
+  exit 1
+fi
+
+choice=$1
 
 if [[ $choice -eq 0 ]]
 then
@@ -62,4 +89,4 @@ fi
 
 echo 'docker container ps'
 
-docker images | grep pdf | head -n2
+docker images | grep pdf-editor | head -n4
