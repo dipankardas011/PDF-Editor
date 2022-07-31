@@ -18,14 +18,14 @@ const upload = multer({ dest: "uploads/" });
 
 
 // -------BACKEND----------
-app.get('merge/clear', (_, res) => {
+app.get('/merge/clear', (_, res) => {
   // res.send('hello world')
   const output = execSync("curl -X GET http://backend-merge:8080/pdf/clear", { encoding: "utf-8" });
   res.status(200).send(output)
 })
 
 
-app.post('merge/upload', upload.single('myFile'), (req, res) => {
+app.post('/merge/upload', upload.single('myFile'), (req, res) => {
   _ = execSync(`cd /app/uploads && mv ${req.file.filename} ${req.file.filename}.pdf`)
   var file = "/app/" + req.file.path + ".pdf"
 
@@ -35,7 +35,7 @@ app.post('merge/upload', upload.single('myFile'), (req, res) => {
 })
 
 
-app.get('merge/download', (req, res) => {
+app.get('/merge/download', (req, res) => {
   const output = execSync("curl -X GET http://backend-merge:8080/downloads");
   res.send(output)
 })
