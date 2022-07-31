@@ -70,15 +70,15 @@ fi
 
 choice=$1
 
-if [[ $choice -eq 0 ]]
+if [ $choice -eq 0 ]
 then
   backend_docker_build_prod
   frontend_docker_build_prod
-elif [[ $choice -eq 1 ]]
+elif [ $choice -eq 1 ]
 then
   backend_docker_build_dev
   frontend_docker_build_dev
-elif [[ $choice -eq 2 ]]
+elif [ $choice -eq 2 ]
 then
   backend_docker_build_test
   frontend_docker_build_test
