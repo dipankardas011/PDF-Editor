@@ -1,16 +1,21 @@
-const express = require('express')
-const { execSync, execFile } = require('child_process');
-const path = require('path');
-const bodyParser = require('body-parser');
-const multer = require('multer');
+import express, { response } from 'express';
+import { execSync, execFile } from 'child_process';
+import { join } from 'path';
+import pkg from 'body-parser';
+const { urlencoded, json } = pkg;
+import multer from 'multer';
+import fetch from 'node-fetch';
 const app = express()
 
-app.set("views", path.join(__dirname, "views"))
+const __dirname = "/app";
+
+app.set("views", join(__dirname, "views"))
 app.set("view engine", "ejs")
 
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+
+app.use(urlencoded({ extended: true }));
+app.use(json());
 
 
 
@@ -18,48 +23,54 @@ const upload = multer({ dest: "uploads/" });
 
 
 // -------BACKEND----------
-app.get('/merge/clear', (_, res) => {
-  // res.send('hello world')
-  const output = execSync("curl -X GET http://backend-merge:8080/pdf/clear", { encoding: "utf-8" });
-  res.status(200).send(output)
+app.get('/merge/clear', async (_, res) => {
+  // const output = execSync("curl -X GET http://backend-merge:8080/pdf/clear", { encoding: "utf-8" });
+  // res.status(200).send(output)
+  const output = await fetch("http://backend-merge:8080/pdf/clear", {
+    method: "GET",
+  }).then(res => res.text()).catch(err => console.error(err));
+  res.send(output);
 })
 
-
+// TODO:
 app.post('/merge/upload', upload.single('myFile'), (req, res) => {
-  _ = execSync(`cd /app/uploads && mv ${req.file.filename} ${req.file.filename}.pdf`)
+  var temp = execSync(`cd /app/uploads && mv ${req.file.filename} ${req.file.filename}.pdf`)
   var file = "/app/" + req.file.path + ".pdf"
 
-  ccc = execSync(`curl --raw -X POST --form "myFile=@${file}" http://backend-merge:8080/upload`, { encoding: "utf-8" })
+  var ccc = execSync(`curl --raw -X POST --form "myFile=@${file}" http://backend-merge:8080/upload`, { encoding: "utf-8" })
   res.send(ccc)
-  _ = execSync(`cd /app/uploads && rm -rf *`) // perodic clean up
+  var temp = execSync(`cd /app/uploads && rm -rf *`) // perodic clean up
 })
 
-
-app.get('/merge/download', (req, res) => {
-  const output = execSync("curl -X GET http://backend-merge:8080/downloads");
+// TODO: download file not working
+app.get('/merge/download', async (req, res) => {
+  // const output = execSync("curl -X GET http://backend-merge:8080/downloads");
+  const output = await fetch("http://backend-merge:8080/downloads", {
+    method: "GET",
+  }).then(res => res.text()).catch(err => console.error(err));
   res.send(output)
 })
 
 
 // ---------FRONTEND------------
 app.get('/', (_, res) => {
-  res.status(200).sendFile(path.join(__dirname, '/index.html'));
+  res.status(200).sendFile(join(__dirname, '/index.html'));
 })
 
 app.get('/about', (_, res) => {
-  res.status(200).sendFile(path.join(__dirname, '/About.html'));
+  res.status(200).sendFile(join(__dirname, '/About.html'));
 })
 
 app.get('/merger', (_, res) => {
-  res.status(200).sendFile(path.join(__dirname, '/index-merge.html'));
+  res.status(200).sendFile(join(__dirname, '/index-merge.html'));
 })
 
 app.get('/rotator', (_, res) => {
-  res.status(200).sendFile(path.join(__dirname, '/index-rotate.html'));
+  res.status(200).sendFile(join(__dirname, '/index-rotate.html'));
 })
 
 const PORT = process.env.PORT || 80
 app.listen(PORT)
 console.log(`Listening to PORT: ${PORT}`)
 
-module.exports = app;
+export default app;
