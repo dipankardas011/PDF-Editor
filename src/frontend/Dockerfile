@@ -1,5 +1,5 @@
 # FROM golang:1.18-alpine
-FROM node:18-alpine3.15 as prod
+FROM node:16-alpine3.15 as prod
 LABEL MAINTAINER="Dipankar Das <dipankardas0115@gmail.com>"
 RUN apk add curl
 WORKDIR /app
