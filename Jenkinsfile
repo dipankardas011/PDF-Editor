@@ -18,13 +18,13 @@ pipeline {
 
     stage('Build') {
       steps{
-        sh 'cd src/backend/merger && go build -v ./... && cd ../frontend/ && npm install'
+        sh 'cd src/backend/merger && go build -v . && cd ../../frontend/ && npm install'
       }
     }
 
     stage('Test') {
       steps {
-        sh 'cd src/backend/merger && go test -v ./...'
+        sh 'cd src/backend/merger && go test -v . && cd ../../frontend/ && export PORT=8080 && npm run test'
       }
     }
   }
