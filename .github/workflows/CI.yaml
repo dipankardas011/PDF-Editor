@@ -67,23 +67,6 @@ jobs:
         cd ../../frontend
         docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)
 
-  # docker_new_release:
-
-  #   needs: [docker_build]
-
-  #   runs-on: ubuntu-latest
-  #   environment: preview
-  #   env:
-  #     SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - name: Publish the Docker image
-  #     run: |
-  #       docker login -u dipugodocker -p "$SUPER_SECRET"
-  #       cd src/backend/merger
-  #       docker build . --file Dockerfile --target prod --tag dipugodocker/pdf-editor:backend
-  #       cd ../../frontend
-  #       docker build . --file Dockerfile --target prod --tag dipugodocker/pdf-editor:frontend
   test_cosign_action:
     needs: [docker_build]
 
@@ -92,10 +75,10 @@ jobs:
 
     env:
       SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
-      BACKEND_MERGE: dipugodocker/pdf-editor:backend-merge
-      BACKEND_DATABASE: dipugodocker/pdf-editor:backend-db
-      BACKEND_ROTATE: dipugodocker/pdf-editor:backend-rotate
-      FRONTEND: dipugodocker/pdf-editor:frontend
+      BACKEND_MERGE: dipugodocker/pdf-editor:0.8-backend-merge
+      BACKEND_DATABASE: dipugodocker/pdf-editor:0.8-backend-db
+      BACKEND_ROTATE: dipugodocker/pdf-editor:0.8-backend-rotate
+      FRONTEND: dipugodocker/pdf-editor:0.8-frontend
 
     name: Install Cosign and test presence in path
     steps:
