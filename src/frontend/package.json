@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "node --experimental-vm-modules ./node_modules/.bin/jest --runInBand --forceExit",
+    "test": "node --experimental-vm-modules ./node_modules/.bin/jest --runInBand --forceExit --coverage",
     "start": "node server.js"
   },
   "author": "Dipankar Das",
