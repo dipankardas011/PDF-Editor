@@ -10,12 +10,6 @@ pipeline {
       }
     }
 
-    // stage('Get-Packages') {
-      // steps {
-        // sh 'apt install qpdf -y'
-      // }
-    // }
-
     stage('Build') {
       steps{
         sh '''
