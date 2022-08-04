@@ -23,7 +23,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend
+  name: backend-merge
   namespace: pdf-editor-ns
 spec:
   selector:
