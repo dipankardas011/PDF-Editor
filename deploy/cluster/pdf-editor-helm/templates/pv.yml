@@ -4,7 +4,7 @@ metadata:
   name: pdf-editor-pvc
   labels:
     pvc: pdf
-  namespace: pdf-editor-ns
+  namespace: {{ .Values.namespace }}
 spec:
   accessModes:
     - ReadWriteOnce
