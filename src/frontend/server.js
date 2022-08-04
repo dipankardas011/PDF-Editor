@@ -69,6 +69,14 @@ app.get('/rotator', (_, res) => {
   res.status(200).sendFile(join(__dirname, '/index-rotate.html'));
 })
 
+app.get('/home-img01', (_, res) => {
+  res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1628.excalidraw.svg'));
+})
+
+app.get('/home-img02', (_, res) => {
+  res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1629.excalidraw.svg'));
+})
+
 const PORT = process.env.PORT || 80
 app.listen(PORT)
 console.log(`Listening to PORT: ${PORT}`)
