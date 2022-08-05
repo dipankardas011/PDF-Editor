@@ -10,21 +10,30 @@ pipeline {
       }
     }
 
-    // stage('Get-Packages') {
-      // steps {
-        // sh 'apt install qpdf -y'
-      // }
-    // }
-
     stage('Build') {
       steps{
-        sh 'cd src/backend/merger && go build -v ./... && cd ../frontend/ && npm install'
+        sh '''
+          cd src/backend/merger
+          docker build --target prod -t hello-backend .
+          cd ../../frontend/
+          docker build --target prod -t hello-frontend .
+        '''
       }
     }
 
     stage('Test') {
       steps {
-        sh 'cd src/backend/merger && go test -v ./...'
+        sh '''
+          echo "Backend testing"
+          cd src/backend/merger
+          go mod tidy
+          go test -v .
+          cd ../../frontend/
+          echo "Frontend testing"
+          export PORT=8085
+          npm install
+          npm run test
+        '''
       }
     }
   }

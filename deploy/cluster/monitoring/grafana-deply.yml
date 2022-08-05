@@ -213,7 +213,7 @@ data:
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "go_request_operations_success_total{instance=\"backend.pdf-editor-ns.svc.cluster.local:8080\", job=\"pdf-editor\"}"
+                  "options": "go_request_operations_success_total{instance=\"backend-merge.pdf-editor-ns.svc.cluster.local:8080\", job=\"pdf-editor\"}"
                 },
                 "properties": [
                   {
@@ -225,7 +225,7 @@ data:
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "go_request_operations_error_total{instance=\"backend.pdf-editor-ns.svc.cluster.local:8080\", job=\"pdf-editor\"}"
+                  "options": "go_request_operations_error_total{instance=\"backend-merge.pdf-editor-ns.svc.cluster.local:8080\", job=\"pdf-editor\"}"
                 },
                 "properties": [
                   {

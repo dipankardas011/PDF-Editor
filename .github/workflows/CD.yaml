@@ -5,11 +5,6 @@ on:
   #   # Monthly release at 12'o clock
   #   - cron: "0 12 1 * *"
   workflow_dispatch:
-    # inputs:
-    #   version:
-    #     description: Version(Optional)
-    #     default: v1.0.0
-    #     required: false
 
 jobs:
 
@@ -19,10 +14,10 @@ jobs:
     environment: deploy
     env:
       SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
-      BACKEND_MERGE: dipugodocker/pdf-editor:backend-merge
-      BACKEND_DATABASE: dipugodocker/pdf-editor:backend-db
-      BACKEND_ROTATE: dipugodocker/pdf-editor:backend-rotate
-      FRONTEND: dipugodocker/pdf-editor:frontend
+      BACKEND_MERGE: dipugodocker/pdf-editor:0.8-backend-merge
+      BACKEND_DATABASE: dipugodocker/pdf-editor:0.8-backend-db
+      BACKEND_ROTATE: dipugodocker/pdf-editor:0.8-backend-rotate
+      FRONTEND: dipugodocker/pdf-editor:0.8-frontend
     steps:
     - uses: actions/checkout@v3
     - name: Publish the Docker image
@@ -35,25 +30,68 @@ jobs:
         docker push $FRONTEND
         docker push $BACKEND_MERGE
 
-  # heroku-deploy:
-  #   needs: [docker_new_release]
-  #   environment: deploy
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v1
-  #   - name: Login to Heroku Container registry
-  #     env:
-  #       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-  #     run: heroku container:login
-  #   - name: Build and push
-  #     env:
-  #       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-  #     run: |
-  #       cd backEnd/
-  #       heroku container:push -a ${{ secrets.HEROKU_APP_PROD_NAME }} web
-  #   - name: Release
-  #     env:
-  #       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-  #     run: |
-  #       cd backEnd/
-  #       heroku container:release -a ${{ secrets.HEROKU_APP_PROD_NAME }} web
+  Sign-cosign-pushed:
+    needs: [docker_build]
+
+    runs-on: ubuntu-latest
+    environment: preview
+
+    env:
+      SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
+      BACKEND_MERGE: dipugodocker/pdf-editor:0.8-backend-merge
+      BACKEND_DATABASE: dipugodocker/pdf-editor:0.8-backend-db
+      BACKEND_ROTATE: dipugodocker/pdf-editor:0.8-backend-rotate
+      FRONTEND: dipugodocker/pdf-editor:0.8-frontend
+
+    name: Install Cosign and test presence in path
+    steps:
+      - uses: actions/checkout@v3
+
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@main
+        # with:
+        #   cosign-release: main
+      - name: Check Version
+        run: |
+          cosign version
+          docker login -u dipugodocker -p "$SUPER_SECRET"
+
+      - name: build all 🏭 Images
+        run: |
+          chmod +x build.sh
+          ./build.sh 0
+
+      - name: push all
+        run: |
+          docker push $BACKEND_DATABASE
+          docker push $BACKEND_MERGE
+          docker push $BACKEND_ROTATE
+          docker push $FRONTEND
+
+      - name: sign
+        run: |
+          echo -n "${{secrets.COSIGNPASSWORD}}" | cosign sign --key cosign.key -a git_sha=$GITHUB_SHA $FRONTEND
+          echo -n "${{secrets.COSIGNPASSWORD}}" | cosign sign --key cosign.key -a git_sha=$GITHUB_SHA $BACKEND_MERGE
+          echo -n "${{secrets.COSIGNPASSWORD}}" | cosign sign --key cosign.key -a git_sha=$GITHUB_SHA $BACKEND_ROTATE
+          echo -n "${{secrets.COSIGNPASSWORD}}" | cosign sign --key cosign.key -a git_sha=$GITHUB_SHA $BACKEND_DATABASE
+
+      - name: verify
+        run: |
+          echo "Frontend Verify"
+          cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA $FRONTEND | jq .
+          echo "Backend images Verify"
+          cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA $BACKEND_DATABASE | jq .
+          cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA $BACKEND_MERGE | jq .
+          cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA $BACKEND_ROTATE | jq .
+
+  helm-artifact-generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: package
+        steps: |-
+          cd deploy/cluster
+          helm package pdf-editor-helm
+          mv pdf-editor-helm-0.7.0.tgz artifact/
+          helm repo index artifact

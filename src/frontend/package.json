@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "pdf-editor frontend",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "test": "jest --runInBand --forceExit",
+    "test": "node --experimental-vm-modules ./node_modules/.bin/jest --runInBand --forceExit --coverage",
     "start": "node server.js"
   },
   "author": "Dipankar Das",
@@ -17,7 +18,9 @@
     "express": "^4.18.1",
     "jest": "^28.1.3",
     "multer": "^1.4.5-lts.1",
+    "node-fetch": "^3.2.10",
     "path": "^0.12.7",
     "supertest": "^6.2.4"
   }
 }
+

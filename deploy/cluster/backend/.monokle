@@ -21,6 +21,7 @@
         "allowEditInClusterMode": true
     },
     "kubeConfig": {
-        "path": "/home/dipankar/.kube/config"
+        "path": "/home/dipankar/.kube/config",
+        "currentContext": "pdf-editor"
     }
 }

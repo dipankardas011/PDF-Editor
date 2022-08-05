@@ -1,6 +1,6 @@
 version: '3'
 services:
-  backend:
+  backend-merge:
     image: docker.io/dipugodocker/pdf-editor:0.7-backend
     container_name: backend
     ports:

@@ -18,7 +18,7 @@ data:
     scrape_configs:
     - job_name: pdf-editor
       static_configs:
-      - targets: ["backend.pdf-editor-ns.svc.cluster.local:8080", "frontend.pdf-editor-ns.svc.cluster.local"]
+      - targets: ["backend-merge.pdf-editor-ns.svc.cluster.local:8080", "frontend.pdf-editor-ns.svc.cluster.local"]
 
   web.yml: |-
     basic_auth_users:
