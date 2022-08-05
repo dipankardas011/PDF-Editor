@@ -5,6 +5,11 @@ on:
   #   # Monthly release at 12'o clock
   #   - cron: "0 12 1 * *"
   workflow_dispatch:
+    inputs:
+      version:
+        description: Version(Optional)
+        default: v1.0.0
+        required: false
 
 jobs:
 
@@ -90,7 +95,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: package
-        steps: |-
+        run: |
           cd deploy/cluster
           helm package pdf-editor-helm
           mv pdf-editor-helm-0.7.0.tgz artifact/
