@@ -84,3 +84,14 @@ jobs:
           cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA $BACKEND_DATABASE | jq .
           cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA $BACKEND_MERGE | jq .
           cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA $BACKEND_ROTATE | jq .
+
+  helm-artifact-generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: package
+        steps: |-
+          cd deploy/cluster
+          helm package pdf-editor-helm
+          mv pdf-editor-helm-0.7.0.tgz artifact/
+          helm repo index artifact
