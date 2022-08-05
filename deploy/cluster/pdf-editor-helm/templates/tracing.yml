@@ -20,6 +20,19 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
+          requests:
+            memory: "50Mi"
+            cpu: "10m"
+        livenessProbe:
+          tcpSocket:
+            port: 16686
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          tcpSocket:
+            port: 16686
+          initialDelaySeconds: 5
+          periodSeconds: 10
         ports:
         - containerPort: 5775
         - containerPort: 6831
