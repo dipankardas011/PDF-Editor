@@ -1,4 +1,4 @@
-name: Stable Docker Image Release
+name: Stable Docker Signed Image Release
 
 on:
   # schedule:
@@ -11,7 +11,7 @@ on:
         default: v1.0.0
         required: false
 jobs:
-  Sign-cosign-docker-push:
+  docker-push-Sign-using-cosign:
 
     runs-on: ubuntu-latest
     environment: deploy
@@ -39,8 +39,14 @@ jobs:
 
       - name: build all 🏭 Images
         run: |
-          chmod +x build.sh
-          ./build.sh 0
+          echo '[🏭] Building for Production [Backend-merger]'
+          cd src/backend/merger && docker build --target prod -t $BACKEND_MERGE . --no-cache
+          echo '[🏭] Building for Production [Backend-rotator]'
+          cd ../rotator && docker build --target prod -t $BACKEND_ROTATE . --no-cache
+          echo '[🏭] Building for Production [Backend-database]'
+          cd ../db && docker build --target db-prod -t $BACKEND_DATABASE . --no-cache
+          echo '[🏭] Building Prod [Frontend]'
+          cd ../../frontend && docker build --target prod -t $FRONTEND . --no-cache
 
       - name: push all
         run: |

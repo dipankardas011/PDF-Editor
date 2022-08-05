@@ -18,7 +18,7 @@ backend_docker_build_dev() {
 }
 
 frontend_docker_build_dev() {
-  echo 'Building Dev [Frontend]'
+  echo '[🙂] Building Dev [Frontend]'
   cd ../../frontend && docker build --target dev -t $FRONTEND .
 }
 
@@ -34,7 +34,7 @@ backend_docker_build_prod() {
 }
 
 frontend_docker_build_prod() {
-  echo 'Building Prod [Frontend]'
+  echo '[🏭] Building Prod [Frontend]'
   cd ../../frontend && docker build --target prod -t $FRONTEND . --no-cache
 }
 
@@ -49,7 +49,7 @@ backend_docker_build_test() {
 }
 
 frontend_docker_build_test() {
-  echo 'Building Test [Frontend]'
+  echo '[🧪] Building Test [Frontend]'
   cd ../../frontend && docker build --target test -t $FRONTEND . --no-cache
 }
 
