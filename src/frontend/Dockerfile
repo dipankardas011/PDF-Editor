@@ -16,10 +16,11 @@ WORKDIR /app
 COPY package.json .
 RUN npm install
 
-FROM node:18 as test
+FROM node:16 as test
 LABEL MAINTAINER="Dipankar Das <dipankardas0115@gmail.com>"
 WORKDIR /app
 COPY package.json .
 RUN npm install
 COPY . .
 RUN npm run test
+

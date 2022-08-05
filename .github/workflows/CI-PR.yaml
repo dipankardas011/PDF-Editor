@@ -11,21 +11,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: 1.17
-
-    - name: Build merger
-      run: |
-        cd src/backend/merger
-        go build -v ./...
-
     - name: 🧪 backend Merger
       run: |
         cd src/backend/merger
-        go test -v ./...
+        docker build --target test -t xyz .
+        docker run --rm xyz
 
   npm_build:
 
@@ -34,21 +24,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 16
-
-    - name: installing dependencies
-      run: |
-        cd src/frontend
-        npm install
-
     - name: 🧪 frontend
-      env:
-        PORT: 8080
       run: |
         cd src/frontend
-        npm run test
+        docker build --target test -t xyz .
+        docker run --rm xyz
 
   docker_build:
 
