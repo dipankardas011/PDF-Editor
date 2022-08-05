@@ -6,7 +6,7 @@ replicaCount:
   backend: 2
   frontend: 4
 
-namespace: pdf-editor-ns
+namespace: helm-pdf-editor-ns
 
 image:
   pullPolicy: Always
