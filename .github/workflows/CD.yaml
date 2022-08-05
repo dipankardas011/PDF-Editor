@@ -10,36 +10,11 @@ on:
         description: Version(Optional)
         default: v1.0.0
         required: false
-
 jobs:
-
-  docker_new_release:
+  Sign-cosign-docker-push:
 
     runs-on: ubuntu-latest
     environment: deploy
-    env:
-      SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
-      BACKEND_MERGE: dipugodocker/pdf-editor:0.8-backend-merge
-      BACKEND_DATABASE: dipugodocker/pdf-editor:0.8-backend-db
-      BACKEND_ROTATE: dipugodocker/pdf-editor:0.8-backend-rotate
-      FRONTEND: dipugodocker/pdf-editor:0.8-frontend
-    steps:
-    - uses: actions/checkout@v3
-    - name: Publish the Docker image
-      run: |
-        docker login -u dipugodocker -p "$SUPER_SECRET"
-        cd src/backend/merger
-        docker build . --file Dockerfile --target prod --tag $BACKEND_MERGE
-        cd ../../frontend
-        docker build . --file Dockerfile --target prod --tag $FRONTEND
-        docker push $FRONTEND
-        docker push $BACKEND_MERGE
-
-  Sign-cosign-pushed:
-    needs: [docker_build]
-
-    runs-on: ubuntu-latest
-    environment: preview
 
     env:
       SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
@@ -95,7 +70,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: package
-        run: |
+        run: |-
           cd deploy/cluster
           helm package pdf-editor-helm
           mv pdf-editor-helm-0.7.0.tgz artifact/
