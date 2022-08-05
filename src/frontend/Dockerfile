@@ -16,10 +16,10 @@ WORKDIR /app
 COPY package.json .
 RUN npm install
 
-FROM node:18-alpine3.15 as test
+FROM node:16 as test
 LABEL MAINTAINER="Dipankar Das <dipankardas0115@gmail.com>"
-RUN apk add curl
 WORKDIR /app
 COPY package.json .
+RUN npm install
 COPY . .
-#RUN npm test
+RUN npm run test

@@ -44,10 +44,10 @@ app.post('/merge/upload', upload.single('myFile'), (req, res) => {
 
 // TODO: download file not working
 app.get('/merge/download', async (req, res) => {
-  // const output = execSync("curl -X GET http://backend-merge:8080/downloads");
-  const output = await fetch("http://backend-merge:8080/downloads", {
-    method: "GET",
-  }).then(res => res.text()).catch(err => console.error(err));
+  const output = execSync("curl -X GET http://backend-merge:8080/downloads");
+  // const output = await fetch("http://backend-merge:8080/downloads", {
+  //   method: "GET",
+  // }).then(res => res.text()).catch(err => console.error(err));
   res.send(output)
 })
 

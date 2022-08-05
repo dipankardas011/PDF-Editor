@@ -12,26 +12,15 @@ jobs:
             echo 'testing go'
 
       - run:
-          name: Getting Dependencies
-          command: |
-            cd src/frontend
-            npm install
-
-      - run:
-          name: Build go backend
-          command: |
-            cd src/backend/merger
-            go build -o backend
-
-      - run:
           name: Testing backend
           command: |
             cd src/backend/merger
-            go test -v .
+            docker build --target test -t xyz .
+            docker run --rm xyz
 
       - run:
           name: Testing frontend
           command: |
-            export PORT=8080
             cd src/frontend
-            npm run test
+            docker build --target test -t xyz .
+            docker run --rm xyz
