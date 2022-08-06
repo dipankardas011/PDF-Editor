@@ -1,3 +1,9 @@
+<!-- FORMAT of PRs 
+😇😇
+Title should be:
+[--Topic-- Example: Test or Code or Documentation or ..](--SubTopic-- backend or frontend or unit or integration) PRs title
+-->
+
 <!-- If your PR fixes an open issue, use `Closes #999` to link your PR with the issue. #999 stands for the issue number you are fixing -->
 
 ## Fixes Issue
