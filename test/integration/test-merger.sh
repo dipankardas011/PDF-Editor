@@ -22,13 +22,13 @@ docker run --rm \
   -d \
   --net xyz \
   --name frontend \
-  -p 80:80 \
+  -p $PORT:80 \
   frontend
 
 sleep 5
 
 # test the curl
-curl -X GET http://localhost/
+curl -X GET http://localhost:$PORT
 
 echo "Clean up"
 

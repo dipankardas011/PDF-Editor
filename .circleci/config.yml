@@ -7,20 +7,23 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Simple debug
-          command: |
-            echo 'testing go'
-
-      - run:
-          name: Testing backend
+          name: Unit-Testing backend-merger
           command: |
             cd src/backend/merger
             docker build --target test -t xyz .
             docker run --rm xyz
 
       - run:
-          name: Testing frontend
+          name: Unit-Testing frontend
           command: |
             cd src/frontend
             docker build --target test -t xyz .
             docker run --rm xyz
+
+      - run:
+          name: Integration-Testing Merger
+          command: |
+            cd test/integration
+            export PORT=9090
+            chmod +x test-merger.sh
+            ./test-merger.sh
