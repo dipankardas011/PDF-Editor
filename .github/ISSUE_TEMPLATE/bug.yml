@@ -1,5 +1,5 @@
 name:  Bug Report
-description: Report a bug encountered with Kubesimplify Website
+description: Report a bug encountered with PDF-Editor
 title: '[Bug] <description>'
 labels: ['triage/awaiting','bug']
 body:

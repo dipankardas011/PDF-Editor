@@ -1,5 +1,5 @@
 name: Feature Request
-description: Suggest a/an feature/enhancement to Kubesimplify's website
+description: Suggest a/an feature/enhancement to PDF-Editor
 title: '[FEATURE] <description>'
 labels: ['triage/awaiting', 'enhancement']
 body:
