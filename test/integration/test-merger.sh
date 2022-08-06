@@ -27,10 +27,41 @@ docker run --rm \
 
 sleep 5
 
-# test the curl
-curl -X GET http://localhost:$PORT
+echo -e "\n$(tput setaf 5)$(tput bold)Testing Endpoint '/'$(tput init)"
+hello=$(curl -X GET http://localhost:$PORT | grep -i "PDF Editor" | wc -l)
+
+if [[ $hello -eq 0 ]]
+then
+  echo -e "\n$(tput setaf 1)$(tput bold)✗ [Failed] the test of Endpoint'/'$(tput init)"
+  docker rm -f frontend backend-merge
+  docker network rm xyz
+  exit 1
+
+else
+  echo -e "\n$(tput setaf 2)$(tput bold)✓ [Passed] the test of Endpoint'/'$(tput init)"
+fi
+
+echo "----------------------------------------------------------------"
+
+echo -e "\n$(tput setaf 5)$(tput bold)Testing Endpoint '/merge/clear'$(tput init)"
+
+hello=$(curl -X GET http://localhost:$PORT/merge/clear | grep -i "Cleared the data!!" | wc -l)
+
+if [[ $hello -eq 0 ]]
+then
+  echo -e "\n$(tput setaf 1)$(tput bold)✗ [Failed] the test of Endpoint'/merge/clear'$(tput init)"
+  docker rm -f frontend backend-merge
+  docker network rm xyz
+  exit 1
+
+else
+  echo -e "\n$(tput setaf 2)$(tput bold)✓ [Passed] the test of Endpoint'/merge/clear'$(tput init)"
+fi
+
+
 
 echo "Clean up"
-
+echo -e "\n$(tput setaf 4)$(tput bold)Cleanup Started$(tput init)"
 docker rm -f frontend backend-merge
 docker network rm xyz
+exit 0
