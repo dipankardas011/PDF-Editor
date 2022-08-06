@@ -58,6 +58,22 @@ else
   echo -e "\n$(tput setaf 2)$(tput bold)✓ [Passed] the test of Endpoint'/merge/clear'$(tput init)"
 fi
 
+echo "----------------------------------------------------------------"
+
+echo -e "\n$(tput setaf 5)$(tput bold)Testing Endpoint '/merger'$(tput init)"
+
+hello=$(curl -X GET http://localhost:$PORT/merger | grep -i "PDF Merger" | wc -l)
+
+if [[ $hello -eq 0 ]]
+then
+  echo -e "\n$(tput setaf 1)$(tput bold)✗ [Failed] the test of Endpoint'/merger'$(tput init)"
+  docker rm -f frontend backend-merge
+  docker network rm xyz
+  exit 1
+
+else
+  echo -e "\n$(tput setaf 2)$(tput bold)✓ [Passed] the test of Endpoint'/merger'$(tput init)"
+fi
 
 
 echo "Clean up"
