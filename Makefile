@@ -15,6 +15,16 @@ run:
 	sudo docker compose up -d
 	docker ps
 
+unit-test:
+	cd test/unit && \
+	chmod +x ./unit-tester.sh && \
+	./unit-tester.sh
+
+integration-test:
+	cd test/integration && \
+	chmod +x test-merger.sh && \
+	./test-merger.sh
+
 publish:
 	docker push dipugodocker/pdf-editor:frontend
 	docker push dipugodocker/pdf-editor:backend-merge

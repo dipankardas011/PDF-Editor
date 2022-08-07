@@ -50,6 +50,17 @@ jobs:
         cd ../../frontend
         docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)-frontend
 
+  integration-testing:
+    needs: [docker_build]
+    runs-on: ubuntu-latest
+    environment: testing
+    steps:
+    - name: Integration-Testing Merger
+      run: |
+        cd test/integration
+        chmod +x test-merger.sh
+        ./test-merger.sh
+
   # heroku-preview:
   #   needs: [docker_build]
   #   runs-on: ubuntu-latest

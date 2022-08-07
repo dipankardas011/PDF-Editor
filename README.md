@@ -99,6 +99,15 @@ make build
 make run
 ```
 
+# How to Test
+
+```bash
+# Integration testing
+make unit-test
+# Integration testing
+make integration-test
+```
+
 
 # To View the page visit
 

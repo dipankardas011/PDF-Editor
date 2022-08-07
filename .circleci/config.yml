@@ -24,6 +24,5 @@ jobs:
           name: Integration-Testing Merger
           command: |
             cd test/integration
-            export PORT=9090
             chmod +x test-merger.sh
             ./test-merger.sh
