@@ -18,7 +18,7 @@ Stage | Tags | Links
 Production | `0.7` | https://pdf-web-editor.azurewebsites.net/
 Beta | `latest` ; `0.8` | http://34.238.111.206/
 
-> A Humble request! 🙏 don't expoit the resources I have used here 
+> A Humble request! 🙏 don't expoit the resources I have used here
 
 > Release Cycle of ~1 Month
 
@@ -99,6 +99,15 @@ make build
 make run
 ```
 
+# How to Test
+
+```bash
+# Integration testing
+make unit-test
+# Integration testing
+make integration-test
+```
+
 
 # To View the page visit
 
@@ -138,6 +147,10 @@ flowchart LR;
 ```
 
 [**Changelog link**](./CHANGELOG.md)
+
+[**Code Of Conduct**](./code-of-conduct.md)
+
+[**Contributing Guidelines**](./CONTRIBUTING.md)
 
 Happy Coding 👍🏼🥳
 

@@ -21,6 +21,9 @@ collaborators:
   - username: dipankardas011
     permission: admin
 
+  - username: umgbhalla
+    permission: maintain
+
 branches:
 
   # Default branch of this repository for configurations and English contents
@@ -35,6 +38,7 @@ branches:
         # En approvers (including Chairs)
         users:
          - dipankardas011
+         - umgbhalla
         teams: []
       enforce_admins: null
       required_linear_history: null

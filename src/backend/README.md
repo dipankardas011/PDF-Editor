@@ -1,15 +1,13 @@
-# OUTDATED FROM `31-7-22`
-
 # How to Make [*Dev*]
 
 Use the two PDFs `01.pdf` and `02.pdf` from testFiles/ for testing purposes
 
 ```sh
-cd backEnd/
+cd backEnd/merger
 
-docker build --target=dev -t <image> .
+docker build --target dev -t <image> .
 
-docker run -it --rm --publish 80:8080 -v ${PWD}:/app <image>
+docker run -it --rm --publish 80:8080 -v ${PWD}:/go/src <image>
 
 # then go
 localhost:80
@@ -17,22 +15,15 @@ localhost:80
 
 # For Testing
 ```sh
-cd backEnd/
+cd backEnd/merger
 
-docker build --target=test -t <image> .
+docker build --target test -t <image> .
 
-docker run -it --rm <image>
+docker run --rm <image>
 
 ```
 
 > ⚠️**NOTE** : Before you commit remove any executable generated during you testing and development
-
-# To check for the ports
-```bash
-cd backEnd/
-docker build -t xyz .
-docker run -it -e PORT=9000 --publish 80:9000 xyz
-```
 
 # Error codes
 
