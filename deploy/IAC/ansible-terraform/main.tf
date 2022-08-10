@@ -177,5 +177,8 @@ resource "aws_instance" "web-server-ec2" {
   #  provisioner "local-exec" {
   # command = "sleep 120; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu --private-key ./demo-key-pair.pem -i '${aws_instance.web-server-ec2.public_ip},' ec2-cfg.yml && curl --head ${aws_instance.web-server-ec2.public_ip}"
   # }
+  provisioner "remote-exec" {
+    command="ls -la / ; cat /etc/os-release ; hostname"
+  }
 }
 
