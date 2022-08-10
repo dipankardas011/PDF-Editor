@@ -89,6 +89,14 @@ resource "aws_security_group" "allow_web" {
   }
 
   ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # so as to make anyone to reach the server
+  }
+
+  ingress {
     description = "Tracing"
     from_port   = 16686
     to_port     = 16686
@@ -136,6 +144,7 @@ resource "aws_instance" "web-server-ec2" {
   instance_type        = "t2.micro"
   availability_zone    = "us-east-1a" # it is hardcoded as aws will make different zones to subnet and ec2 creating error
   iam_instance_profile = "my-ssm-ec2-role"
+  key_name             = "pdf-terraform"
   network_interface {
     device_index         = 0
     network_interface_id = aws_network_interface.web-server-nic.id
