@@ -177,8 +177,16 @@ resource "aws_instance" "web-server-ec2" {
   #  provisioner "local-exec" {
   # command = "sleep 120; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu --private-key ./demo-key-pair.pem -i '${aws_instance.web-server-ec2.public_ip},' ec2-cfg.yml && curl --head ${aws_instance.web-server-ec2.public_ip}"
   # }
+  provisioner "file" {
+    source      = "ansible-script.sh"
+    destination = "/home/ubuntu/PDF-Editor/deploy/IAC/ansible-terraform/ansible-script.sh"
+  }
   provisioner "remote-exec" {
-    command="ls -la / ; cat /etc/os-release ; hostname"
+    inline = [
+      "cd /home/ubuntu/PDF-Editor/deploy/IAC/ansible-terraform/",
+      "chmod +x ansible-script.sh",
+      "./ansible-script.sh 0"
+    ]
   }
 }
 
