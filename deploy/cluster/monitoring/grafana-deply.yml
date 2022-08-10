@@ -134,21 +134,6 @@ data:
           "basicAuthPassword": "1234"
         }
       ]
-    }
-  jaeger.yml: |-
-    {
-      "apiVersion": 1,
-      "datasources": [
-        {
-          "access": "proxy",
-          "editable": true,
-          "name": "Jaeger",
-          "orgId": 1,
-          "type": "jaeger",
-          "url": "http://trace.pdf-editor-ns.svc:16686",
-        }
-      ]
-    }
 
 ---
 
