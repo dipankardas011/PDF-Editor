@@ -16,7 +16,7 @@ website that can edit PDF's
 Stage | Tags | Links
 --|--|--
 Production | `0.7` | https://pdf-web-editor.azurewebsites.net/
-Beta | `latest` ; `0.8` | http://34.238.111.206/
+Beta | `latest` ; `0.8` | http://44.209.39.161/
 
 > A Humble request! 🙏 don't expoit the resources I have used here
 
