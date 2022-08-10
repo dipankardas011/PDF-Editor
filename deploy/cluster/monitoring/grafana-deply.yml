@@ -119,21 +119,35 @@ metadata:
 data:
   prometheus.yaml: |-
     {
-        "apiVersion": 1,
-        "datasources": [
-            {
-               "access":"proxy",
-                "editable": true,
-                "name": "prometheus",
-                "orgId": 1,
-                "type": "prometheus",
-                "url": "http://prometheus-server.monitoring.svc:9090",
-                "version": 1,
-                "basicAuth": "true",
-                "basicAuthUser": "admin",
-                "basicAuthPassword": "1234"
-            }
-        ]
+      "apiVersion": 1,
+      "datasources": [
+        {
+          "access": "proxy",
+          "editable": true,
+          "name": "prometheus",
+          "orgId": 1,
+          "type": "prometheus",
+          "url": "http://prometheus-server.monitoring.svc:9090",
+          "version": 1,
+          "basicAuth": "true",
+          "basicAuthUser": "admin",
+          "basicAuthPassword": "1234"
+        }
+      ]
+    }
+  jaeger.yml: |-
+    {
+      "apiVersion": 1,
+      "datasources": [
+        {
+          "access": "proxy",
+          "editable": true,
+          "name": "Jaeger",
+          "orgId": 1,
+          "type": "jaeger",
+          "url": "http://trace.pdf-editor-ns.svc:16686",
+        }
+      ]
     }
 
 ---
