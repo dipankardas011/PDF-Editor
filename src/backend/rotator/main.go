@@ -21,7 +21,11 @@ func greet(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "[ %s ] Hello from PDF-Rotator", time.Now())
 }
 
+func uploadHandler(w http.ResponseWriter, r *http.Request) {
+}
+
 func main() {
 	http.HandleFunc("/greet", greet)
+	http.HandleFunc("/upload", uploadHandler)
 	http.ListenAndServe(getPort(), nil)
 }
