@@ -30,19 +30,29 @@ app.get('/merge/clear', async (_, res) => {
     method: "GET",
   }).then(res => res.text()).catch(err => console.error(err));
   res.send(output);
+  /*
+   * session destroy
+   */
 })
 
-// TODO:
+
 app.post('/merge/upload', upload.single('myFile'), (req, res) => {
+  /*
+   * session creation
+   */
   var temp = execSync(`cd /app/uploads && mv ${req.file.filename} ${req.file.filename}.pdf`)
   var file = "/app/" + req.file.path + ".pdf"
 
   var ccc = execSync(`curl --raw -X POST --form "myFile=@${file}" http://backend-merge:8080/upload`, { encoding: "utf-8" })
-  res.send(ccc)
   var temp = execSync(`cd /app/uploads && rm -rf *`) // perodic clean up
+  if (res.statusCode === 200) {
+    res.redirect('/merger');
+  }else {
+    res.send(ccc)
+  }
 })
 
-// TODO: download file not working
+
 app.get('/merge/download', async (req, res) => {
   const output = execSync("curl -X GET http://backend-merge:8080/downloads");
   // const output = await fetch("http://backend-merge:8080/downloads", {
