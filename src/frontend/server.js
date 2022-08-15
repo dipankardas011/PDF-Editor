@@ -15,9 +15,9 @@ app.set("view engine", "ejs")
 
 // having expiration time of 5m
 app.use(session({
-  secret: '1234',
-  cookie: { maxAge: 1000 * 60 * 5 },
-  saveUninitialized: true // false
+  secret: '1234',			// TODO: have a random password generator
+  cookie: { maxAge: 1000 * 60 * 5 },	// DISCUSS
+  saveUninitialized: true // false	// XXX: true is working fine
 }));
 
 
@@ -80,6 +80,10 @@ app.get('/merge/download', async (req, res) => {
   // }).then(res => res.text()).catch(err => console.error(err));
   res.send(output)
 })
+
+// TODO: Add a clear method which will automatically get called when
+// sessiosn gets destroys
+
 
 
 // ---------FRONTEND------------
