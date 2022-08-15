@@ -102,6 +102,20 @@ jobs:
           cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA $BACKEND_MERGE | jq .
           cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA $BACKEND_ROTATE | jq .
 
+  ansible_update:
+    needs: [test_cosign_action]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Ansible and version
+        run: |
+          sudo apt install ansible -y
+          ansible --version
+      - name: Start the update
+        run: |
+          echo "TODO: Add the continuous delevery after CI"
+
+
 
 # docker build . --file Dockerfile --tag dipugodocker/pdf-editor:0.$(($(date +%m) + 1))-rc
 # docker push dipugodocker/pdf-editor:0.$(($(date +%m) + 1))-rc

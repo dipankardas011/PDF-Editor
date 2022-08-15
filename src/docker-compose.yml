@@ -1,0 +1,37 @@
+# its for the [DEV]
+version: '3'
+
+networks:
+  pdf-editor:
+
+volumes:
+  tmp-dir:
+
+services:
+  backend-merge:
+    container_name: pdf-editor-backend-merger
+    image: pdf-merger
+    build:
+      context: backend/merger
+      target: prod
+    volumes:
+    - tmp-dir:/go/src/
+    networks:
+    - pdf-editor
+    ports:
+    - "8080"
+
+  frontend:
+    depends_on:
+    - backend-merge
+    container_name: pdf-editor-frontend
+    image: pdf-frontend
+    build:
+      context: frontend
+      target: prod
+    networks:
+    - pdf-editor
+    ports:
+    - "80:80"
+
+

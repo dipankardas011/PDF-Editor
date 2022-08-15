@@ -5,6 +5,7 @@ import pkg from 'body-parser';
 const { urlencoded, json } = pkg;
 import multer from 'multer';
 import fetch from 'node-fetch';
+import session from 'express-session';
 const app = express()
 
 const __dirname = "/app";
@@ -12,6 +13,12 @@ const __dirname = "/app";
 app.set("views", join(__dirname, "views"))
 app.set("view engine", "ejs")
 
+// having expiration time of 5m
+app.use(session({
+  secret: '1234',
+  cookie: { maxAge: 1000 * 60 * 5 },
+  saveUninitialized: true // false
+}));
 
 
 app.use(urlencoded({ extended: true }));
@@ -25,9 +32,12 @@ const upload = multer({ dest: "uploads/" });
 // -------BACKEND----------
 
 // FIXME: Use the sessionID for differentiating different users
-app.get('/merge/clear', async (_, res) => {
+app.get('/merge/clear', async (req, res) => {
   // const output = execSync("curl -X GET http://backend-merge:8080/pdf/clear", { encoding: "utf-8" });
   // res.status(200).send(output)
+  
+  console.log(req.sessionID);
+  
   const output = await fetch("http://backend-merge:8080/pdf/clear", {
     method: "GET",
   }).then(res => res.text()).catch(err => console.error(err));
@@ -42,6 +52,8 @@ app.post('/merge/upload', upload.single('myFile'), (req, res) => {
   /*
    * session creation
    */
+  console.log(req.sessionID);
+
   var temp = execSync(`cd /app/uploads && mv ${req.file.filename} ${req.file.filename}.pdf`)
   var file = "/app/" + req.file.path + ".pdf"
 
