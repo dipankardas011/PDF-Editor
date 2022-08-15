@@ -1,7 +1,8 @@
 pipeline {
-  agent {
-    // docker { image 'golang:1.18-bullseye' }
-    label 'worker'
+  agent any
+  tools {
+    // gradle 'gradle'
+    'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'docker-latest'
   }
   stages {
     stage('Git-Checkout') {
