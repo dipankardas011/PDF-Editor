@@ -1,0 +1,16 @@
+version: '3'
+
+volumes:
+  jenkins:
+
+services:
+  jenkins:
+    build:
+      context: .
+    image: jenkins11
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
