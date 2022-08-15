@@ -23,6 +23,8 @@ const upload = multer({ dest: "uploads/" });
 
 
 // -------BACKEND----------
+
+// FIXME: Use the sessionID for differentiating different users
 app.get('/merge/clear', async (_, res) => {
   // const output = execSync("curl -X GET http://backend-merge:8080/pdf/clear", { encoding: "utf-8" });
   // res.status(200).send(output)
@@ -35,7 +37,7 @@ app.get('/merge/clear', async (_, res) => {
    */
 })
 
-
+// FIXME: Use the sessionID for differentiating different users
 app.post('/merge/upload', upload.single('myFile'), (req, res) => {
   /*
    * session creation
@@ -45,6 +47,12 @@ app.post('/merge/upload', upload.single('myFile'), (req, res) => {
 
   var ccc = execSync(`curl --raw -X POST --form "myFile=@${file}" http://backend-merge:8080/upload`, { encoding: "utf-8" })
   var temp = execSync(`cd /app/uploads && rm -rf *`) // perodic clean up
+
+  /**
+   * @Test Addding this will cause integration test to fail!!
+   * FIXME: resolve the issue with test cases
+   */
+
   if (res.statusCode === 200) {
     res.redirect('/merger');
   }else {
@@ -52,7 +60,7 @@ app.post('/merge/upload', upload.single('myFile'), (req, res) => {
   }
 })
 
-
+// FIXME: Use the sessionID for differentiating different users
 app.get('/merge/download', async (req, res) => {
   const output = execSync("curl -X GET http://backend-merge:8080/downloads");
   // const output = await fetch("http://backend-merge:8080/downloads", {

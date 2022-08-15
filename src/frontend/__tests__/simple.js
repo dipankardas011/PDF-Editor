@@ -16,6 +16,33 @@ describe('User Endpoints', () => {
     const res = await requestWithSupertest.get('/');
       expect(res.status).toEqual(200);
       expect(res.type).toEqual(expect.stringContaining('html'));
+  });
+});
+
+
+describe('User Endpoints', () => {
+  it('GET /merger', async () => {
+    const res = await requestWithSupertest.get('/merger');
+      expect(res.status).toEqual(200);
+      expect(res.type).toEqual(expect.stringContaining('html'));
+  });
+});
+
+describe('User Endpoints', () => {
+  it('GET /rotator', async () => {
+    const res = await requestWithSupertest.get('/rotator');
+      expect(res.status).toEqual(200);
+      expect(res.type).toEqual(expect.stringContaining('html'));
+      // expect(res.body).toHaveProperty('users')
+  });
+});
+
+
+describe('User Endpoints', () => {
+  it('GET /about', async () => {
+    const res = await requestWithSupertest.get('/about');
+      expect(res.status).toEqual(200);
+      expect(res.type).toEqual(expect.stringContaining('html'));
       // expect(res.body).toHaveProperty('users')
   });
 });
