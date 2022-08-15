@@ -1,7 +1,8 @@
 pipeline {
-  agent {
-    // docker { image 'golang:1.18-bullseye' }
-    label 'worker'
+  agent any
+  tools {
+    // gradle 'gradle'
+    'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'docker-latest'
   }
   stages {
     stage('Git-Checkout') {
@@ -14,9 +15,9 @@ pipeline {
       steps{
         sh '''
           cd src/backend/merger
-          docker build --target prod -t hello-backend .
+          docker build --target test -t hello-backend .
           cd ../../frontend/
-          docker build --target prod -t hello-frontend .
+          docker build --target test -t hello-frontend .
         '''
       }
     }
@@ -25,16 +26,21 @@ pipeline {
       steps {
         sh '''
           echo "Backend testing"
-          cd src/backend/merger
-          go mod tidy
-          go test -v .
-          cd ../../frontend/
+          docker run --rm hello-backend
           echo "Frontend testing"
-          export PORT=8085
-          npm install
-          npm run test
+          docker run --rm hello-frontend
         '''
       }
+    }
+  }
+  
+  post {
+    always {
+      sh '''
+        docker rmi -f hello-backend
+        docker rmi -f hello-frontend
+        echo "Done cLEAniNg"
+      '''
     }
   }
 }
