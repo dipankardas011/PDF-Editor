@@ -3,11 +3,11 @@
 # Author: dipankardas011
 
 sysUpdate() {
-  ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu --private-key ./pdf-terraform.pem -i 'http://34.238.111.206/,' ec2-cfg.yml
+  ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu --private-key ./pdf-terraform.pem -i '44.209.39.161,' ec2-cfg.yml
 }
 
 againDeployNewVersion() {
-  ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu --private-key ./pdf-terraform.pem -i 'http://34.238.111.206/,' ec2-cfg-update.yml
+  ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu --private-key ./pdf-terraform.pem -i '44.209.39.161,' ec2-cfg-update.yml
 }
 
 
