@@ -62,13 +62,16 @@
       Merge More than 2 PDFs(comming soon..)
     </div>
 
-    <form id="form" class="card m-5 mx-auto p-5" enctype="multipart/form-data" action="/merge/upload" method="POST">
-      <div class="mb-3">
-        <caption>File Uploader</caption>
-        <input id="myFile" class="form-control" type="file" onchange="return fileValidation()" name="myFile" />
-      </div>
-      <input type="submit" class="btn btn-info" value="upload" />
-    </form>
+      <form id="form" class="card m-5 mx-auto p-5" enctype="multipart/form-data" action="/merge/upload" method="POST">
+        <div class="mb-3">
+          <caption>File 1</caption>
+          <input id="myFile1" class="form-control" type="file" onchange="return fileValidation()" name="myFile" multiple/>
+          <br>
+          <caption>File 2</caption>
+          <input id="myFile2" class="form-control" type="file" onchange="return fileValidation()" name="myFile" />
+        </div>
+        <input type="submit" class="btn btn-info" value="upload" />
+      </form>
     <a href="/merge/clear">
       <button class="btn btn-outline-danger" type="button">CLEAR</button>
     </a>
@@ -124,7 +127,8 @@
         <li class="nav-item"><a href="/merger" class="nav-link px-2 text-muted">Merge</a></li>
         <li class="nav-item"><a href="/rotator" class="nav-link px-2 text-muted">Rotate</a></li>
       </ul>
-      <p class="text-center text-muted">© 2022 Projects</p>
+      <p class="text-center text-muted">PDF-Merger:v0.8</p>
+      <p class="text-center text-muted">© 2022 Dipankar</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>

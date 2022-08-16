@@ -1,37 +1,57 @@
-# its for the [DEV]
 version: '3'
+services:
+  backend-merge:
+    depends_on:
+      - backend-db
+    image: pdf-merger
+    container_name: backend-merger
+    build:
+      context: backend/merger
+      target: prod
+
+    ports:
+      - "8080"
+    networks:
+      - pdf-editor
+    volumes:
+      - app_data:/go/src
+
+  frontend:
+    depends_on:
+      - backend-merge
+    image: pdf-frontend
+    container_name: frontend-merger-pdf
+    build:
+      context: frontend/
+      target: prod
+
+    ports:
+      - "80:80"
+    networks:
+      - pdf-editor
+
+  trace:
+    depends_on:
+      - frontend
+    image: jaegertracing/all-in-one
+    container_name: jaeger-tracing-pdf
+    ports:
+    - "6831"
+    - "6832"
+    - "5778"
+    - "16686:16686"
+    - "4317"
+    - "4318"
+    - "14250"
+    - "14268"
+    - "14269"
+    - "9411"
+    networks:
+      - pdf-editor
 
 networks:
   pdf-editor:
 
 volumes:
-  tmp-dir:
-
-services:
-  backend-merge:
-    container_name: pdf-editor-backend-merger
-    image: pdf-merger
-    build:
-      context: backend/merger
-      target: prod
-    volumes:
-    - tmp-dir:/go/src/
-    networks:
-    - pdf-editor
-    ports:
-    - "8080"
-
-  frontend:
-    depends_on:
-    - backend-merge
-    container_name: pdf-editor-frontend
-    image: pdf-frontend
-    build:
-      context: frontend
-      target: prod
-    networks:
-    - pdf-editor
-    ports:
-    - "80:80"
-
-
+  db_data:
+  app_data:

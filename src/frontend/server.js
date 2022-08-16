@@ -6,6 +6,7 @@ const { urlencoded, json } = pkg;
 import multer from 'multer';
 import fetch from 'node-fetch';
 import session from 'express-session';
+import { request } from 'http';
 const app = express()
 
 const __dirname = "/app";
@@ -35,9 +36,9 @@ const upload = multer({ dest: "uploads/" });
 app.get('/merge/clear', async (req, res) => {
   // const output = execSync("curl -X GET http://backend-merge:8080/pdf/clear", { encoding: "utf-8" });
   // res.status(200).send(output)
-  
+
   console.log(req.sessionID);
-  
+
   const output = await fetch("http://backend-merge:8080/pdf/clear", {
     method: "GET",
   }).then(res => res.text()).catch(err => console.error(err));
@@ -48,36 +49,52 @@ app.get('/merge/clear', async (req, res) => {
 })
 
 // FIXME: Use the sessionID for differentiating different users
-app.post('/merge/upload', upload.single('myFile'), (req, res) => {
+app.post('/merge/upload', upload.array('myFile'), (req, res) => {
   /*
    * session creation
    */
-  console.log(req.sessionID);
+  console.log(`SessionID: ${req.sessionID}`);
+  res.redirect('/merger')
 
-  var temp = execSync(`cd /app/uploads && mv ${req.file.filename} ${req.file.filename}.pdf`)
-  var file = "/app/" + req.file.path + ".pdf"
+  var temp = execSync(`cd /app/uploads && mv ${req.files[0].filename} ${req.files[0].filename}.pdf`)
+  var temp = execSync(`cd /app/uploads && mv ${req.files[1].filename} ${req.files[1].filename}.pdf`)
 
-  var ccc = execSync(`curl --raw -X POST --form "myFile=@${file}" http://backend-merge:8080/upload`, { encoding: "utf-8" })
+
+  console.log('File 1 ready for upload');
+  var file = "/app/" + req.files[0].path + ".pdf"
+  var ccc = execSync(`curl --raw -X POST --form "File=@${file}" http://backend-merge:8080/upload`, { encoding: "utf-8" })
+  console.log('File 1 uploaded');
+
+
+  console.log('File 2 ready for upload');
+  var file = "/app/" + req.files[1].path + ".pdf"
+  var ccc = execSync(`curl --raw -X POST --form "File=@${file}" http://backend-merge:8080/upload`, { encoding: "utf-8" })
+  console.log('File 2 uploaded');
+
+
   var temp = execSync(`cd /app/uploads && rm -rf *`) // perodic clean up
+
 
   /**
    * @Test Addding this will cause integration test to fail!!
    * FIXME: resolve the issue with test cases
    */
 
-  if (res.statusCode === 200) {
-    res.redirect('/merger');
-  }else {
-    res.send(ccc)
-  }
+  // // if (res.statusCode === 200) {
+    // res.redirect('/merge/download');
+  // // }else {
+  //   res.send(ccc)
+  // }
+  // res.send(200).sendFile(join(__dirname, '/index-merge.html'));
 })
+
 
 // FIXME: Use the sessionID for differentiating different users
 app.get('/merge/download', async (req, res) => {
-  const output = execSync("curl -X GET http://backend-merge:8080/downloads");
-  // const output = await fetch("http://backend-merge:8080/downloads", {
-  //   method: "GET",
-  // }).then(res => res.text()).catch(err => console.error(err));
+  // const output = execSync("curl -X GET http://backend-merge:8080/downloads");
+  const output = await fetch("http://backend-merge:8080/downloads", {
+    method: "GET",
+  }).then(res => res.buffer()).catch(err => console.error(err));
   res.send(output)
 })
 

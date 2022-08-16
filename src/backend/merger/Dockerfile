@@ -1,4 +1,4 @@
-FROM golang:1.18-alpine as prod-stage1
+FROM golang:1.17-alpine as prod-stage1
 LABEL MAINTAINER="Dipankar Das <dipankardas0115@gmail.com>"
 WORKDIR /go/src
 COPY . .
@@ -15,7 +15,7 @@ RUN rm -f go.sum go.mod file.go main.go main_test.go Dockerfile .dockerignore
 CMD ["./merger-executable"]
 EXPOSE 8080
 
-FROM golang:1.18-alpine as dev
+FROM golang:1.17-alpine as dev
 RUN apk update
 RUN apk add qpdf
 WORKDIR /go/src

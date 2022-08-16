@@ -138,6 +138,7 @@ func DownloadFile(w http.ResponseWriter, r *http.Request) {
 	defer span.End()
 
 	requestsProcessed.Inc()
+	fmt.Println("Downloading...")
 	if r.Method == "GET" {
 		http.ServeFile(w, r, "uploads/resrelt.pdf")
 		requestsProcessedSuccess.Inc()
