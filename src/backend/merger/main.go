@@ -111,7 +111,7 @@ func getPort() string {
 	if port == "" {
 		port = "8080"
 	}
-	fmt.Println("{\"Source\": \"pdf-merger\", \"operation\": \"Merge\", \"Status\": {\"Port\": \"%v\"}}", port)
+	fmt.Printf("{\"Source\": \"pdf-merger\", \"operation\": \"Merge\", \"Status\": {\"Port\": \"%v\"}}\n", port)
 	return ":" + port
 }
 
