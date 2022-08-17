@@ -3,16 +3,18 @@ testing:
 	chmod 700 backend.sh && \
 	./backend.sh
 
-clean:
-	sudo docker compose down
-
 build:
 	chmod +x build.sh && \
 	./build.sh 0
 
-run:
-	cd deploy/IAC/ansible-terraform/
+run: build
+	cd deploy/IAC/ansible-terraform/ && \
 	sudo docker compose up -d
+	docker ps
+
+clean:
+	cd deploy/IAC/ansible-terraform/ && \
+	sudo docker compose down
 	docker ps
 
 unit-test:

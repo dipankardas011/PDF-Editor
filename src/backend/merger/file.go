@@ -84,7 +84,6 @@ func uploadFile(w http.ResponseWriter, r *http.Request, ctx context.Context) {
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	// t, err := template.ParseFiles("./upload.html")
 	t, err := template.ParseFiles("./templates/upload.html")
 
 	var x templateStat

@@ -14,10 +14,10 @@ const __dirname = "/app";
 app.set("views", join(__dirname, "views"))
 app.set("view engine", "ejs")
 
-// having expiration time of 5m
+// having expiration time of 1m
 app.use(session({
   secret: '1234',			// TODO: have a random password generator
-  cookie: { maxAge: 1000 * 60 * 5 },	// DISCUSS
+  cookie: { maxAge: 1000 * 60 * 1 },	// DISCUSS
   saveUninitialized: true // false	// XXX: true is working fine
 }));
 
@@ -34,10 +34,7 @@ const upload = multer({ dest: "uploads/" });
 
 // FIXME: Use the sessionID for differentiating different users
 app.get('/merge/clear', async (req, res) => {
-  // const output = execSync("curl -X GET http://backend-merge:8080/pdf/clear", { encoding: "utf-8" });
-  // res.status(200).send(output)
-
-  console.log(req.sessionID);
+  console.log(`{"Source": "pdf-frontend", "operation": "Merge", "Status": "Session clear", "ID", "${req.sessionID}"}`);
 
   const output = await fetch("http://backend-merge:8080/pdf/clear", {
     method: "GET",
@@ -53,26 +50,29 @@ app.post('/merge/upload', upload.array('myFile'), (req, res) => {
   /*
    * session creation
    */
-  console.log(`SessionID: ${req.sessionID}`);
+  console.log(`{"Source": "pdf-frontend", "Status": "Session merger upload", "ID", "${req.sessionID}"}`);
 
   var temp = execSync(`cd /app/uploads && mv ${req.files[0].filename} ${req.files[0].filename}.pdf`)
   var temp = execSync(`cd /app/uploads && mv ${req.files[1].filename} ${req.files[1].filename}.pdf`)
 
 
-  console.log('File 1 ready for upload');
+  console.log('{"Source": "pdf-frontend", "FileNo": "1", "operation": "Merge", "Status": "Upload Ready"}');
   var file = "/app/" + req.files[0].path + ".pdf"
 
   var ccc = execSync(`curl --raw -X POST --form "File=@${file}" http://backend-merge:8080/upload`, { encoding: "utf-8" })
-  console.log('File 1 uploaded');
+  console.log('{"Source": "pdf-frontend", "FileNo": "1", "operation": "Merge", "Status": "Uploaded"}');
 
 
-  console.log('File 2 ready for upload');
+  console.log('{"Source": "pdf-frontend", "FileNo": "2", "operation": "Merge", "Status": "Upload Ready"}');
   var file = "/app/" + req.files[1].path + ".pdf"
   var ccc = execSync(`curl --raw -X POST --form "File=@${file}" http://backend-merge:8080/upload`, { encoding: "utf-8" })
-  console.log('File 2 uploaded');
-
-
   var temp = execSync(`cd /app/uploads && rm -rf *`) // perodic clean up
+  console.log('{"Source": "pdf-frontend", "FileNo": "2", "operation": "Merge", "Status": "Uploaded"}');
+
+
+
+  // DONT TOUCH: the below line!!
+  // Its is necessary for testing
 
   (res.statusCode === 200) ? res.redirect('/merge/download') : res.send(ccc)
 })
@@ -119,6 +119,5 @@ app.get('/home-img02', (_, res) => {
 
 const PORT = process.env.PORT || 80
 app.listen(PORT)
-console.log(`Listening to PORT: ${PORT}`)
-
+console.log(`{"Source": "pdf-frontend", "operation": "HomePage", "Status": {"Port": "${PORT}"}}`)
 export default app;

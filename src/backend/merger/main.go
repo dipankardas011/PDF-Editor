@@ -96,9 +96,12 @@ func MergePdf(ctx context.Context) error {
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println("Error in MergePDF", err)
+		fmt.Println("{\"Source\": \"pdf-merger\", \"FileNo\": [\"1\", \"2\"], \"operation\": \"Merge\", \"Status\": \"Merge ERROR\"}")
 		requestsProcessedError.Inc()
+	} else {
+		fmt.Println("{\"Source\": \"pdf-merger\", \"FileNo\": [\"1\", \"2\"], \"operation\": \"Merge\", \"Status\": \"Merged\"}")
+		requestsProcessedSuccess.Inc()
 	}
-	requestsProcessedSuccess.Inc()
 	return err
 }
 
@@ -108,7 +111,7 @@ func getPort() string {
 	if port == "" {
 		port = "8080"
 	}
-	fmt.Printf("ENV{Port}: %v\n", port)
+	fmt.Println("{\"Source\": \"pdf-merger\", \"operation\": \"Merge\", \"Status\": {\"Port\": \"%v\"}}", port)
 	return ":" + port
 }
 
@@ -138,8 +141,8 @@ func DownloadFile(w http.ResponseWriter, r *http.Request) {
 	defer span.End()
 
 	requestsProcessed.Inc()
-	fmt.Println("Downloading...")
 	if r.Method == "GET" {
+		fmt.Println("{\"Source\": \"pdf-merger\", \"operation\": \"Merge\", \"Status\": \"Sending MergedPDF\"}")
 		http.ServeFile(w, r, "uploads/resrelt.pdf")
 		requestsProcessedSuccess.Inc()
 	} else {
