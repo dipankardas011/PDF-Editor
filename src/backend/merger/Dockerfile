@@ -1,4 +1,4 @@
-FROM golang:1.17-alpine as prod-stage1
+FROM golang:1.18-alpine as prod-stage1
 LABEL MAINTAINER="Dipankar Das <dipankardas0115@gmail.com>"
 WORKDIR /go/src
 COPY . .

@@ -54,7 +54,6 @@ app.post('/merge/upload', upload.array('myFile'), (req, res) => {
    * session creation
    */
   console.log(`SessionID: ${req.sessionID}`);
-  res.redirect('/merger')
 
   var temp = execSync(`cd /app/uploads && mv ${req.files[0].filename} ${req.files[0].filename}.pdf`)
   var temp = execSync(`cd /app/uploads && mv ${req.files[1].filename} ${req.files[1].filename}.pdf`)
@@ -62,6 +61,7 @@ app.post('/merge/upload', upload.array('myFile'), (req, res) => {
 
   console.log('File 1 ready for upload');
   var file = "/app/" + req.files[0].path + ".pdf"
+
   var ccc = execSync(`curl --raw -X POST --form "File=@${file}" http://backend-merge:8080/upload`, { encoding: "utf-8" })
   console.log('File 1 uploaded');
 
@@ -74,18 +74,7 @@ app.post('/merge/upload', upload.array('myFile'), (req, res) => {
 
   var temp = execSync(`cd /app/uploads && rm -rf *`) // perodic clean up
 
-
-  /**
-   * @Test Addding this will cause integration test to fail!!
-   * FIXME: resolve the issue with test cases
-   */
-
-  // // if (res.statusCode === 200) {
-    // res.redirect('/merge/download');
-  // // }else {
-  //   res.send(ccc)
-  // }
-  // res.send(200).sendFile(join(__dirname, '/index-merge.html'));
+  (res.statusCode === 200) ? res.redirect('/merge/download') : res.send(ccc)
 })
 
 

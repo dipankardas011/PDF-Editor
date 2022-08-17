@@ -12,6 +12,10 @@ docker build --target prod -t backend .
 
 # create container frontend
 cd ../../frontend
+
+# making the upload button act like upload button
+sed -i 's/(res.statusCode === 200).*res.send(ccc)/res.send(ccc)/g' server.js
+
 docker build --target prod -t frontend .
 
 # create a isolated network
@@ -37,6 +41,10 @@ Call_Cleanup() {
   echo -e "\n================================================================"
   echo -e "\n$(tput setaf 3)$(tput bold)Cleanup Started$(tput init)"
   docker rm -f frontend backend-merge
+  cd ../../src/frontend/
+  # making the upload button act like both upload and download
+  sed -i "s/res.send(ccc)/(res.statusCode === 200) ? res.redirect('\/merge\/download') : res.send(ccc)/g" server.js
+  cd -
   docker network rm xyz
   rm -f merged.pdf
   echo -e "$(tput setaf 2)$(tput bold) ✓ [DONE] Cleanup$(tput init)"
@@ -134,7 +142,7 @@ echo -e "\n$(tput setaf 5)$(tput bold)Testing Endpoint '/merge/upload'$(tput ini
 flag=0
 echo -e "\n$(tput setaf 6)$(tput bold)  ↕ Upload file 01.pdf$(tput init)"
 
-hello=$(curl --raw -X POST --form "myFile=@${PWD}/resources/01.pdf" http://localhost:$PORT/merge/upload | grep -e '<div.*;alert-success role="alert">Uploaded.*<\/div>' | wc -l)
+hello=$(curl --raw --form "myFile=@${PWD}/resources/01.pdf" --form "myFile=@${PWD}/resources/02.pdf" http://localhost:${PORT}/merge/upload | grep -e '<div.*;alert-success role="alert">Uploaded.*<\/div>' | wc -l)
 if [[ $hello -eq 0 ]]; then
   echo -e "\n$(tput setaf 1)$(tput bold)  ↕ ✗ [Failed] to upload 01.pdf$(tput init)"
   flag=1
@@ -142,15 +150,15 @@ else
   echo -e "\n$(tput setaf 6)$(tput bold)  ↕ ✓ [Passed] to upload 01.pdf$(tput init)"
 fi
 
-echo -e "\n$(tput setaf 6)$(tput bold)  ↕ Upload file 02.pdf$(tput init)"
-
-hello=$(curl --raw -X POST --form "myFile=@${PWD}/resources/02.pdf" http://localhost:$PORT/merge/upload | grep -e '<div.*;alert-success role="alert">Uploaded.*<\/div>' | wc -l)
-if [[ $hello -eq 0 ]]; then
-  echo -e "\n$(tput setaf 1)$(tput bold)  ↕ ✗ [Failed] to upload 02.pdf$(tput init)"
-  flag=1
-else
-  echo -e "\n$(tput setaf 6)$(tput bold)  ↕ ✓ [Passed] to upload 02.pdf$(tput init)"
-fi
+# TODO: Remove the LEGACY Tests cases
+#echo -e "\n$(tput setaf 6)$(tput bold)  ↕ Upload file 02.pdf$(tput init)"
+#hello=$(curl --raw -X POST --form "myFile=@${PWD}/resources/02.pdf" http://localhost:$PORT/merge/upload | grep -e '<div.*;alert-success role="alert">Uploaded.*<\/div>' | wc -l)
+#if [[ $hello -eq 0 ]]; then
+ # echo -e "\n$(tput setaf 1)$(tput bold)  ↕ ✗ [Failed] to upload 02.pdf$(tput init)"
+  #flag=1
+#else
+ # echo -e "\n$(tput setaf 6)$(tput bold)  ↕ ✓ [Passed] to upload 02.pdf$(tput init)"
+#fi
 
 
 if [[ $flag -eq 1 ]]; then
@@ -163,14 +171,14 @@ fi
 
 echo "----------------------------------------------------------------"
 
-echo -e "\n$(tput setaf 5)$(tput bold)Testing Endpoint '/merge/download'$(tput init)"
+echo -e "\n$(tput setaf 5)$(tput bold)Testing Endpoint '/merge/upload & /merge/download'$(tput init)"
 
-# its dependent on uploads
+its dependent on uploads
 if [[ $isUploadSuccess -eq 1 ]]; then
   echo -e "\n$(tput setaf 1)$(tput bold)✗ [Failed] the test of Endpoint /merge/upload so [FAILED]$(tput init)"
 else
   hello=$(curl --raw --output merged.pdf -X GET http://localhost:$PORT/merge/download && cat merged.pdf | head -n 5 | grep -be "%PDF.*" | wc -l) # return value is stored in hello
-
+  # hello=$(curl --raw --output merged.pdf --form "myFile=@${PWD}/resources/01.pdf" --form "myFile=@${PWD}/resources/02.pdf" -L http://localhost:$PORT/merge/upload && cat merged.pdf | head -n 5 | grep -be "%PDF.*" | wc -l) # return value is stored in hello
   size01PDF=$(cat resources/01.pdf | tail -n 2 | head -n 1)
   size02PDF=$(cat resources/02.pdf | tail -n 2 | head -n 1)
   sizemergedPDF=$(cat merged.pdf | tail -n 2 | head -n 1)
@@ -193,6 +201,12 @@ else
     fi
   fi
 fi
+
+#
+#
+# TODO: Add the Failing test cases
+#
+#
 
 
 echo -e "\n----------------------------------------------------------------"

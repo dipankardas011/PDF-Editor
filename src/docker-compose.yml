@@ -4,7 +4,7 @@ services:
     depends_on:
       - backend-db
     image: pdf-merger
-    container_name: backend-merger
+    container_name: backend-merge
     build:
       context: backend/merger
       target: prod
@@ -22,7 +22,7 @@ services:
     image: pdf-frontend
     container_name: frontend-merger-pdf
     build:
-      context: frontend/
+      context: frontend
       target: prod
 
     ports:
@@ -53,5 +53,4 @@ networks:
   pdf-editor:
 
 volumes:
-  db_data:
   app_data:

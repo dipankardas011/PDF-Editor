@@ -65,22 +65,18 @@
       <form id="form" class="card m-5 mx-auto p-5" enctype="multipart/form-data" action="/merge/upload" method="POST">
         <div class="mb-3">
           <caption>File 1</caption>
-          <input id="myFile1" class="form-control" type="file" onchange="return fileValidation()" name="myFile" multiple/>
+          <input id="myFile1" class="form-control" type="file" name="myFile" onchange="return fileValidation()" multiple/>
           <br>
+          <div id="imagePreview1"></div>
           <caption>File 2</caption>
-          <input id="myFile2" class="form-control" type="file" onchange="return fileValidation()" name="myFile" />
+          <input id="myFile2" class="form-control" type="file" name="myFile" onchange="return fileValidation()" multiple />
+          <div id="imagePreview2"></div>
         </div>
-        <input type="submit" class="btn btn-info" value="upload" />
+        <input type="submit" class="btn btn-info" value="upload & download"/>
       </form>
     <a href="/merge/clear">
       <button class="btn btn-outline-danger" type="button">CLEAR</button>
     </a>
-    <br>
-    <br>
-    <a href="/merge/download" download>
-      <button class="btn btn-outline-success" type="button">DOWNLOAD</button>
-    </a>
-    </form>
 
     <br>
     <br>
@@ -133,35 +129,46 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
+    <script defer>
       function fileValidation() {
-        var fileInput =
-          document.getElementById('myFile');
+        var fileInput1 = document.getElementById('myFile1');
+        var fileInput2 = document.getElementById('myFile2');
 
-        var filePath = fileInput.value;
+        var filePath1 = fileInput1.value;
+        var filePath2 = fileInput2.value;
 
         // Allowing file type
-        var allowedExtensions =
-          /(\.pdf)$/i;
-
-        if (!allowedExtensions.exec(filePath)) {
-          alert('Invalid file type');
-          fileInput.value = '';
+        const allowedExtensions = /(\.pdf)$/i;
+        if ( (filePath1 != '' && filePath2 != '') && (!allowedExtensions.exec(filePath1) || !allowedExtensions.exec(filePath2)))  {
+          alert('Invalid file type for File 1 or File 2');
+          fileInput2.value = '';
+          fileInput1.value = '';
           return false;
         }
         else {
 
           // Image preview
-          if (fileInput.files && fileInput.files[0]) {
+          if (fileInput1.files && fileInput1.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
               document.getElementById(
-                'imagePreview').innerHTML =
-                '<img src="' + e.target.result
-                + '"/>';
+                'imagePreview1').innerHTML =
+                '<br><iframe src="' + e.target.result
+                + '"></iframe><br>';
             };
 
-            reader.readAsDataURL(fileInput.files[0]);
+            reader.readAsDataURL(fileInput1.files[0]);
+          }
+          if (fileInput2.files && fileInput2.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              document.getElementById(
+                'imagePreview2').innerHTML =
+                '<br><iframe src="' + e.target.result
+                + '"></iframe><br>';
+            };
+
+            reader.readAsDataURL(fileInput2.files[0]);
           }
         }
       }

@@ -4,7 +4,7 @@ services:
     depends_on:
       - backend-db
     image: docker.io/dipugodocker/pdf-editor:backend-merge
-    container_name: backend-merger
+    container_name: backend-merge
     ports:
       - "8080"
     networks:
@@ -16,7 +16,7 @@ services:
     depends_on:
       - backend-db
     image: docker.io/dipugodocker/pdf-editor:backend-rotate
-    container_name: backend-rotator
+    container_name: backend-rotate
     ports:
       - "8081"
     networks:
@@ -37,7 +37,7 @@ services:
       - backend-merge
       - backend-rotate
     image: docker.io/dipugodocker/pdf-editor:frontend
-    container_name: frontend-merger-pdf
+    container_name: frontend
     ports:
       - "80:80"
     networks:
