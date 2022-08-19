@@ -13,6 +13,10 @@ website that can edit PDF's
 
 [Project Board For Current Status](https://github.com/users/dipankardas011/projects/2/views/1)
 
+Jenkins Link http://ec2-54-211-12-103.compute-1.amazonaws.com:8080/
+User: guest
+Pass: 77777
+
 Stage | Tags | Links
 --|--|--
 Production | `0.7` | https://pdf-web-editor.azurewebsites.net/
