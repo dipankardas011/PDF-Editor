@@ -5,21 +5,6 @@ metadata:
 
 ---
 
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: frontend-lb
-#   namespace: pdf-editor-ns
-# spec:
-#   selector:
-#     app: frontend-pdf
-#   ports:
-#   - port: 80
-#     targetPort: web-port
-#     protocol: TCP
-
-# ---
-
 apiVersion: v1
 kind: Service
 metadata:
