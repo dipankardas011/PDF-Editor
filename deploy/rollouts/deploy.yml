@@ -96,24 +96,6 @@ spec:
 
 # Canary is not good for Backend ig
 # ---
-
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: pdf-editor-pvc
-#   labels:
-#     pvc: pdf
-#   namespace: pdf-editor-ns
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   storageClassName: standard
-#   resources:
-#     requests:
-#       storage: 50Mi
-
-# ---
-
 # apiVersion: apps/v1
 # kind: Deployment
 # metadata:

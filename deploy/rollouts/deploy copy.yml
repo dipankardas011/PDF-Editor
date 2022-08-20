@@ -65,22 +65,25 @@ spec:
 #         - containerPort: 80
 #           name: web-port
 
----
+# ---
 
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pdf-editor-pvc
-  labels:
-    pvc: pdf
-  namespace: pdf-editor-ns
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: standard
-  resources:
-    requests:
-      storage: 50Mi
+##############################################
+## MORE Applicable for DB in StatefulSet    ##
+##############################################
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: pdf-editor-pvc
+#   labels:
+#     pvc: pdf
+#   namespace: pdf-editor-ns
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   storageClassName: standard
+#   resources:
+#     requests:
+#       storage: 50Mi
 
 ---
 
@@ -155,5 +158,4 @@ spec:
               name: backend-port
       volumes:
       - name: backend
-        persistentVolumeClaim:
-          claimName: pdf-editor-pvc
+        emptyDir: {}
