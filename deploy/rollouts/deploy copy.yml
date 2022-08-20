@@ -98,7 +98,7 @@ spec:
     blueGreen:
       # activeService specifies the service to update with the new template hash at time of promotion.
       # This field is mandatory for the blueGreen update strategy.
-      activeService: backend
+      activeService: backend-merge
       # previewService specifies the service to update with the new template hash before promotion.
       # This allows the preview stack to be reachable without serving production traffic.
       # This field is optional.
