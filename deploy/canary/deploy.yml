@@ -94,97 +94,97 @@ spec:
           name: web-port
 
 
-# Canary is not good for API Testing (I guess)
----
+# Canary is not good for Backend ig
+# ---
 
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pdf-editor-pvc
-  labels:
-    pvc: pdf
-  namespace: pdf-editor-ns
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: standard
-  resources:
-    requests:
-      storage: 50Mi
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: pdf-editor-pvc
+#   labels:
+#     pvc: pdf
+#   namespace: pdf-editor-ns
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   storageClassName: standard
+#   resources:
+#     requests:
+#       storage: 50Mi
 
----
+# ---
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: pdf-editor-backend
-  namespace: pdf-editor-ns
-  labels:
-    app: pdf
-    backend: main
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: backend-main
-  template:
-    metadata:
-      labels:
-        app: backend-main
-    spec:
-      initContainers:
-        - name: pdf-files
-          image: docker.io/dipugodocker/pdf-editor:0.7-backend
-          volumeMounts:
-          - name: backend
-            mountPath: /mnt
-          command: ["cp", "-vR", ".", "/mnt"]
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: pdf-editor-backend
+#   namespace: pdf-editor-ns
+#   labels:
+#     app: pdf
+#     backend: main
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: backend-main
+#   template:
+#     metadata:
+#       labels:
+#         app: backend-main
+#     spec:
+#       initContainers:
+#         - name: pdf-files
+#           image: docker.io/dipugodocker/pdf-editor:0.7-backend
+#           volumeMounts:
+#           - name: backend
+#             mountPath: /mnt
+#           command: ["cp", "-vR", ".", "/mnt"]
 
-      containers:
-        - name: pdf-editor-backend
-          image: docker.io/dipugodocker/pdf-editor:0.7-backend
-          volumeMounts:
-          - name: backend
-            mountPath: /go/src/
-          resources:
-            requests:
-                memory: "50Mi"
-                cpu: "10m"
-            limits:
-              memory: "500Mi"
-              cpu: "100m"
-          livenessProbe:
-            httpGet:
-              port: 8080
-              path: /greet
-            initialDelaySeconds: 15
-            periodSeconds: 20
-          readinessProbe:
-            httpGet:
-              port: 8080
-              path: /greet
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          ports:
-            - containerPort: 8080
-              name: backend-port
-      volumes:
-      - name: backend
-        persistentVolumeClaim:
-          claimName: pdf-editor-pvc
----
+#       containers:
+#         - name: pdf-editor-backend
+#           image: docker.io/dipugodocker/pdf-editor:0.7-backend
+#           volumeMounts:
+#           - name: backend
+#             mountPath: /go/src/
+#           resources:
+#             requests:
+#                 memory: "50Mi"
+#                 cpu: "10m"
+#             limits:
+#               memory: "500Mi"
+#               cpu: "100m"
+#           livenessProbe:
+#             httpGet:
+#               port: 8080
+#               path: /greet
+#             initialDelaySeconds: 15
+#             periodSeconds: 20
+#           readinessProbe:
+#             httpGet:
+#               port: 8080
+#               path: /greet
+#             initialDelaySeconds: 5
+#             periodSeconds: 10
+#           ports:
+#             - containerPort: 8080
+#               name: backend-port
+#       volumes:
+#       - name: backend
+#         persistentVolumeClaim:
+#           claimName: pdf-editor-pvc
+# ---
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend-merge
-  namespace: pdf-editor-ns
-spec:
-  selector:
-    app: backend-main
-  ports:
-  - port: 8080
-    targetPort: backend-port
-    protocol: TCP
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: backend-merge
+#   namespace: pdf-editor-ns
+# spec:
+#   selector:
+#     app: backend-main
+#   ports:
+#   - port: 8080
+#     targetPort: backend-port
+#     protocol: TCP
 
 ...
