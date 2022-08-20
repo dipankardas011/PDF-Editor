@@ -1,9 +1,9 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: pdf-editor-ns
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: pdf-editor-ns
 
----
+# ---
 
 apiVersion: v1
 kind: Service
