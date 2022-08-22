@@ -3,17 +3,16 @@ kind: Deployment
 metadata:
   name: pdf-editor-backend
   labels:
-    app: pdf
-    backend: main
+    app: backend-merger
 spec:
   selector:
     matchLabels:
-      app: backend-main
+      app: backend-merger
   replicas: 2
   template:
     metadata:
       labels:
-        app: backend-main
+        app: backend-merger
     spec:
       initContainers:
         - name: pdf-files
@@ -22,6 +21,13 @@ spec:
           - name: backend
             mountPath: /mnt
           command: ["cp", "-vR", ".", "/mnt"]
+          resources:
+            requests:
+                memory: "10Mi"
+                cpu: "1m"
+            limits:
+              memory: "100Mi"
+              cpu: "50m"
 
       containers:
         - name: pdf-editor
@@ -53,5 +59,4 @@ spec:
               name: backend-port
       volumes:
       - name: backend
-        persistentVolumeClaim:
-          claimName: pdf-editor-pvc
+        emptyDir: {}

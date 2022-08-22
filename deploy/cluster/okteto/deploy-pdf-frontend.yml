@@ -3,10 +3,9 @@ kind: Deployment
 metadata:
   name: pdf-editor-frontend
   labels:
-    app: pdf
-    frontend: main
+    app: frontend-pdf
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: frontend-pdf
@@ -34,10 +33,10 @@ spec:
         readinessProbe:
           httpGet:
             port: 80
-            path: /
+            path: /about
           initialDelaySeconds: 5
           periodSeconds: 10
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
           name: web-port
