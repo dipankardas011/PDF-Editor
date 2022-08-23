@@ -2,10 +2,7 @@
 
 website that can edit PDF's
 
-[![Golang and Docker CI](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml/badge.svg?branch=main)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml) [![pages-build-deployment](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment)
-[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/pdf-editor-web)](https://artifacthub.io/packages/search?repo=pdf-editor-web) [![CodeQL](https://github.com/dipankardas011/PDF-Editor/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/codeql-analysis.yml)
-[![[Stable](Backend-merger) Docker Signed Image Release](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD-backend-merge.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD-backend-merge.yaml)[![[Stable](Frontend) Stable Docker Signed Image Release](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD-frontend.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD-frontend.yaml)[![Datree-policy-Checks](https://github.com/dipankardas011/PDF-Editor/actions/workflows/Datree-CD.yaml/badge.svg?branch=main)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/Datree-CD.yaml) [![ImageScan [Aqua Trivy]](https://github.com/dipankardas011/PDF-Editor/actions/workflows/imageScan.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/imageScan.yaml)
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/dipankardas011/PDF-Editor)[![CircleCI](https://dl.circleci.com/status-badge/img/gh/dipankardas011/PDF-Editor/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/dipankardas011/PDF-Editor/tree/main)
+[![Golang and Docker CI](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml/badge.svg?branch=main)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml) [![pages-build-deployment](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment) [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/pdf-editor-web)](https://artifacthub.io/packages/search?repo=pdf-editor-web) [![CodeQL](https://github.com/dipankardas011/PDF-Editor/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/codeql-analysis.yml) [![\[Stable\](Backend-merger) Docker Signed Image Release](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD-backend-merge.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD-backend-merge.yaml) [![\[Stable\](Frontend) Stable Docker Signed Image Release](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD-frontend.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD-frontend.yaml) [![Datree-policy-Checks](https://github.com/dipankardas011/PDF-Editor/actions/workflows/Datree-CD.yaml/badge.svg?branch=main)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/Datree-CD.yaml) [![ImageScan [Aqua Trivy]](https://github.com/dipankardas011/PDF-Editor/actions/workflows/imageScan.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/imageScan.yaml) [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/dipankardas011/PDF-Editor)[![CircleCI](https://dl.circleci.com/status-badge/img/gh/dipankardas011/PDF-Editor/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/dipankardas011/PDF-Editor/tree/main)
 
 
 ## Software Requirement Specification
@@ -14,14 +11,14 @@ website that can edit PDF's
 
 [Project Board For Current Status](https://github.com/users/dipankardas011/projects/2/views/1)
 
-Jenkins Link http://ec2-54-211-12-103.compute-1.amazonaws.com:8080/
-User: guest
-Pass: 77777
+Jenkins server -> [URL](http://ec2-54-211-12-103.compute-1.amazonaws.com:8080/)
+> User: `guest`
+> Pass: `77777`
 
 Stage | Tags | Links
 --|--|--
 Production | `0.7` | https://pdf-web-editor.azurewebsites.net/
-Beta | `latest` ; `0.8` | http://44.209.39.161/
+Alpha | `latest` ; `0.8` | http://44.209.39.161/
 
 > A Humble request! 🙏 don't expoit the resources I have used here
 
