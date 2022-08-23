@@ -22,6 +22,6 @@
     },
     "kubeConfig": {
         "path": "/home/dipankar/.kube/config",
-        "currentContext": "pdf-editor"
+        "currentContext": ""
     }
 }

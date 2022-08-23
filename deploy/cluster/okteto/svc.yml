@@ -4,7 +4,7 @@ metadata:
   name: backend-merge
 spec:
   selector:
-    app: backend-main
+    app: backend-merger
   ports:
   - port: 8080
     targetPort: backend-port
