@@ -14,7 +14,7 @@ docker build --target prod -t backend .
 cd ../../frontend
 
 # making the upload button act like upload button
-sed -i 's/(res.statusCode === 200).*res.send(ccc)/res.send(ccc)/g' server.js
+sed -i 's/(isSuccessfull).*res.send(storeError)/res.send(ccc2)/g' server.js
 
 docker build --target prod -t frontend .
 
@@ -43,7 +43,7 @@ Call_Cleanup() {
   docker rm -f frontend backend-merge
   cd ../../src/frontend/
   # making the upload button act like both upload and download
-  sed -i "s/res.send(ccc)/(res.statusCode === 200) ? res.redirect('\/merge\/download') : res.send(ccc)/g" server.js
+  sed -i "s/res.send(ccc2)/(isSuccessfull) ? res.redirect('\/merge\/download') : res.send(storeError)/g" server.js
   cd -
   docker network rm xyz
   rm -f merged.pdf
