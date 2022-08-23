@@ -27,4 +27,4 @@ RUN apk add qpdf
 WORKDIR /go/src
 COPY . .
 RUN go get -d
-ENTRYPOINT ["go", "test", "."]
+ENTRYPOINT ["go", "test", "-v", "."]

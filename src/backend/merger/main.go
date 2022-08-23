@@ -150,6 +150,7 @@ func DownloadFile(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// helperCleaner marked for **DEPRECATION**
 func helperCleaner(ctx context.Context) (err error) {
 	tr := otel.Tracer("Clean Helper")
 	_, span := tr.Start(ctx, "helpCleaner")
@@ -159,6 +160,7 @@ func helperCleaner(ctx context.Context) (err error) {
 	return cmd.Run()
 }
 
+// clearExistingpdfs marked for **DEPRECATION**
 func clearExistingpdfs(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
