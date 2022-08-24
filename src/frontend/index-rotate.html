@@ -63,6 +63,16 @@
         This Site is under 🚧
       </div>
     </div>
+    <br>
+    <form id="form" class="card m-5 mx-auto p-5" enctype="multipart/form-data" action="/rotate/upload" method="POST">
+      <div class="mb-3">
+        <caption>File</caption>
+        <input id="myFile1" class="form-control" type="file" name="myFile" onchange="return fileValidation()"/>
+        <br>
+        <div id="imagePreview"></div>
+      </div>
+      <input type="submit" class="btn btn-info" value="Rotate"/>
+    </form>
 
     <br>
   </main>

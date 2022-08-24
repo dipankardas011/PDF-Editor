@@ -29,7 +29,6 @@ func DownloadFile(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	uploadedStat = false
 	err := os.MkdirAll("./uploads", os.ModePerm)
 	if err != nil {
 		panic(err)

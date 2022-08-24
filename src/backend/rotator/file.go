@@ -14,22 +14,18 @@ type templateStat struct {
 	Status string `json:"Status"`
 }
 
-var (
-	numberOfFilesUploaded int
-	uploadedStat          bool
-)
-
 const NUMBEROFDOCS int = 1
 
 func RotatePdf() error {
 	// specify the clockwise or anti clockwise direction
+	// FIXME: ONly One Page is getting rotated right
 	cmd := exec.Command("qpdf", "--rotate=+90:1", "./uploads/00.pdf", "./uploads/resrelt.pdf")
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println("Error in RotatePDF", err)
-		fmt.Println("{\"Source\": \"pdf-rotator\", \"FileNo\": [\"1\", \"2\"], \"operation\": \"Rotate\", \"Status\": \"Rotate ERROR\"}")
+		fmt.Println("{\"Source\": \"pdf-rotator\", \"FileNo\": \"1\", \"operation\": \"Rotate\", \"Status\": \"Rotate ERROR\"}")
 	} else {
-		fmt.Println("{\"Source\": \"pdf-rotator\", \"FileNo\": [\"1\", \"2\"], \"operation\": \"Rotate\", \"Status\": \"Rotated\"}")
+		fmt.Println("{\"Source\": \"pdf-rotator\", \"FileNo\": \"1\", \"operation\": \"Rotate\", \"Status\": \"Rotated\"}")
 	}
 	return err
 }
@@ -48,7 +44,6 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 	if handler.Header["Content-Type"][0] != "application/pdf" {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		// t, err := template.ParseFiles("./upload.html")
 		t, err := template.ParseFiles("./templates/upload.html")
 		var x templateStat
 		if err != nil {
@@ -67,11 +62,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dst, err := os.Create(fmt.Sprintf("./uploads/0%d.pdf", numberOfFilesUploaded))
-	if numberOfFilesUploaded == 1 {
-		uploadedStat = true
-	}
-	numberOfFilesUploaded = (numberOfFilesUploaded + 1) % NUMBEROFDOCS
+	dst, err := os.Create("./uploads/00.pdf")
 	defer dst.Close()
 
 	if err != nil {
@@ -102,14 +93,12 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if uploadedStat {
-		if RotatePdf() == nil {
-			uploadedStat = false
-		} else {
-			x = templateStat{
-				Header: "alert alert-danger",
-				Status: "CRITICAL ERROR 502 ❌",
-			}
+	if RotatePdf() == nil {
+		fmt.Println("Came back from RotatePdf")
+	} else {
+		x = templateStat{
+			Header: "alert alert-danger",
+			Status: "CRITICAL ERROR 502 ❌",
 		}
 	}
 	t.Execute(w, x)

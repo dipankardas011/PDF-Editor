@@ -10,7 +10,7 @@ USER 1000
 CMD [ "node", "server.js" ]
 EXPOSE 80
 
-FROM node:18-alpine3.15 as dev
+FROM node:16-alpine3.15 as dev
 RUN apk add curl
 WORKDIR /app
 COPY package.json .
