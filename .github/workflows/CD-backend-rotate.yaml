@@ -1,4 +1,4 @@
-name: '[Stable](Backend-merger) Docker Signed Image Release'
+name: '[Stable](Backend-rotator) Docker Signed Image Release'
 
 on:
   schedule:
@@ -11,7 +11,7 @@ on:
         default: v1.0.0
         required: false
 jobs:
-  docker-push-backend-merge-Sign-using-cosign:
+  docker-push-backend-rotate-Sign-using-cosign:
     runs-on: ubuntu-latest
     environment: deploy
 
