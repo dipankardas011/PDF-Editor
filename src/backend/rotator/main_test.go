@@ -2,8 +2,6 @@
 package main
 
 import (
-	// "context"
-	// "log"
 	"os"
 	"testing"
 )

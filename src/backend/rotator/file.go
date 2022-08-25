@@ -95,7 +95,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if RotatePdf() == nil {
-		fmt.Println("Came back from RotatePdf")
+		fmt.Println("{\"Source\": \"Backend-Rotate\",\"Status\": \"Came back from RotatePdf\"}")
 	} else {
 		x = templateStat{
 			Header: "alert alert-danger",
