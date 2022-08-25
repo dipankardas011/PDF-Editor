@@ -16,6 +16,8 @@ clean:
 	cd deploy/IAC/ansible-terraform/ && \
 	sudo docker compose down
 	docker ps
+	docker volume rm ansible-terraform_app_data_M
+	docker volume rm ansible-terraform_app_data_R
 
 unit-test:
 	cd test/unit && \

@@ -1,8 +1,6 @@
 version: '3'
 services:
   backend-merge:
-    depends_on:
-      - backend-db
     image: pdf-merger
     container_name: backend-merge
     build:
@@ -14,13 +12,28 @@ services:
     networks:
       - pdf-editor
     volumes:
-      - app_data:/go/src
+      - app_data_M:/go/src
+
+  backend-rotate:
+    image: pdf-rotator
+    container_name: backend-rotate
+    build:
+      context: backend/rotator
+      target: prod
+
+    ports:
+      - "8081"
+    networks:
+      - pdf-editor
+    volumes:
+      - app_data_R:/go/src
 
   frontend:
     depends_on:
       - backend-merge
+      - backend-rotate
     image: pdf-frontend
-    container_name: frontend-merger-pdf
+    container_name: frontend-pdf
     build:
       context: frontend
       target: prod
@@ -34,7 +47,7 @@ services:
     depends_on:
       - frontend
     image: jaegertracing/all-in-one
-    container_name: jaeger-tracing-pdf
+    container_name: jaeger-tracing
     ports:
     - "6831"
     - "6832"
@@ -53,4 +66,5 @@ networks:
   pdf-editor:
 
 volumes:
-  app_data:
+  app_data_M:
+  app_data_R:

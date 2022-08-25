@@ -15,7 +15,9 @@ pipeline {
       steps{
         sh '''
           cd src/backend/merger
-          docker build --target test -t hello-backend .
+          docker build --target test -t hello-backendM .
+          cd ../rotator
+          docker build --target test -t hello-backendR .
           cd ../../frontend/
           docker build --target test -t hello-frontend .
         '''
@@ -26,18 +28,21 @@ pipeline {
       steps {
         sh '''
           echo "Backend testing"
-          docker run --rm hello-backend
+          docker run --rm hello-backendM
+          echo "Rotator testing"
+          docker run --rm hello-backendR
           echo "Frontend testing"
           docker run --rm hello-frontend
         '''
       }
     }
   }
-  
+
   post {
     always {
       sh '''
-        docker rmi -f hello-backend
+        docker rmi -f hello-backendM
+        docker rmi -f hello-backendR
         docker rmi -f hello-frontend
         echo "Done cLEAniNg"
       '''

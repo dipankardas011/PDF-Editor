@@ -2,7 +2,7 @@
 
 # All the global variables
 counterEndpoints=0
-NO_OF_ENDPOINTS=7
+NO_OF_ENDPOINTS=6
 PORT=9090
 isUploadSuccess=1
 
@@ -14,7 +14,9 @@ docker build --target prod -t backend .
 cd ../../frontend
 
 # making the upload button act like upload button
-sed -i 's/(isSuccessfull).*res.send(storeError)/res.send(ccc2)/g' server.js
+sed -i "s/(isSuccessfull).*merge.*res.send(storeError)/res.send(ccc2)/g" server.js
+sed -i "s/(isSuccessfull).*rotate.*res.send(storeError)/res.send(ccc1)/g" server.js
+
 
 docker build --target prod -t frontend .
 
@@ -44,6 +46,7 @@ Call_Cleanup() {
   cd ../../src/frontend/
   # making the upload button act like both upload and download
   sed -i "s/res.send(ccc2)/(isSuccessfull) ? res.redirect('\/merge\/download') : res.send(storeError)/g" server.js
+  sed -i "s/res.send(ccc1)/(isSuccessfull) ? res.redirect('\/rotate\/download') : res.send(storeError)/g" server.js
   cd -
   docker network rm xyz
   rm -f merged.pdf
@@ -57,7 +60,6 @@ echo -e "\n$(tput setaf 3)$(tput bold)- /$(tput init)"
 echo -e "$(tput setaf 3)$(tput bold)- /about$(tput init)"
 echo -e "$(tput setaf 3)$(tput bold)- /merger$(tput init)"
 echo -e "$(tput setaf 3)$(tput bold)- /rotator$(tput init)"
-echo -e "\n$(tput setaf 3)$(tput bold)- /merge/clear$(tput init)"
 echo -e "$(tput setaf 3)$(tput bold)- /merge/upload$(tput init)"
 echo -e "$(tput setaf 3)$(tput bold)- /merge/download$(tput init)"
 
@@ -121,20 +123,6 @@ fi
 
 
 # @@ TESTING ALL MERGER ENDPOINTS
-echo "----------------------------------------------------------------"
-
-echo -e "\n$(tput setaf 5)$(tput bold)Testing Endpoint '/merge/clear'$(tput init)"
-
-hello=$(curl -X GET http://localhost:$PORT/merge/clear | grep -ie "<div.*;alert-success.*>Cleared the data!!.*<\/div>" | wc -l)
-
-if [[ $hello -eq 0 ]]
-then
-  echo -e "\n$(tput setaf 1)$(tput bold)✗ [Failed] the test of Endpoint /merge/clear$(tput init)"
-else
-  counterEndpoints=$((counterEndpoints+1))
-  echo -e "\n$(tput setaf 2)$(tput bold)✓ [Passed] the test of Endpoint /merge/clear$(tput init)"
-fi
-
 
 echo "----------------------------------------------------------------"
 
@@ -144,21 +132,11 @@ echo -e "\n$(tput setaf 6)$(tput bold)  ↕ Upload file 01.pdf$(tput init)"
 
 hello=$(curl --raw --form "myFile=@${PWD}/resources/01.pdf" --form "myFile=@${PWD}/resources/02.pdf" http://localhost:${PORT}/merge/upload | grep -e '<div.*;alert-success role="alert">Uploaded.*<\/div>' | wc -l)
 if [[ $hello -eq 0 ]]; then
-  echo -e "\n$(tput setaf 1)$(tput bold)  ↕ ✗ [Failed] to upload 01.pdf$(tput init)"
+  echo -e "\n$(tput setaf 1)$(tput bold)  ↕ ✗ [Failed] to upload 01.pdf & 02.pdf$(tput init)"
   flag=1
 else
-  echo -e "\n$(tput setaf 6)$(tput bold)  ↕ ✓ [Passed] to upload 01.pdf$(tput init)"
+  echo -e "\n$(tput setaf 6)$(tput bold)  ↕ ✓ [Passed] to upload 01.pdf & 02.pdf$(tput init)"
 fi
-
-# TODO: Remove the LEGACY Tests cases
-#echo -e "\n$(tput setaf 6)$(tput bold)  ↕ Upload file 02.pdf$(tput init)"
-#hello=$(curl --raw -X POST --form "myFile=@${PWD}/resources/02.pdf" http://localhost:$PORT/merge/upload | grep -e '<div.*;alert-success role="alert">Uploaded.*<\/div>' | wc -l)
-#if [[ $hello -eq 0 ]]; then
- # echo -e "\n$(tput setaf 1)$(tput bold)  ↕ ✗ [Failed] to upload 02.pdf$(tput init)"
-  #flag=1
-#else
- # echo -e "\n$(tput setaf 6)$(tput bold)  ↕ ✓ [Passed] to upload 02.pdf$(tput init)"
-#fi
 
 
 if [[ $flag -eq 1 ]]; then
@@ -173,7 +151,6 @@ echo "----------------------------------------------------------------"
 
 echo -e "\n$(tput setaf 5)$(tput bold)Testing Endpoint '/merge/upload & /merge/download'$(tput init)"
 
-its dependent on uploads
 if [[ $isUploadSuccess -eq 1 ]]; then
   echo -e "\n$(tput setaf 1)$(tput bold)✗ [Failed] the test of Endpoint /merge/upload so [FAILED]$(tput init)"
 else

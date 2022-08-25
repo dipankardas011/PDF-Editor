@@ -27,24 +27,15 @@ app.use(json());
 
 
 
-const upload = multer({ dest: "uploads/" });
+const uploadM = multer({ dest: "uploadsM/" });
+const uploadR = multer({ dest: "uploadsR/" });
 
 
-// -------BACKEND----------
+// -------BACKEND (Merger)----------
 
-app.get('/merge/clear', async (req, res) => {
-  // console.log(`{"Source": "pdf-frontend", "operation": "Merge", "Status": "Session clear", "ID", "${req.sessionID}"}`);
 
-  const output = await fetch("http://backend-merge:8080/pdf/clear", {
-    method: "GET",
-  }).then(res => res.text()).catch(err => console.error(err));
-  res.send(output);
-  /*
-   * session destroy
-   */
-})
 
-app.post('/merge/upload', upload.array('myFile'), (req, res) => {
+app.post('/merge/upload', uploadM.array('myFile'), (req, res) => {
   /*
    * session creation
    */
@@ -54,8 +45,8 @@ app.post('/merge/upload', upload.array('myFile'), (req, res) => {
     return res.status(403).send("############################\n# [ERROR] No file selected #\n############################");
   }
 
-  var temp = execSync(`cd /app/uploads && mv ${req.files[0].filename} ${req.files[0].filename}.pdf`)
-  var temp = execSync(`cd /app/uploads && mv ${req.files[1].filename} ${req.files[1].filename}.pdf`)
+  var temp = execSync(`cd /app/uploadsM && mv ${req.files[0].filename} ${req.files[0].filename}.pdf`)
+  var temp = execSync(`cd /app/uploadsM && mv ${req.files[1].filename} ${req.files[1].filename}.pdf`)
 
 
   console.log('{"Source": "pdf-frontend", "FileNo": "1", "operation": "Merge", "Status": "Upload Ready"}');
@@ -65,7 +56,7 @@ app.post('/merge/upload', upload.array('myFile'), (req, res) => {
   console.log('{"Source": "pdf-frontend", "FileNo": "2", "operation": "Merge", "Status": "Upload Ready"}');
   file = "/app/" + req.files[1].path + ".pdf"
   var ccc2 = execSync(`curl --raw -X POST --form "File=@${file}" http://backend-merge:8080/upload`, { encoding: "utf-8" })
-  temp = execSync(`cd /app/uploads && rm -rf *`) // perodic clean up
+  temp = execSync(`cd /app/uploadsM && rm -rf *`) // perodic clean up
 
 
   const CHECK_ERRORS = /(CRITICAL ERROR 502)/g;
@@ -92,34 +83,75 @@ app.get('/merge/download', async (req, res) => {
   const output = await fetch("http://backend-merge:8080/downloads", {
     method: "GET",
   }).then(res => res.buffer()).catch(err => console.error(err));
+  res.setHeader('Content-disposition', 'attachment; filename=merged.pdf');
+  res.setHeader('Content-type', 'application/pdf');
   res.send(output)
 })
 
 
+
+// -------BACKEND (Rotator)----------
+app.post('/rotate/upload', uploadR.single('myFile'), (req, res) => {
+  // console.log(`{"Source": "pdf-frontend", "Status": "Session merger upload", "ID", "${req.sessionID}"}`);
+
+  if (req.file.filename === '') {
+    return res.status(403).send("############################\n# [ERROR] No file selected #\n############################");
+  }
+
+  var temp = execSync(`cd /app/uploadsR && mv ${req.file.filename} ${req.file.filename}.pdf`)
+
+
+  console.log('{"Source": "pdf-frontend", "FileNo": "1", "operation": "Rotate", "Status": "Upload Ready"}');
+  var file = "/app/" + req.file.path + ".pdf"
+  var ccc1 = execSync(`curl --raw -X POST --form "Pages=${req.body.pages}" --form "File=@${file}" http://backend-rotate:8081/upload`, { encoding: "utf-8" })
+  temp = execSync(`cd /app/uploadsR && rm -rf *`) // perodic clean up
+
+
+  const CHECK_ERRORS = /(CRITICAL ERROR 502)/g;
+  var storeError;
+  var isSuccessfull = false;
+
+  if (!CHECK_ERRORS.exec(ccc1)) {
+    isSuccessfull = true;
+    console.log('{"Source": "pdf-frontend", "FileNo": ["1"], "operation": "Rotate", "Status": "Uploaded"}');
+  } else {
+    storeError = ccc1;
+  }
+
+
+  // DONT TOUCH!!!!
+  // the below line!!
+  // Its is necessary for testing
+
+  (isSuccessfull) ? res.redirect('/rotate/download') : res.send(storeError)
+})
+
+
+app.get('/rotate/download', async (req, res) => {
+  const output = await fetch("http://backend-rotate:8081/downloads", {
+    method: "GET",
+  }).then(res => res.buffer()).catch(err => console.error(err));
+  res.setHeader('Content-disposition', 'attachment; filename=rotated.pdf');
+  res.setHeader('Content-type', 'application/pdf');
+  res.send(output)
+})
+
+
+
+
 // ---------FRONTEND------------
-app.get('/', (_, res) => {
-  res.status(200).sendFile(join(__dirname, '/index.html'));
-})
+app.get('/', (_, res) => res.status(200).sendFile(join(__dirname, '/index.html')) )
 
-app.get('/about', (_, res) => {
-  res.status(200).sendFile(join(__dirname, '/About.html'));
-})
+app.get('/about', (_, res) => res.status(200).sendFile(join(__dirname, '/About.html')) )
 
-app.get('/merger', (_, res) => {
-  res.status(200).sendFile(join(__dirname, '/index-merge.html'));
-})
+app.get('/merger', (_, res) => res.status(200).sendFile(join(__dirname, '/index-merge.html')) )
 
-app.get('/rotator', (_, res) => {
-  res.status(200).sendFile(join(__dirname, '/index-rotate.html'));
-})
+app.get('/rotator', (_, res) => res.status(200).sendFile(join(__dirname, '/index-rotate.html')) )
 
-app.get('/home-img01', (_, res) => {
-  res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1628.excalidraw.svg'));
-})
+app.get('/home-img01', (_, res) => res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1628.excalidraw.svg')) )
 
-app.get('/home-img02', (_, res) => {
-  res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1629.excalidraw.svg'));
-})
+app.get('/home-img02', (_, res) => res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1629.excalidraw.svg')) )
+
 
 const PORT = process.env.PORT || 80
 app.listen(PORT)

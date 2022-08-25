@@ -15,16 +15,16 @@ RUN rm -f go.mod main.go Dockerfile .dockerignore
 CMD ["./rotator-executable"]
 EXPOSE 8081
 
-FROM golang:1.18-alpine as dev
+FROM golang:1.17-alpine as dev
 RUN apk update
 RUN apk add qpdf
 WORKDIR /go/src
 
 
-FROM golang:1.18-alpine as test
-RUN apk update
-RUN apk add qpdf
+FROM golang:1.18 as test
+RUN apt -y update
+RUN apt install -y qpdf
 WORKDIR /go/src
 COPY . .
 RUN go get -d
-ENTRYPOINT ["go", "test", "."]
+ENTRYPOINT ["go", "test", "-v", "."]

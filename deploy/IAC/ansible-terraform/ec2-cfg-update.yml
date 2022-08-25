@@ -13,7 +13,7 @@
     shell: 'cd /home/ubuntu/PDF-Editor/deploy/IAC/ansible-terraform/ && docker-compose down && sleep 2'
 
   - name: removing the docker images
-    shell: 'docker rmi -f $(docker images -q)'
+    shell: 'docker rmi -f $(docker images -q) && docker volume prune -f'
 
   - name: run docker-compose again
     shell: 'cd /home/ubuntu/PDF-Editor/deploy/IAC/ansible-terraform/ && sudo docker-compose up -d && curl --head -X GET http://localhost/'
