@@ -33,17 +33,7 @@ const uploadR = multer({ dest: "uploadsR/" });
 
 // -------BACKEND (Merger)----------
 
-// app.get('/merge/clear', async (req, res) => {
-//   // console.log(`{"Source": "pdf-frontend", "operation": "Merge", "Status": "Session clear", "ID", "${req.sessionID}"}`);
 
-//   const output = await fetch("http://backend-merge:8080/pdf/clear", {
-//     method: "GET",
-//   }).then(res => res.text()).catch(err => console.error(err));
-//   res.send(output);
-//   /*
-//    * session destroy
-//    */
-// })
 
 app.post('/merge/upload', uploadM.array('myFile'), (req, res) => {
   /*
@@ -98,10 +88,6 @@ app.get('/merge/download', async (req, res) => {
 
 
 
-
-
-
-
 // -------BACKEND (Rotator)----------
 app.post('/rotate/upload', uploadR.single('myFile'), (req, res) => {
   // console.log(`{"Source": "pdf-frontend", "Status": "Session merger upload", "ID", "${req.sessionID}"}`);
@@ -109,6 +95,8 @@ app.post('/rotate/upload', uploadR.single('myFile'), (req, res) => {
   if (req.file.filename === '') {
     return res.status(403).send("############################\n# [ERROR] No file selected #\n############################");
   }
+
+  console.log(`Pages: ${req.body.pages}`)
 
   var temp = execSync(`cd /app/uploadsR && mv ${req.file.filename} ${req.file.filename}.pdf`)
 
@@ -149,35 +137,19 @@ app.get('/rotate/download', async (req, res) => {
 
 
 
-
-
-
-
-
 // ---------FRONTEND------------
-app.get('/', (_, res) => {
-  res.status(200).sendFile(join(__dirname, '/index.html'));
-})
+app.get('/', (_, res) => res.status(200).sendFile(join(__dirname, '/index.html')) )
 
-app.get('/about', (_, res) => {
-  res.status(200).sendFile(join(__dirname, '/About.html'));
-})
+app.get('/about', (_, res) => res.status(200).sendFile(join(__dirname, '/About.html')) )
 
-app.get('/merger', (_, res) => {
-  res.status(200).sendFile(join(__dirname, '/index-merge.html'));
-})
+app.get('/merger', (_, res) => res.status(200).sendFile(join(__dirname, '/index-merge.html')) )
 
-app.get('/rotator', (_, res) => {
-  res.status(200).sendFile(join(__dirname, '/index-rotate.html'));
-})
+app.get('/rotator', (_, res) => res.status(200).sendFile(join(__dirname, '/index-rotate.html')) )
 
-app.get('/home-img01', (_, res) => {
-  res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1628.excalidraw.svg'));
-})
+app.get('/home-img01', (_, res) => res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1628.excalidraw.svg')) )
 
-app.get('/home-img02', (_, res) => {
-  res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1629.excalidraw.svg'));
-})
+app.get('/home-img02', (_, res) => res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1629.excalidraw.svg')) )
+
 
 const PORT = process.env.PORT || 80
 app.listen(PORT)

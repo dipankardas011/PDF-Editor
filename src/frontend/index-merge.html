@@ -62,18 +62,18 @@
       Merge More than 2 PDFs(comming soon..)
     </div>
 
-      <form id="form" class="card m-5 mx-auto p-5" enctype="multipart/form-data" action="/merge/upload" method="POST">
-        <div class="mb-3">
-          <caption>File 1</caption>
-          <input id="myFile1" class="form-control" type="file" name="myFile" onchange="return fileValidation()" multiple/>
-          <br>
-          <div id="imagePreview1"></div>
-          <caption>File 2</caption>
-          <input id="myFile2" class="form-control" type="file" name="myFile" onchange="return fileValidation()" multiple />
-          <div id="imagePreview2"></div>
-        </div>
-        <input type="submit" class="btn btn-info" value="Merge"/>
-      </form>
+    <form id="form" class="card m-5 mx-auto p-5" enctype="multipart/form-data" action="/merge/upload" method="POST">
+      <div class="mb-3">
+        <caption>File 1</caption>
+        <input id="myFile1" class="form-control" type="file" name="myFile" onchange="return fileValidation()" multiple/>
+        <br>
+        <div id="imagePreview1"></div>
+        <caption>File 2</caption>
+        <input id="myFile2" class="form-control" type="file" name="myFile" onchange="return fileValidation()" multiple />
+        <div id="imagePreview2"></div>
+      </div>
+      <input type="submit" class="btn btn-info" value="Merge"/>
+    </form>
 
     <br>
     <div class="alert alert-primary d-flex align-items-center" role="alert">

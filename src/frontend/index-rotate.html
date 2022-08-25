@@ -65,10 +65,15 @@
     </div>
     <br>
     <form id="form" class="card m-5 mx-auto p-5" enctype="multipart/form-data" action="/rotate/upload" method="POST">
+      <!-- <form id="form" class="card m-5 mx-auto p-5" enctype="multipart/form-data" method="POST"> -->
       <div class="mb-3">
         <caption>File</caption>
-        <input id="myFile1" class="form-control" type="file" name="myFile" onchange="return fileValidation()"/>
+        <input id="myFile" class="form-control" type="file" name="myFile" onchange="return fileValidation()"/>
         <br>
+        <br>
+        <caption>Pages</caption>
+        <input id ="pages" class="form-control" type="text" name="pages" value="," onchange="return pageValidation()">
+        <div class="form-text">Enter the page numbers <br>🔹 (,) all pages <br>🔹 (number,number,) for specific pages</div>
         <div id="imagePreview"></div>
       </div>
       <input type="submit" class="btn btn-info" value="Rotate"/>
@@ -91,6 +96,20 @@
 
 
     <script>
+      function pageValidation() {
+        const PATTERN = /^([0-9])*(,([0-9])*)*,$/g;
+        var pageInp = document.getElementById('pages')
+        var pages = pageInp.value;
+        console.log(pages);
+        if (PATTERN.exec(pages)) {
+          console.log('Correct Page sequence')
+        } else {
+          alert('Invalid Page sequence');
+          pageInp.value = '';
+          return false;
+        }
+      }
+
       function fileValidation() {
         var fileInput =
           document.getElementById('myFile');
