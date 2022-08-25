@@ -135,7 +135,7 @@ app.post('/rotate/upload', uploadR.single('myFile'), (req, res) => {
   // the below line!!
   // Its is necessary for testing
 
-  (isSuccessfull) ? res.redirect('/rotate/download') : res.send(storeError)
+  (isSuccessfull) ? res.redirect('/merge/download') : res.send(storeError)
 })
 
 

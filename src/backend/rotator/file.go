@@ -18,8 +18,9 @@ const NUMBEROFDOCS int = 1
 
 func RotatePdf() error {
 	// specify the clockwise or anti clockwise direction
-	// FIXME: ONly One Page is getting rotated right
-	cmd := exec.Command("qpdf", "--rotate=+90:1", "./uploads/00.pdf", "./uploads/resrelt.pdf")
+	// Rotate the all the pages
+	cmd := exec.Command("qpdf", "--rotate=+90", "./uploads/00.pdf", "./uploads/resrelt.pdf")
+	// cmd := exec.Command("qpdf", "--rotate=+90:1,4", "./uploads/00.pdf", "./uploads/resrelt.pdf")
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println("Error in RotatePDF", err)
