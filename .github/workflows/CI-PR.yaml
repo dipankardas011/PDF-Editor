@@ -16,6 +16,11 @@ jobs:
         cd src/backend/merger
         docker build --target test -t xyz .
         docker run --rm xyz
+    - name: 🧪 backend Rotator
+      run: |
+        cd src/backend/rotator
+        docker build --target test -t xyz .
+        docker run --rm xyz
 
   npm_build:
 
@@ -45,10 +50,10 @@ jobs:
         docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)-merge
         cd ../rotator
         docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)-rotate
-        cd ../db
-        docker build . --target db-prod --file Dockerfile --tag pdf-editor:$(date +%s)-db
         cd ../../frontend
         docker build . --target prod --file Dockerfile --tag pdf-editor:$(date +%s)-frontend
+      # cd ../db
+      # docker build . --target db-prod --file Dockerfile --tag pdf-editor:$(date +%s)-db
 
   # heroku-preview:
   #   needs: [docker_build]
