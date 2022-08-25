@@ -83,6 +83,8 @@ app.get('/merge/download', async (req, res) => {
   const output = await fetch("http://backend-merge:8080/downloads", {
     method: "GET",
   }).then(res => res.buffer()).catch(err => console.error(err));
+  res.setHeader('Content-disposition', 'attachment; filename=merged.pdf');
+  res.setHeader('Content-type', 'application/pdf');
   res.send(output)
 })
 
@@ -129,6 +131,8 @@ app.get('/rotate/download', async (req, res) => {
   const output = await fetch("http://backend-rotate:8081/downloads", {
     method: "GET",
   }).then(res => res.buffer()).catch(err => console.error(err));
+  res.setHeader('Content-disposition', 'attachment; filename=rotated.pdf');
+  res.setHeader('Content-type', 'application/pdf');
   res.send(output)
 })
 
