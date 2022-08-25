@@ -16,15 +16,8 @@ func TestPortNumber(t *testing.T) {
 	}
 	os.Unsetenv("PORT")
 	w = getPort()
-	if w != ":8080" {
+	if w != ":8081" {
 		t.Fatalf("Port number assigned was `incorrect`\n")
-	}
-}
-
-func TestNoOfFiles(t *testing.T) {
-	no := NUMBEROFDOCS
-	if no != 2 {
-		t.Fatalf("Number of Docs to be uploaded must be `2`\n")
 	}
 }
 
