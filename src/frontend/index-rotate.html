@@ -65,7 +65,6 @@
     </div>
     <br>
     <form id="form" class="card m-5 mx-auto p-5" enctype="multipart/form-data" action="/rotate/upload" method="POST">
-      <!-- <form id="form" class="card m-5 mx-auto p-5" enctype="multipart/form-data" method="POST"> -->
       <div class="mb-3">
         <caption>File</caption>
         <input id="myFile" class="form-control" type="file" name="myFile" onchange="return fileValidation()"/>
@@ -100,9 +99,36 @@
         const PATTERN = /^([0-9])*(,([0-9])*)*,$/g;
         var pageInp = document.getElementById('pages')
         var pages = pageInp.value;
-        console.log(pages);
         if (PATTERN.exec(pages)) {
           console.log('Correct Page sequence')
+          var fileInput = document.getElementById('myFile');
+
+          var filePath = fileInput.value;
+
+          if (filePath == '') {
+            alert('Select the File first!!');
+            pageInp.value = '';
+            return false;
+          }
+
+          var reader = new FileReader();
+          reader.readAsBinaryString(fileInput.files[0]);
+          reader.onloadend = function () {
+            var noPages;
+            noPages = reader.result.match(/\/Type[\s]*\/Page[^s]/g).length;
+
+            var eachPage = pages.split(",");
+            for (const pg of eachPage) {
+              if (pg.length > 0) {
+                if (pg > noPages) {
+                  pageInp.value = '';
+                  alert('Invalid! Page boundarie');
+                  return false;
+                }
+              }
+            }
+          }
+
         } else {
           alert('Invalid Page sequence');
           pageInp.value = '';
@@ -117,8 +143,7 @@
         var filePath = fileInput.value;
 
         // Allowing file type
-        var allowedExtensions =
-          /(\.pdf)$/i;
+        var allowedExtensions = /(\.pdf)$/i;
 
         if (!allowedExtensions.exec(filePath)) {
           alert('Invalid file type');

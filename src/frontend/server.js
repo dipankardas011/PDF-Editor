@@ -96,14 +96,12 @@ app.post('/rotate/upload', uploadR.single('myFile'), (req, res) => {
     return res.status(403).send("############################\n# [ERROR] No file selected #\n############################");
   }
 
-  console.log(`-> Pages: ${req.body.pages}`)
-
   var temp = execSync(`cd /app/uploadsR && mv ${req.file.filename} ${req.file.filename}.pdf`)
 
 
   console.log('{"Source": "pdf-frontend", "FileNo": "1", "operation": "Rotate", "Status": "Upload Ready"}');
   var file = "/app/" + req.file.path + ".pdf"
-  var ccc1 = execSync(`curl --raw -X POST --form "File=@${file}" http://backend-rotate:8081/upload`, { encoding: "utf-8" })
+  var ccc1 = execSync(`curl --raw -X POST --form "Pages=${req.body.pages}" --form "File=@${file}" http://backend-rotate:8081/upload`, { encoding: "utf-8" })
   temp = execSync(`cd /app/uploadsR && rm -rf *`) // perodic clean up
 
 

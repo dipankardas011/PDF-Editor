@@ -16,14 +16,15 @@ type templateStat struct {
 
 const NUMBEROFDOCS int = 1
 
-func RotatePdf() error {
+func RotatePdf(pages string) error {
 	// specify the clockwise or anti clockwise direction
 	// Rotate the all the pages
-	cmd := exec.Command("qpdf", "--rotate=+90:", "./uploads/00.pdf", "./uploads/resrelt.pdf")
-	// cmd := exec.Command("qpdf", "--rotate=+90:1,4", "./uploads/00.pdf", "./uploads/resrelt.pdf")
+	rotateOptions := "--rotate=+90:" + pages[:(len(pages)-1)]
+
+	cmd := exec.Command("qpdf", rotateOptions, "./uploads/00.pdf", "./uploads/resrelt.pdf")
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println("Error in RotatePDF", err)
+		fmt.Println(">>> Error in RotatePDF", err)
 		fmt.Println("{\"Source\": \"pdf-rotator\", \"FileNo\": \"1\", \"operation\": \"Rotate\", \"Status\": \"Rotate ERROR\"}")
 	} else {
 		fmt.Println("{\"Source\": \"pdf-rotator\", \"FileNo\": \"1\", \"operation\": \"Rotate\", \"Status\": \"Rotated\"}")
@@ -40,6 +41,8 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+
+	pages := r.FormValue("Pages")
 
 	defer file.Close()
 
@@ -94,7 +97,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if RotatePdf() == nil {
+	if RotatePdf(pages) == nil {
 		fmt.Println("{\"Source\": \"Backend-Rotate\",\"Status\": \"Came back from RotatePdf\"}")
 	} else {
 		x = templateStat{

@@ -94,7 +94,7 @@ func MergePdf(ctx context.Context) error {
 	cmd := exec.Command("qpdf", "--empty", "--pages", "./uploads/00.pdf", "./uploads/01.pdf", "--", "./uploads/resrelt.pdf")
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println("Error in MergePDF", err)
+		fmt.Println(">>> Error in MergePDF", err)
 		fmt.Println("{\"Source\": \"pdf-merger\", \"FileNo\": [\"1\", \"2\"], \"operation\": \"Merge\", \"Status\": \"Merge ERROR\"}")
 		requestsProcessedError.Inc()
 	} else {
