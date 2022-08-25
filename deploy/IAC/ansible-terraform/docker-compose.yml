@@ -18,8 +18,6 @@ services:
       - app_data_M:/go/src
 
   backend-rotate:
-    depends_on:
-      - backend-db
     image: docker.io/dipugodocker/pdf-editor:backend-rotate
     container_name: backend-rotate
     ports:
