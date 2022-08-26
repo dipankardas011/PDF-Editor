@@ -19,7 +19,7 @@ jobs:
       SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
       # BACKEND_MERGE: dipugodocker/pdf-editor:0.8-backend-merge
       # BACKEND_DATABASE: dipugodocker/pdf-editor:0.8-backend-db
-      BACKEND_ROTATE: dipugodocker/pdf-editor:0.8-backend-rotate
+      BACKEND_ROTATE: dipugodocker/pdf-editor:0.1-backend-rotate
       # FRONTEND: dipugodocker/pdf-editor:0.8-frontend
 
     name: Install Cosign and test presence in path
@@ -39,7 +39,7 @@ jobs:
       - name: build all 🏭 Images
         run: |
           echo '[🏭] Building for Production [Backend-rotator]'
-          cd ../rotator && docker build --target prod -t $BACKEND_ROTATE . --no-cache
+          cd src/backend/rotator && docker build --target prod -t $BACKEND_ROTATE . --no-cache
         # echo '[🏭] Building for Production [Backend-merger]'
         # cd src/backend/merger && docker build --target prod -t $BACKEND_MERGE . --no-cache
         #  echo '[🏭] Building for Production [Backend-database]'
