@@ -1,30 +1,48 @@
 version: '3'
+
+volumes:
+  app_data_M:
+  app_data_R:
+
+networks:
+  pdf-editor:
 services:
   backend-merge:
-    image: docker.io/dipugodocker/pdf-editor:0.7-backend
-    container_name: backend
+    image: docker.io/dipugodocker/pdf-editor:0.8-backend-merge
+    container_name: backend-merge
     ports:
       - "8080"
     networks:
       - pdf-editor
     volumes:
-      - db_data:/go/src
+      - app_data_M:/go/src
+
+  backend-rotate:
+    image: docker.io/dipugodocker/pdf-editor:0.1-backend-rotate
+    container_name: backend-rotate
+    ports:
+      - "8081"
+    volumes:
+      - app_data_R:/go/src
+    networks:
+      - pdf-editor
 
   frontend:
     depends_on:
-      - backend
-    image: docker.io/dipugodocker/pdf-editor:0.7-frontend
+      - backend-merge
+      - backend-rotate
+    image: docker.io/dipugodocker/pdf-editor:0.8-frontend
     container_name: frontend
     ports:
       - "80:80"
     networks:
       - pdf-editor
+
   trace:
     depends_on:
-      - backend
       - frontend
     image: jaegertracing/all-in-one
-    container_name: jaeger
+    container_name: jaeger-tracing-pdf
     ports:
     - "6831"
     - "6832"
@@ -38,9 +56,3 @@ services:
     - "9411"
     networks:
       - pdf-editor
-
-networks:
-  pdf-editor:
-
-volumes:
-  db_data:
