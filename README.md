@@ -1,4 +1,4 @@
-# Online PDF Editor 🥳
+# Web-based PDF Editor 🥳
 
 website that can edit PDF's
 

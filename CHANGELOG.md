@@ -1,6 +1,17 @@
 # CHANGELOG
 
-## Version 0.6
+## Version 0.8
+* New UX
+* Removed the need for the clear button
+* One Click merge and download
+* added feature Rotate PDF
+* some minor fixes
+  * K8s manifests
+  * argo rollouts
+  * ansible configs
+  * testing
+
+## Version 0.6 & 0.7
 * New UI
 * Microservice Architecture
   * backend server
