@@ -5,8 +5,21 @@ metadata:
   namespace: pdf-editor-ns
 spec:
   selector:
-    app: backend-main
+    app: backend-merge
   ports:
   - port: 8080
+    targetPort: backend-port
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-rotate
+  namespace: pdf-editor-ns
+spec:
+  selector:
+    app: backend-rotate
+  ports:
+  - port: 8081
     targetPort: backend-port
     protocol: TCP

@@ -17,8 +17,8 @@ Jenkins server -> [URL](http://ec2-54-211-12-103.compute-1.amazonaws.com:8080/)
 
 Stage | Tags | Links
 --|--|--
-Production | `0.7` | https://pdf-web-editor.azurewebsites.net/
-Alpha | `latest` ; `0.8` | http://44.209.39.161/
+Production | `0.8` | https://pdf-web-editor.azurewebsites.net/
+Alpha | `latest` ; `0.9` | http://44.209.39.161/
 
 > A Humble request! 🙏 don't expoit the resources I have used here
 

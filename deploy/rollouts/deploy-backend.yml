@@ -41,8 +41,7 @@ metadata:
   name: pdf-editor-backend-merge
   namespace: pdf-editor-ns
   labels:
-    app: pdf
-    backend: merger
+    app: backend-merge
 spec:
   replicas: 2
   strategy:
@@ -116,8 +115,7 @@ metadata:
   name: pdf-editor-rotator
   namespace: pdf-editor-ns
   labels:
-    app: pdf
-    backend: rotator
+    app: backend-rotate
 spec:
   replicas: 2
   strategy:

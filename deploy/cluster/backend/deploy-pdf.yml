@@ -1,24 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pdf-editor-backend
+  name: pdf-editor-backend-merger
   labels:
-    app: pdf
-    backend: main
+    app: backend-merge
   namespace: pdf-editor-ns
 spec:
   selector:
     matchLabels:
-      app: backend-main
+      app: backend-merge
   replicas: 2
   template:
     metadata:
       labels:
-        app: backend-main
+        app: backend-merge
     spec:
       initContainers:
         - name: pdf-files
-          image: docker.io/dipugodocker/pdf-editor:0.7-backend
+          image: docker.io/dipugodocker/pdf-editor:0.7-backend-merge
           volumeMounts:
           - name: backend
             mountPath: /mnt
@@ -26,7 +25,7 @@ spec:
 
       containers:
         - name: pdf-editor
-          image: docker.io/dipugodocker/pdf-editor:0.7-backend
+          image: docker.io/dipugodocker/pdf-editor:0.7-backend-merge
           volumeMounts:
           - name: backend
             mountPath: /go/src/
@@ -54,5 +53,61 @@ spec:
               name: backend-port
       volumes:
       - name: backend
-        persistentVolumeClaim:
-          claimName: pdf-editor-pvc
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf-editor-backend-rotator
+  labels:
+    app: backend-rotate
+  namespace: pdf-editor-ns
+spec:
+  selector:
+    matchLabels:
+      app: backend-rotate
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: backend-rotate
+    spec:
+      initContainers:
+        - name: pdf-files
+          image: docker.io/dipugodocker/pdf-editor:0.1-backend-rotate
+          volumeMounts:
+          - name: backend
+            mountPath: /mnt
+          command: ["cp", "-vR", ".", "/mnt"]
+
+      containers:
+        - name: pdf-editor
+          image: docker.io/dipugodocker/pdf-editor:0.1-backend-rotate
+          volumeMounts:
+          - name: backend
+            mountPath: /go/src/
+          resources:
+            requests:
+                memory: "50Mi"
+                cpu: "10m"
+            limits:
+              memory: "500Mi"
+              cpu: "100m"
+          livenessProbe:
+            httpGet:
+              port: 8081
+              path: /greet
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              port: 8081
+              path: /greet
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          ports:
+            - containerPort: 8081
+              name: backend-port
+      volumes:
+      - name: backend
+        emptyDir: {}

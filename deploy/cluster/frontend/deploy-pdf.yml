@@ -3,8 +3,7 @@ kind: Deployment
 metadata:
   name: pdf-editor-frontend
   labels:
-    app: pdf
-    frontend: main
+    app: frontend-pdf
   namespace: pdf-editor-ns
 spec:
   replicas: 3
@@ -18,7 +17,7 @@ spec:
     spec:
       containers:
       - name: pdf-editor-frontend
-        image: docker.io/dipugodocker/pdf-editor:0.7-frontend
+        image: docker.io/dipugodocker/pdf-editor:0.8-frontend
         resources:
           requests:
               memory: "50Mi"
