@@ -116,7 +116,7 @@ spec:
           readinessProbe:
             httpGet:
               port: 8081
-              path: /about
+              path: /greet
             initialDelaySeconds: 5
             periodSeconds: 10
           ports:
