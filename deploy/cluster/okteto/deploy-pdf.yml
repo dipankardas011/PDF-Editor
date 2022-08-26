@@ -60,3 +60,68 @@ spec:
       volumes:
       - name: backend
         emptyDir: {}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf-editor-rotate
+  labels:
+    app: backend-rotate
+spec:
+  selector:
+    matchLabels:
+      app: backend-rotate
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: backend-rotate
+    spec:
+      initContainers:
+        - name: pdf-files
+          image: docker.io/dipugodocker/pdf-editor:backend-rotate
+          volumeMounts:
+          - name: backend
+            mountPath: /mnt
+          command: ["cp", "-vR", ".", "/mnt"]
+          resources:
+            requests:
+                memory: "10Mi"
+                cpu: "1m"
+            limits:
+              memory: "100Mi"
+              cpu: "50m"
+
+      containers:
+        - name: pdf-editor
+          image: docker.io/dipugodocker/pdf-editor:backend-rotate
+          volumeMounts:
+          - name: backend
+            mountPath: /go/src/
+          resources:
+            requests:
+                memory: "50Mi"
+                cpu: "10m"
+            limits:
+              memory: "500Mi"
+              cpu: "100m"
+          livenessProbe:
+            httpGet:
+              port: 8081
+              path: /greet
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              port: 8081
+              path: /greet
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          ports:
+            - containerPort: 8081
+              name: rotate-port
+      volumes:
+      - name: backend
+        emptyDir: {}

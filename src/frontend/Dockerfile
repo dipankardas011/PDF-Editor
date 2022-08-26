@@ -5,8 +5,8 @@ WORKDIR /app
 COPY package.json .
 RUN npm install
 COPY . .
-RUN chown 1000 -R /app/
-USER 1000
+# RUN chown 1000 -R /app/
+# USER 1000
 CMD [ "node", "server.js" ]
 EXPOSE 80
 
