@@ -49,8 +49,7 @@ kind: Rollout
 metadata:
   name: pdf-editor-frontend
   labels:
-    app: pdf
-    frontend: main
+    app: frontend-pdf
   namespace: pdf-editor-ns
 spec:
   replicas: 4

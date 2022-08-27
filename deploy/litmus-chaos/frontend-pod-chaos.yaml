@@ -1,0 +1,522 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: frontend-net-latency-1661577676
+  namespace: litmus
+  labels:
+    subject: frontend-net-latency_litmus
+spec:
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  entrypoint: custom-chaos
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: argo-chaos
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: install-chaos-experiments
+            template: install-chaos-experiments
+        - - name: pod-network-latency-qpk
+            template: pod-network-latency-qpk
+    - name: install-chaos-experiments
+      inputs:
+        artifacts:
+          - name: pod-network-latency-qpk
+            path: /tmp/pod-network-latency-qpk.yaml
+            raw:
+              data: >
+                apiVersion: litmuschaos.io/v1alpha1
+
+                description:
+                  message: |
+                    Injects network latency on pods belonging to an app deployment
+                kind: ChaosExperiment
+
+                metadata:
+                  name: pod-network-latency
+                  labels:
+                    name: pod-network-latency
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: chaosexperiment
+                    app.kubernetes.io/version: 2.11.0
+                spec:
+                  definition:
+                    scope: Namespaced
+                    permissions:
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods
+                        verbs:
+                          - create
+                          - delete
+                          - get
+                          - list
+                          - patch
+                          - update
+                          - deletecollection
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - events
+                        verbs:
+                          - create
+                          - get
+                          - list
+                          - patch
+                          - update
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - configmaps
+                        verbs:
+                          - get
+                          - list
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods/log
+                        verbs:
+                          - get
+                          - list
+                          - watch
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods/exec
+                        verbs:
+                          - get
+                          - list
+                          - create
+                      - apiGroups:
+                          - apps
+                        resources:
+                          - deployments
+                          - statefulsets
+                          - replicasets
+                          - daemonsets
+                        verbs:
+                          - list
+                          - get
+                      - apiGroups:
+                          - apps.openshift.io
+                        resources:
+                          - deploymentconfigs
+                        verbs:
+                          - list
+                          - get
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - replicationcontrollers
+                        verbs:
+                          - get
+                          - list
+                      - apiGroups:
+                          - argoproj.io
+                        resources:
+                          - rollouts
+                        verbs:
+                          - list
+                          - get
+                      - apiGroups:
+                          - batch
+                        resources:
+                          - jobs
+                        verbs:
+                          - create
+                          - list
+                          - get
+                          - delete
+                          - deletecollection
+                      - apiGroups:
+                          - litmuschaos.io
+                        resources:
+                          - chaosengines
+                          - chaosexperiments
+                          - chaosresults
+                        verbs:
+                          - create
+                          - list
+                          - get
+                          - patch
+                          - update
+                          - delete
+                    image: litmuschaos/go-runner:2.11.0
+                    imagePullPolicy: Always
+                    args:
+                      - -c
+                      - ./experiments -name pod-network-latency
+                    command:
+                      - /bin/bash
+                    env:
+                      - name: TARGET_CONTAINER
+                        value: ""
+                      - name: NETWORK_INTERFACE
+                        value: eth0
+                      - name: LIB_IMAGE
+                        value: litmuschaos/go-runner:2.11.0
+                      - name: TC_IMAGE
+                        value: gaiadocker/iproute2
+                      - name: NETWORK_LATENCY
+                        value: "2000"
+                      - name: TOTAL_CHAOS_DURATION
+                        value: "60"
+                      - name: RAMP_TIME
+                        value: ""
+                      - name: JITTER
+                        value: "0"
+                      - name: LIB
+                        value: litmus
+                      - name: PODS_AFFECTED_PERC
+                        value: ""
+                      - name: TARGET_PODS
+                        value: ""
+                      - name: CONTAINER_RUNTIME
+                        value: docker
+                      - name: DESTINATION_IPS
+                        value: ""
+                      - name: DESTINATION_HOSTS
+                        value: ""
+                      - name: SOCKET_PATH
+                        value: /var/run/docker.sock
+                      - name: NODE_LABEL
+                        value: ""
+                      - name: SEQUENCE
+                        value: parallel
+                    labels:
+                      name: pod-network-latency
+                      app.kubernetes.io/part-of: litmus
+                      app.kubernetes.io/component: experiment-job
+                      app.kubernetes.io/runtime-api-usage: "true"
+                      app.kubernetes.io/version: 2.11.0
+      container:
+        args:
+          - kubectl apply -f /tmp/pod-network-latency-qpk.yaml -n
+            {{workflow.parameters.adminModeNamespace}} &&  sleep 30
+        command:
+          - sh
+          - -c
+        image: litmuschaos/k8s:2.11.0
+    - name: pod-network-latency-qpk
+      inputs:
+        artifacts:
+          - name: pod-network-latency-qpk
+            path: /tmp/chaosengine-pod-network-latency-qpk.yaml
+            raw:
+              data: >
+                apiVersion: litmuschaos.io/v1alpha1
+
+                kind: ChaosEngine
+
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: pod-network-latency-qpk
+                  labels:
+                    instance_id: 34e9da9f-3cf1-4b66-9d1a-53db773279af
+                spec:
+                  engineState: active
+                  appinfo:
+                    appns: pdf-editor-ns
+                    applabel: app=frontend-pdf
+                    appkind: rollout
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: pod-network-latency
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: NETWORK_LATENCY
+                              value: "2000"
+                            - name: JITTER
+                              value: "0"
+                            - name: CONTAINER_RUNTIME
+                              value: docker
+                            - name: SOCKET_PATH
+                              value: /var/run/docker.sock
+                            - name: PODS_AFFECTED_PERC
+                              value: ""
+                        probe:
+                          - name: xzcxzxz
+                            type: httpProbe
+                            mode: Continuous
+                            runProperties:
+                              probeTimeout: 10000
+                              retry: 2
+                              interval: 2
+                              stopOnFailure: false
+                            httpProbe/inputs:
+                              url: http://frontend-lb.pdf-editor-ns.svc.cluster.local:80
+                              method:
+                                get:
+                                  criteria: ==
+                                  responseCode: "200"
+      container:
+        args:
+          - -file=/tmp/chaosengine-pod-network-latency-qpk.yaml
+          - -saveName=/tmp/engine-name
+        image: litmuschaos/litmus-checker:2.11.0
+
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: frontend-cpu-hog-1661577974
+  namespace: litmus
+  labels:
+    subject: frontend-cpu-hog_litmus
+spec:
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  entrypoint: custom-chaos
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: argo-chaos
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: install-chaos-experiments
+            template: install-chaos-experiments
+        - - name: pod-cpu-hog-03q
+            template: pod-cpu-hog-03q
+    - name: install-chaos-experiments
+      inputs:
+        artifacts:
+          - name: pod-cpu-hog-03q
+            path: /tmp/pod-cpu-hog-03q.yaml
+            raw:
+              data: >
+                apiVersion: litmuschaos.io/v1alpha1
+
+                description:
+                  message: |
+                    Injects cpu consumption on pods belonging to an app deployment
+                kind: ChaosExperiment
+
+                metadata:
+                  name: pod-cpu-hog
+                  labels:
+                    name: pod-cpu-hog
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: chaosexperiment
+                    app.kubernetes.io/version: 2.11.0
+                spec:
+                  definition:
+                    scope: Namespaced
+                    permissions:
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods
+                        verbs:
+                          - create
+                          - delete
+                          - get
+                          - list
+                          - patch
+                          - update
+                          - deletecollection
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - events
+                        verbs:
+                          - create
+                          - get
+                          - list
+                          - patch
+                          - update
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - configmaps
+                        verbs:
+                          - get
+                          - list
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods/log
+                        verbs:
+                          - get
+                          - list
+                          - watch
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods/exec
+                        verbs:
+                          - get
+                          - list
+                          - create
+                      - apiGroups:
+                          - apps
+                        resources:
+                          - deployments
+                          - statefulsets
+                          - replicasets
+                          - daemonsets
+                        verbs:
+                          - list
+                          - get
+                      - apiGroups:
+                          - apps.openshift.io
+                        resources:
+                          - deploymentconfigs
+                        verbs:
+                          - list
+                          - get
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - replicationcontrollers
+                        verbs:
+                          - get
+                          - list
+                      - apiGroups:
+                          - argoproj.io
+                        resources:
+                          - rollouts
+                        verbs:
+                          - list
+                          - get
+                      - apiGroups:
+                          - batch
+                        resources:
+                          - jobs
+                        verbs:
+                          - create
+                          - list
+                          - get
+                          - delete
+                          - deletecollection
+                      - apiGroups:
+                          - litmuschaos.io
+                        resources:
+                          - chaosengines
+                          - chaosexperiments
+                          - chaosresults
+                        verbs:
+                          - create
+                          - list
+                          - get
+                          - patch
+                          - update
+                          - delete
+                    image: litmuschaos/go-runner:2.11.0
+                    imagePullPolicy: Always
+                    args:
+                      - -c
+                      - ./experiments -name pod-cpu-hog
+                    command:
+                      - /bin/bash
+                    env:
+                      - name: TOTAL_CHAOS_DURATION
+                        value: "60"
+                      - name: CPU_CORES
+                        value: "1"
+                      - name: CPU_LOAD
+                        value: "100"
+                      - name: PODS_AFFECTED_PERC
+                        value: ""
+                      - name: RAMP_TIME
+                        value: ""
+                      - name: LIB
+                        value: litmus
+                      - name: LIB_IMAGE
+                        value: litmuschaos/go-runner:2.11.0
+                      - name: STRESS_IMAGE
+                        value: alexeiled/stress-ng:latest-ubuntu
+                      - name: CONTAINER_RUNTIME
+                        value: docker
+                      - name: SOCKET_PATH
+                        value: /var/run/docker.sock
+                      - name: TARGET_PODS
+                        value: ""
+                      - name: NODE_LABEL
+                        value: ""
+                      - name: SEQUENCE
+                        value: parallel
+                    labels:
+                      name: pod-cpu-hog
+                      app.kubernetes.io/part-of: litmus
+                      app.kubernetes.io/component: experiment-job
+                      app.kubernetes.io/runtime-api-usage: "true"
+                      app.kubernetes.io/version: 2.11.0
+      container:
+        args:
+          - kubectl apply -f /tmp/pod-cpu-hog-03q.yaml -n
+            {{workflow.parameters.adminModeNamespace}} &&  sleep 30
+        command:
+          - sh
+          - -c
+        image: litmuschaos/k8s:2.11.0
+    - name: pod-cpu-hog-03q
+      inputs:
+        artifacts:
+          - name: pod-cpu-hog-03q
+            path: /tmp/chaosengine-pod-cpu-hog-03q.yaml
+            raw:
+              data: >
+                apiVersion: litmuschaos.io/v1alpha1
+
+                kind: ChaosEngine
+
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: pod-cpu-hog-03q
+                  labels:
+                    instance_id: 86b67701-a5a8-45e1-a054-7ca238f2c938
+                spec:
+                  engineState: active
+                  appinfo:
+                    appns: pdf-editor-ns
+                    applabel: app=frontend-pdf
+                    appkind: rollout
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: pod-cpu-hog
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: CPU_CORES
+                              value: "1"
+                            - name: PODS_AFFECTED_PERC
+                              value: ""
+                            - name: CONTAINER_RUNTIME
+                              value: docker
+                            - name: SOCKET_PATH
+                              value: /var/run/docker.sock
+                        probe:
+                          - name: cpu hog
+                            type: httpProbe
+                            mode: Continuous
+                            runProperties:
+                              probeTimeout: 100
+                              retry: 1
+                              interval: 3
+                              stopOnFailure: false
+                            httpProbe/inputs:
+                              url: http://frontend-lb.pdf-editor-ns.svc.cluster.local:80
+                              method:
+                                get:
+                                  criteria: ==
+                                  responseCode: "200"
+      container:
+        args:
+          - -file=/tmp/chaosengine-pod-cpu-hog-03q.yaml
+          - -saveName=/tmp/engine-name
+        image: litmuschaos/litmus-checker:2.11.0
+...
