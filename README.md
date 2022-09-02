@@ -17,7 +17,7 @@ Jenkins server -> [URL](http://ec2-44-202-126-47.compute-1.amazonaws.com:8080/)
 
 > Pass: `77777`
 
-> `(Available till 15th Sep)` Due to 💰 have to stop the instance 
+> `(Available till 15th Sep)` Due to 💰 have to stop the instance
 
 Stage | Tags | Links | Status
 --|--|--|--
@@ -94,14 +94,15 @@ helm uninstall <Release Name> ./pdf-editor-helm
 ---
 
 ## ArgoRollouts
-```sh
-deploy the path deploy/blue-green to argo-cd UI
+```
+# using Argo-CD to deploy
+deploy the path deploy/rollouts
+With namespace set to pdf-editor-ns
 ```
 
 # How to Run
 
 ```bash
-make build
 make run
 ```
 
@@ -132,23 +133,50 @@ terraform apply
 <Elastic ip>:8080
 ```
 
-# Flow of the program using Graphs
+# Decission Tree
+
+## Frontend -> Backend-Merger
 ```mermaid
 flowchart LR;
-    XX[START]:::white-->web{Website};
-    web{Website}-->B{file1 uploaded};
-    web{Website}-->C{file2 uploaded};
+    XX[START]:::white--/merger-->web{Website};
+    web{Website}-->B{Upload PDF1};
+    web{Website}-->C{Upload PDF2};
     DD{Download Link}-->web{Website};
 
     classDef green color:#022e1f,fill:#00f500;
     classDef red color:#022e1f,fill:#f11111;
     classDef white color:#022e1f,fill:#fff;
     classDef black color:#fff,fill:#000;
+    classDef BLUE color:#fff,fill:#00f;
 
-    B--upload 1-->S[GO Server]:::green;
-    C--upload 2-->S[GO Server]:::green;
+    B--Upload PDF-1-->S[GO Server]:::green;
+    C--Upload PDF-2-->S[GO Server]:::green;
 
-    S[GO server]-->DD{Download Link}
+    S[GO server]-->DD{Merged PDF available}
+    web--/merger/download-->dd{Download};
+    dd--->YY[END]:::BLUE;
+```
+
+## Frontend -> Backend-Rotator
+```mermaid
+flowchart LR;
+    XX[START]:::white--/merger-->web{Website};
+    web{Website}-->B{Upload PDF};
+    web{Website}-->C{Additional Parameters};
+    DD{Download Link}-->web{Website};
+
+    classDef green color:#022e1f,fill:#00f500;
+    classDef red color:#022e1f,fill:#f11111;
+    classDef white color:#022e1f,fill:#fff;
+    classDef black color:#fff,fill:#000;
+    classDef BLUE color:#fff,fill:#00f;
+
+    B--Upload PDF-->S[GO Server]:::green;
+    C--upload Params-->S[GO Server]:::green;
+
+    S[GO server]-->DD{Rotated PDF available}
+    web--/rotator/download-->dd{Download};
+    dd--->YY[END]:::BLUE;
 
 ```
 

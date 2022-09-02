@@ -17,7 +17,7 @@ jobs:
 
     env:
       SUPER_SECRET: ${{ secrets.DOCKER_PASS }}
-      BACKEND_MERGE: dipugodocker/pdf-editor:0.8-backend-merge
+      BACKEND_MERGE: dipugodocker/pdf-editor:0.9-backend-merge
       # BACKEND_DATABASE: dipugodocker/pdf-editor:0.8-backend-db
       # BACKEND_ROTATE: dipugodocker/pdf-editor:0.8-backend-rotate
       # FRONTEND: dipugodocker/pdf-editor:0.8-frontend
