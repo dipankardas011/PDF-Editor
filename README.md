@@ -160,7 +160,7 @@ flowchart LR;
 ## Frontend -> Backend-Rotator
 ```mermaid
 flowchart LR;
-    XX[START]:::white--/merger-->web{Website};
+    XX[START]:::white--/rotator-->web{Website};
     web{Website}-->B{Upload PDF};
     web{Website}-->C{Additional Parameters};
     DD{Download Link}-->web{Website};
