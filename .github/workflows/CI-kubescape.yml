@@ -1,0 +1,33 @@
+---
+name: K8s Manifest Sec checks Kubescape
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+jobs:
+  kubescape:
+
+    runs-on: ubuntu-latest
+    environment: testing
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: 🧪 Install Kubescape
+      run: 'curl -s https://raw.githubusercontent.com/kubescape/kubescape/master/install.sh | /bin/bash'
+    
+    - name: 🧪 Kubescape version
+      run: kubescape version
+    
+    - name: Check the backend
+      run: |
+        cd deploy/cluster/backend
+        kubescape scan $(ls | grep -e '.ya*ml')
+    
+    - name: Check the frontend
+      run: |
+        cd deploy/cluster/frontend
+        kubescape scan $(ls | grep -e '.ya*ml')
+...
