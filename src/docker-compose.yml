@@ -11,8 +11,6 @@ services:
       - "8080"
     networks:
       - pdf-editor
-    volumes:
-      - app_data_M:/go/src
 
   backend-rotate:
     image: pdf-rotator
@@ -25,8 +23,6 @@ services:
       - "8081"
     networks:
       - pdf-editor
-    volumes:
-      - app_data_R:/go/src
 
   frontend:
     depends_on:
@@ -64,7 +60,3 @@ services:
 
 networks:
   pdf-editor:
-
-volumes:
-  app_data_M:
-  app_data_R:

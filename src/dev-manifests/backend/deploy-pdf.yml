@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf-editor-backend-merger
+  labels:
+    app: backend-merge
+spec:
+  selector:
+    matchLabels:
+      app: backend-merge
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: backend-merge
+    spec:
+      initContainers:
+        - name: pdf-files
+          image: pdf-editor-backend-merge
+          volumeMounts:
+          - name: backend
+            mountPath: /mnt
+          command: ["cp", "-vR", ".", "/mnt"]
+
+      containers:
+        - name: pdf-editor
+          image: pdf-editor-backend-merge
+          volumeMounts:
+          - name: backend
+            mountPath: /go/src/
+          resources:
+            requests:
+                memory: "50Mi"
+                cpu: "10m"
+            limits:
+              memory: "500Mi"
+              cpu: "100m"
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /greet
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /greet
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          ports:
+            - containerPort: 8080
+              name: backend-port
+      volumes:
+      - name: backend
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf-editor-backend-rotator
+  labels:
+    app: backend-rotate
+spec:
+  selector:
+    matchLabels:
+      app: backend-rotate
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: backend-rotate
+    spec:
+      initContainers:
+        - name: pdf-files
+          image: pdf-editor-backend-rotate
+          volumeMounts:
+          - name: backend
+            mountPath: /mnt
+          command: ["cp", "-vR", ".", "/mnt"]
+
+      containers:
+        - name: pdf-editor
+          image: pdf-editor-backend-rotate
+          volumeMounts:
+          - name: backend
+            mountPath: /go/src/
+          resources:
+            requests:
+                memory: "50Mi"
+                cpu: "10m"
+            limits:
+              memory: "500Mi"
+              cpu: "100m"
+          livenessProbe:
+            httpGet:
+              port: 8081
+              path: /greet
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              port: 8081
+              path: /greet
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          ports:
+            - containerPort: 8081
+              name: backend-port
+      volumes:
+      - name: backend
+        emptyDir: {}
