@@ -4,17 +4,19 @@ metadata:
   name: src
 build:
   artifacts:
-  - image: pdf-editor-frontend
+  - image: dipugodocker/skaffold-pdf-editor-frontend
     context: frontend
     docker:
       target: prod
       dockerfile: Dockerfile
-  - image: pdf-editor-backend-merge
+
+  - image: dipugodocker/skaffold-pdf-editor-backend-merge
     context: backend/merger
     docker:
       target: prod
       dockerfile: Dockerfile
-  - image: pdf-editor-backend-rotate
+
+  - image: dipugodocker/skaffold-pdf-editor-backend-rotate
     context: backend/rotator
     docker:
       target: prod

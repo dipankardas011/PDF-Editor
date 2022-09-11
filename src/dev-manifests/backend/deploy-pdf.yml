@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
         - name: pdf-files
-          image: pdf-editor-backend-merge
+          image: dipugodocker/skaffold-pdf-editor-backend-merge
           volumeMounts:
           - name: backend
             mountPath: /mnt
@@ -24,7 +24,7 @@ spec:
 
       containers:
         - name: pdf-editor
-          image: pdf-editor-backend-merge
+          image: dipugodocker/skaffold-pdf-editor-backend-merge
           volumeMounts:
           - name: backend
             mountPath: /go/src/
@@ -72,7 +72,7 @@ spec:
     spec:
       initContainers:
         - name: pdf-files
-          image: pdf-editor-backend-rotate
+          image: dipugodocker/skaffold-pdf-editor-backend-rotate
           volumeMounts:
           - name: backend
             mountPath: /mnt
@@ -80,7 +80,7 @@ spec:
 
       containers:
         - name: pdf-editor
-          image: pdf-editor-backend-rotate
+          image: dipugodocker/skaffold-pdf-editor-backend-rotate
           volumeMounts:
           - name: backend
             mountPath: /go/src/

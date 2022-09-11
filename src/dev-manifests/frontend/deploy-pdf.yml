@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: pdf-editor-frontend
-        image: pdf-editor-frontend
+        image: dipugodocker/skaffold-pdf-editor-frontend
         resources:
           requests:
               memory: "50Mi"
