@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-merge
+spec:
+  selector:
+    app: backend-merge
+  ports:
+  - port: 8080
+    targetPort: backend-port
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-rotate
+spec:
+  selector:
+    app: backend-rotate
+  ports:
+  - port: 8081
+    targetPort: backend-port
+    protocol: TCP

@@ -1,0 +1,31 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: src
+build:
+  artifacts:
+  - image: dipugodocker/skaffold-pdf-editor-frontend
+    context: frontend
+    docker:
+      target: prod
+      dockerfile: Dockerfile
+
+  - image: dipugodocker/skaffold-pdf-editor-backend-merge
+    context: backend/merger
+    docker:
+      target: prod
+      dockerfile: Dockerfile
+
+  - image: dipugodocker/skaffold-pdf-editor-backend-rotate
+    context: backend/rotator
+    docker:
+      target: prod
+      dockerfile: Dockerfile
+
+deploy:
+  kubectl:
+    manifests:
+    - dev-manifests/backend/deploy-pdf.yml
+    - dev-manifests/backend/svc.yml
+    - dev-manifests/frontend/deploy-pdf.yml
+    - dev-manifests/frontend/svc.yml
