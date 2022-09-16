@@ -2,16 +2,16 @@ apiVersion: v1
 entries:
   pdf-editor-helm:
   - apiVersion: v2
-    appVersion: "0.7"
-    created: "2022-08-05T14:25:42.794370918+05:30"
+    appVersion: "0.8"
+    created: "2022-09-16T20:51:08.089381881+05:30"
     description: A Helm chart for pdf-editor
-    digest: 6f2c8a2c87fc3da08434f5a126f5e141a03ae8988dea5f26977ae8b21ce70ea2
+    digest: b7073ddfb8a3e98359490959e8504255751ddf7e8495035d948e2fa62d08cfcf
     maintainers:
     - email: dipankardas0115@gmail.com
       name: Dipankar Das
     name: pdf-editor-helm
     type: application
     urls:
-    - pdf-editor-helm-0.7.0.tgz
-    version: 0.7.0
-generated: "2022-08-05T14:25:42.793758154+05:30"
+    - pdf-editor-helm-0.8.0.tgz
+    version: 0.8.0
+generated: "2022-09-16T20:51:08.088881836+05:30"
