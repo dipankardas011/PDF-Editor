@@ -23,11 +23,11 @@ jobs:
     
     - name: Check the backend
       run: |
-        cd deploy/cluster/backend
-        kubescape scan $(ls | grep -e '.ya*ml')
+        cd deploy/cluster/
+        kubescape scan -v backend/*.yml
     
     - name: Check the frontend
       run: |
-        cd deploy/cluster/frontend
-        kubescape scan $(ls | grep -e '.ya*ml')
+        cd deploy/cluster/
+        kubescape scan -v frontend/*.yml
 ...
