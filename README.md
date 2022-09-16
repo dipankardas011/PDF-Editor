@@ -11,13 +11,13 @@ website that can edit PDF's
 
 [Project Board For Current Status](https://github.com/users/dipankardas011/projects/2/views/1)
 
-Jenkins server -> [URL](http://ec2-44-202-126-47.compute-1.amazonaws.com:8080/)
+~Jenkins server -> [URL](http://ec2-XX-XX-XX-XX.compute-1.amazonaws.com:8080/)~
 > **Note**
 
 > User: `guest`
 > Pass: `77777`
 
-> (Available till 15th Sep) Due to 💰 have to stop the instance
+> (Available till 15th Sep '22) Due to 💰 had to stop the instance
 
 Stage | Tags | Links | Status
 --|--|--|--
