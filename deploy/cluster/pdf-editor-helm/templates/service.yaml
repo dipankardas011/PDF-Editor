@@ -9,7 +9,22 @@ spec:
     - port: 8080
       targetPort: 8080
   selector:
-    web: pdf-editor
+    web: pdf-editor-merge
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-rotate
+  namespace: {{ .Values.namespace }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 8081
+      targetPort: 8081
+  selector:
+    web: pdf-editor-rotate
 
 ---
 

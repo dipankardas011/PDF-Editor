@@ -1,28 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pdf-editor-backend
+  name: pdf-editor-backend-merge
   namespace: {{ .Values.namespace }}
   labels:
-    web: pdf-editor
+    web: pdf-editor-merge
 spec:
   replicas: {{ .Values.replicaCount.backend }}
   selector:
     matchLabels:
-      web: pdf-editor
+      web: pdf-editor-merge
   template:
     metadata:
       labels:
-        web: pdf-editor
+        web: pdf-editor-merge
 
     spec:
       volumes:
       - name: backend
-        persistentVolumeClaim:
-          claimName: pdf-editor-pvc
+        emptyDir: {}
       initContainers:
         - name: pdf-files
-          image: docker.io/dipugodocker/pdf-editor:{{ .Chart.AppVersion }}-backend
+          image: docker.io/dipugodocker/pdf-editor:{{ .Chart.AppVersion }}-backend-merge
           volumeMounts:
           - name: backend
             mountPath: /mnt
@@ -30,7 +29,7 @@ spec:
 
       containers:
         - name: pdf-editor
-          image: docker.io/dipugodocker/pdf-editor:{{ .Chart.AppVersion }}-backend
+          image: docker.io/dipugodocker/pdf-editor:{{ .Chart.AppVersion }}-backend-merge
           volumeMounts:
           - name: backend
             mountPath: /go/src/
@@ -56,6 +55,68 @@ spec:
           ports:
             - containerPort: 8080
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf-editor-backend-rotate
+  namespace: {{ .Values.namespace }}
+  labels:
+    web: pdf-editor-rotate
+spec:
+  replicas: {{ .Values.replicaCount.backend }}
+  selector:
+    matchLabels:
+      web: pdf-editor-rotate
+  template:
+    metadata:
+      labels:
+        web: pdf-editor-rotate
+
+    spec:
+      volumes:
+      - name: backend
+        emptyDir: {}
+      initContainers:
+        - name: pdf-files
+          image: docker.io/dipugodocker/pdf-editor:0.1-backend-rotate
+          volumeMounts:
+          - name: backend
+            mountPath: /mnt
+          command: ["cp", "-vR", ".", "/mnt"]
+
+      containers:
+        - name: pdf-editor
+          image: docker.io/dipugodocker/pdf-editor:0.1-backend-rotate
+          volumeMounts:
+          - name: backend
+            mountPath: /go/src/
+          resources:
+            requests:
+                memory: "50Mi"
+                cpu: "10m"
+            limits:
+              memory: "500Mi"
+              cpu: "100m"
+          livenessProbe:
+            httpGet:
+              port: 8081
+              path: /greet
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              port: 8081
+              path: /greet
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          ports:
+            - containerPort: 8081
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+
 
 ---
 
