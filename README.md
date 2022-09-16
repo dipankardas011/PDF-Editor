@@ -107,6 +107,13 @@ With namespace set to pdf-editor-ns
 make run
 ```
 
+# How to Dev
+
+```bash
+cd src/
+skaffold dev
+```
+
 # How to Test
 
 ```bash
