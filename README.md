@@ -130,6 +130,9 @@ make integration-test
 http://localhost
 ```
 
+# Blog Post on this project
+[![](./coverpage.png)](https://blog.kubesimplify.com/about-my-pdf-editor-project)
+
 # AWS Terraform
 ![](./coverpageAWS.png)
 ```bash
