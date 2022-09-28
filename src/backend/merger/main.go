@@ -104,6 +104,7 @@ func MergePdf(ctx context.Context) error {
 	return err
 }
 
+// getPort checking on port and returning
 func getPort() string {
 	port := os.Getenv("PORT")
 
