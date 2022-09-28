@@ -104,6 +104,7 @@ func MergePdf(ctx context.Context) error {
 	return err
 }
 
+// getPort returns port number for backend merger http server to listen default is 8080
 func getPort() string {
 	port := os.Getenv("PORT")
 
