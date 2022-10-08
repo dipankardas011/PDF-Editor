@@ -1,0 +1,33 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: backend-merge-service-monitor
+  labels:
+    release: prom
+    service-monitoring: backend-merge
+  namespace: pdf-editor-ns
+spec:
+  selector:
+    matchLabels:
+      service: backend-merge
+  endpoints:
+  - port: web
+
+---
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: backend-rotate-service-monitor
+  labels:
+    release: prom
+    service-monitoring: backend-rotate
+  namespace: pdf-editor-ns
+spec:
+  selector:
+    matchLabels:
+      service: backend-rotate
+  endpoints:
+  - port: web
+
+...
