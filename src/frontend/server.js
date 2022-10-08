@@ -9,6 +9,37 @@ import fetch from 'node-fetch';
 // import { request } from 'http';
 const app = express()
 
+// const client = require('prom-client');
+import prom from 'prom-client'
+const client = prom
+const register = new client.Registry();
+client.collectDefaultMetrics({
+  app: 'frontend-metrics',
+  prefix: 'node_',
+  timeout: 10000,
+  gcDurationBuckets: [0.001, 0.01, 0.1, 1, 2, 5],
+  register
+});
+
+const requestsProcessed = new client.Counter({
+  name: 'nodejs_request_operations_frontend_total',
+  help: 'The total number of processed requests',
+});
+
+const requestsProcessedError = new client.Counter({
+  name: 'nodejs_request_operations_frontend_error_total',
+  help: 'The total number of HTTP requests Errors',
+});
+
+const requestsProcessedSuccess = new client.Counter({
+  name: 'nodejs_request_operations_frontend_success_total',
+  help: 'The total number of HTTP 200 requests',
+});
+register.registerMetric(requestsProcessed);
+register.registerMetric(requestsProcessedError);
+register.registerMetric(requestsProcessedSuccess);
+
+
 const __dirname = "/app";
 
 app.set("views", join(__dirname, "views"))
@@ -40,8 +71,9 @@ app.post('/merge/upload', uploadM.array('myFile'), (req, res) => {
    * session creation
    */
   // console.log(`{"Source": "pdf-frontend", "Status": "Session merger upload", "ID", "${req.sessionID}"}`);
-
-  if (req.files.length == 0) {
+  requestsProcessed.inc(1)
+  if (req.files.length === 0) {
+    requestsProcessedError.inc(1)
     return res.status(403).send("############################\n# [ERROR] No file selected #\n############################");
   }
 
@@ -65,8 +97,10 @@ app.post('/merge/upload', uploadM.array('myFile'), (req, res) => {
 
   if (!CHECK_ERRORS.exec(ccc1) && !CHECK_ERRORS.exec(ccc2)) {
     isSuccessfull = true;
+    requestsProcessedSuccess.inc(1)
     console.log('{"Source": "pdf-frontend", "FileNo": ["1", "2"], "operation": "Merge", "Status": "Uploaded"}');
   } else {
+    requestsProcessedError.inc(1)
     storeError = (CHECK_ERRORS.exec(ccc1)) ? ccc1 : ccc2;
   }
 
@@ -80,11 +114,13 @@ app.post('/merge/upload', uploadM.array('myFile'), (req, res) => {
 
 
 app.get('/merge/download', async (req, res) => {
+  requestsProcessed.inc(1)
   const output = await fetch("http://backend-merge:8080/downloads", {
     method: "GET",
   }).then(res => res.buffer()).catch(err => console.error(err));
   res.setHeader('Content-disposition', 'attachment; filename=merged.pdf');
   res.setHeader('Content-type', 'application/pdf');
+  requestsProcessedSuccess.inc(1)
   res.send(output)
 })
 
@@ -94,7 +130,9 @@ app.get('/merge/download', async (req, res) => {
 app.post('/rotate/upload', uploadR.single('myFile'), (req, res) => {
   // console.log(`{"Source": "pdf-frontend", "Status": "Session merger upload", "ID", "${req.sessionID}"}`);
 
+  requestsProcessed.inc(1)
   if (req.file.filename === '') {
+    requestsProcessedError.inc(1)
     return res.status(403).send("############################\n# [ERROR] No file selected #\n############################");
   }
 
@@ -113,9 +151,11 @@ app.post('/rotate/upload', uploadR.single('myFile'), (req, res) => {
 
   if (!CHECK_ERRORS.exec(ccc1)) {
     isSuccessfull = true;
+    requestsProcessedSuccess.inc(1)
     console.log('{"Source": "pdf-frontend", "FileNo": ["1"], "operation": "Rotate", "Status": "Uploaded"}');
   } else {
     storeError = ccc1;
+    requestsProcessedError.inc(1)
   }
 
 
@@ -128,11 +168,13 @@ app.post('/rotate/upload', uploadR.single('myFile'), (req, res) => {
 
 
 app.get('/rotate/download', async (req, res) => {
+  requestsProcessed.inc(1)
   const output = await fetch("http://backend-rotate:8081/downloads", {
     method: "GET",
   }).then(res => res.buffer()).catch(err => console.error(err));
   res.setHeader('Content-disposition', 'attachment; filename=rotated.pdf');
   res.setHeader('Content-type', 'application/pdf');
+  requestsProcessedSuccess.inc(1)
   res.send(output)
 })
 
@@ -152,6 +194,10 @@ app.get('/home-img01', (_, res) => res.status(200).sendFile(join(__dirname, '/re
 
 app.get('/home-img02', (_, res) => res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1629.excalidraw.svg')) )
 
+app.get('/metrics', async(_, res) => {
+  res.setHeader('Content-Type', register.contentType);
+  res.send(await register.metrics());
+})
 
 const PORT = process.env.PORT || 80
 app.listen(PORT)

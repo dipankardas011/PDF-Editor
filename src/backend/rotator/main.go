@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
 	"os"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var requestsProcessed = promauto.NewCounter(prometheus.CounterOpts{
@@ -61,6 +61,6 @@ func main() {
 	http.HandleFunc("/greet", greet)
 	http.HandleFunc("/upload", uploadHandler)
 	http.HandleFunc("/downloads", DownloadFile)
-	http.ListenAndServe(getPort(), nil)
 	http.Handle("/metrics", promhttp.Handler())
+	http.ListenAndServe(getPort(), nil)
 }
