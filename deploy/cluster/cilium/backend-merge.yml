@@ -10,7 +10,7 @@ spec:
   ingress:
     - fromEndpoints:
         - matchLabels:
-            name: pdf-editor-lb
+            name: pdf-editor-frontend
       toPorts:
         - ports:
             - port: "8080"
@@ -30,5 +30,5 @@ spec:
         - k8sServiceSelector:
             selector:
               matchLabels:
-                name: pdf-editor-lb
+                name: pdf-editor-frontend
 

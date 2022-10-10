@@ -3,12 +3,15 @@ kind: Service
 metadata:
   name: frontend-lb
   namespace: pdf-editor-ns
+  labels:
+    name: pdf-editor-frontend
 spec:
   selector:
     app: frontend-pdf
   type: ClusterIP
   ports:
   - port: 80
+    name: web
     targetPort: web-port
     protocol: TCP
 

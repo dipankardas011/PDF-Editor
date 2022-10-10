@@ -6,7 +6,7 @@ metadata:
 spec:
   endpointSelector:
     matchLabels:
-      name: pdf-editor-ig
+      name: pdf-editor-frontend
   ingress:
     - fromEntities:
         - world

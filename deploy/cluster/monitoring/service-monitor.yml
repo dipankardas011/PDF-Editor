@@ -30,4 +30,20 @@ spec:
   endpoints:
   - port: web
 
+---
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: frontend-service-monitor
+  labels:
+    release: prom
+    service-monitoring: frontend
+  namespace: pdf-editor-ns
+spec:
+  selector:
+    matchLabels:
+      name: pdf-editor-frontend
+  endpoints:
+  - port: web
 ...
