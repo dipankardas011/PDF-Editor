@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	service     = "PDF Editor tracing"
+	service     = "PDF Editor backend-merger tracing"
 	environment = "production"
 	id          = 1
 )
@@ -60,17 +60,17 @@ func loadConfigsTracing() {
 }
 
 var requestsProcessed = promauto.NewCounter(prometheus.CounterOpts{
-	Name: "go_request_operations_total",
+	Name: "go_request_operations_merger_total",
 	Help: "The total number of processed requests",
 })
 
 var requestsProcessedError = promauto.NewCounter(prometheus.CounterOpts{
-	Name: "go_request_operations_error_total",
+	Name: "go_request_operations_merger_error_total",
 	Help: "The total number of HTTP requests Errors",
 })
 
 var requestsProcessedSuccess = promauto.NewCounter(prometheus.CounterOpts{
-	Name: "go_request_operations_success_total",
+	Name: "go_request_operations_merger_success_total",
 	Help: "The total number of HTTP 200 requests",
 })
 
@@ -148,57 +148,3 @@ func DownloadFile(w http.ResponseWriter, r *http.Request) {
 		requestsProcessedError.Inc()
 	}
 }
-
-// // helperCleaner marked for **DEPRECATION**
-// func helperCleaner(ctx context.Context) (err error) {
-// 	tr := otel.Tracer("Clean Helper")
-// 	_, span := tr.Start(ctx, "helpCleaner")
-// 	defer span.End()
-
-// 	cmd := exec.Command("rm", "-Rf", "./uploads/")
-// 	return cmd.Run()
-// }
-
-// // clearExistingpdfs marked for **DEPRECATION**
-// func clearExistingpdfs(w http.ResponseWriter, r *http.Request) {
-// 	ctx, cancel := context.WithCancel(context.Background())
-// 	defer cancel()
-// 	tr := tp.Tracer("Clearing PDF's")
-// 	ctxIn, span := tr.Start(ctx, "Clearing")
-// 	defer span.End()
-
-// 	requestsProcessed.Inc()
-// 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-// 	t, err := template.ParseFiles("./templates/upload.html")
-
-// 	var x templateStat
-// 	if err != nil {
-// 		x = templateStat{
-// 			Header: "alert alert-danger",
-// 			Status: "Internal Server error 501 ⚠️",
-// 		}
-// 		requestsProcessedError.Inc()
-// 	}
-
-// 	err = helperCleaner(ctxIn)
-
-// 	if err != nil {
-// 		x = templateStat{
-// 			Header: "alert alert-danger",
-// 			Status: "CRITICAL ERROR 503 ❌",
-// 		}
-// 		requestsProcessedError.Inc()
-// 	}
-// 	err = os.MkdirAll("./uploads", os.ModePerm)
-// 	if err != nil {
-// 		requestsProcessedError.Inc()
-// 		panic(err)
-// 	} else {
-// 		x = templateStat{
-// 			Header: "alert alert-success",
-// 			Status: fmt.Sprintf("Cleared the data!!✅\t%s", time.Now()),
-// 		}
-// 		requestsProcessedSuccess.Inc()
-// 	}
-// 	t.Execute(w, x)
-// }

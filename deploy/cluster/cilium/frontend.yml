@@ -1,0 +1,49 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: frontend-cilium-policy
+  namespace: pdf-editor-ns
+spec:
+  endpointSelector:
+    matchLabels:
+      name: pdf-editor-frontend
+  ingress:
+    - fromEntities:
+        - world
+      toPorts:
+        - ports:
+            - port: "80"
+    - fromEntities:
+        - cluster
+      toPorts:
+        - ports:
+            - port: "80"
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+          rules:
+            dns:
+              - matchPattern: "*"
+    - toServices:
+        - k8sServiceSelector:
+            selector:
+              matchLabels:
+                service: backend-merge
+      toPorts:
+        - ports:
+            - port: "8080"
+    - toServices:
+        - k8sServiceSelector:
+            selector:
+              matchLabels:
+                service: backend-rotate
+      toPorts:
+        - ports:
+            - port: "8081"
+

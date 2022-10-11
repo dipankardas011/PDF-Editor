@@ -1,3 +1,7 @@
+# #############################
+# DECRYPTED: Now using kube-prom
+# #############################
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:

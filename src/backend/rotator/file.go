@@ -17,7 +17,7 @@ type templateStat struct {
 const NUMBEROFDOCS int = 1
 
 func RotatePdf(pages string) error {
-	// specify the clockwise or anti clockwise direction
+	// specify the clockwise or anti-clockwise direction
 	// Rotate the all the pages
 	rotateOptions := "--rotate=+90:" + pages[:(len(pages)-1)]
 
@@ -25,8 +25,10 @@ func RotatePdf(pages string) error {
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println(">>> Error in RotatePDF", err)
+		requestsProcessedError.Inc()
 		fmt.Println("{\"Source\": \"pdf-rotator\", \"FileNo\": \"1\", \"operation\": \"Rotate\", \"Status\": \"Rotate ERROR\"}")
 	} else {
+		requestsProcessedSuccess.Inc()
 		fmt.Println("{\"Source\": \"pdf-rotator\", \"FileNo\": \"1\", \"operation\": \"Rotate\", \"Status\": \"Rotated\"}")
 	}
 	return err
@@ -39,6 +41,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	file, handler, err := r.FormFile("File")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		requestsProcessedError.Inc()
 		return
 	}
 
@@ -55,6 +58,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 				Header: "alert alert-danger",
 				Status: "Internal Server error 501 ⚠️",
 			}
+			requestsProcessedError.Inc()
 		} else {
 			x = templateStat{
 				Header: "alert alert-danger",
@@ -71,12 +75,14 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		requestsProcessedError.Inc()
 		return
 	}
 
 	// Copy the uploaded file to the created file on the filesystem
 	if _, err := io.Copy(dst, file); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		requestsProcessedError.Inc()
 		return
 	}
 
@@ -90,6 +96,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 			Header: "alert alert-danger",
 			Status: "Internal Server error 501 ⚠️",
 		}
+		requestsProcessedError.Inc()
 	} else {
 		x = templateStat{
 			Header: "alert alert-success",
@@ -109,11 +116,13 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 }
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
+	requestsProcessed.Inc()
 
 	switch r.Method {
 	case "POST":
 		uploadFile(w, r)
 	default:
+		requestsProcessedError.Inc()
 		w.WriteHeader(http.StatusBadRequest)
 	}
 }

@@ -10,12 +10,16 @@ kind: Service
 metadata:
   name: frontend-lb
   namespace: pdf-editor-ns
+  labels:
+    name: pdf-editor-frontend
+  type: ClusterIP
 spec:
   selector:
     app: frontend-pdf
   ports:
   - port: 80
     targetPort: web-port
+    name: web
     protocol: TCP
 
 ---
@@ -23,9 +27,9 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: primary-ingress
+  name: pdf-editor-ig
   labels:
-    name: primary-ingress
+    name: pdf-editor-ig
   annotations:
     kubernetes.io/ingress.class: nginx
   namespace: pdf-editor-ns
@@ -62,7 +66,7 @@ spec:
       canaryService: frontend-lb-canary
       trafficRouting:
         nginx:
-          stableIngress: primary-ingress
+          stableIngress: pdf-editor-ig
       steps:
       - setWeight: 30
       - pause: {}
