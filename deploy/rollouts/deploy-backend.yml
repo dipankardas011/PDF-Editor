@@ -10,11 +10,14 @@ kind: Service
 metadata:
   name: backend-merge
   namespace: pdf-editor-ns
+  labels:
+    service: backend-merge
 spec:
   selector:
     app: backend-merge
   ports:
   - port: 8080
+    name: web
     targetPort: backend-port
     protocol: TCP
 
@@ -25,11 +28,14 @@ kind: Service
 metadata:
   name: backend-rotate
   namespace: pdf-editor-ns
+  labels:
+    service: backend-rotate
 spec:
   selector:
     app: backend-rotate
   ports:
   - port: 8081
+    name: web
     targetPort: backend-port
     protocol: TCP
 
