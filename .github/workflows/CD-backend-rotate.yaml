@@ -58,6 +58,6 @@ jobs:
         run: |-
           cd deploy/cluster
           helm package pdf-editor-helm
-          mv pdf-editor-helm-0.7.0.tgz artifact/
+          mv pdf-editor-helm-1.0.0.tgz artifact/
           helm repo index artifact
           git status -s
