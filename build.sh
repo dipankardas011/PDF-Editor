@@ -3,7 +3,6 @@
 # TODO: when removing the tag backend and frontend ensure all the are changed it used everywhere
 
 BACKEND_MERGE='dipugodocker/pdf-editor:backend-merge'
-BACKEND_DATABASE='dipugodocker/pdf-editor:backend-db'
 BACKEND_ROTATE='dipugodocker/pdf-editor:backend-rotate'
 FRONTEND='dipugodocker/pdf-editor:frontend'
 
@@ -13,8 +12,6 @@ backend_docker_build_dev() {
   cd src/backend/merger && docker build --target dev -t $BACKEND_MERGE .
   echo '[🙂] Building for Devlopment [Backend-rotator]'
   cd ../rotator && docker build --target dev -t $BACKEND_ROTATE .
-  echo '[🙂] Building for Devlopment [Backend-database]'
-  cd ../db && docker build --target db-prod -t $BACKEND_DATABASE .
 }
 
 frontend_docker_build_dev() {
@@ -29,8 +26,6 @@ backend_docker_build_prod() {
   cd src/backend/merger && docker build --target prod -t $BACKEND_MERGE . --no-cache
   echo '[🏭] Building for Production [Backend-rotator]'
   cd ../rotator && docker build --target prod -t $BACKEND_ROTATE . --no-cache
-  echo '[🏭] Building for Production [Backend-database]'
-  cd ../db && docker build --target db-prod -t $BACKEND_DATABASE . --no-cache
 }
 
 frontend_docker_build_prod() {
@@ -44,8 +39,6 @@ backend_docker_build_test() {
   cd src/backend/merger && docker build --target test -t $BACKEND_MERGE . --no-cache
   echo '[🧪] Building for Testing [Backend-rotator]'
   cd ../rotator && docker build --target test -t $BACKEND_ROTATE . --no-cache
-  echo '[🧪] Building for Testing [Backend-database]'
-  cd ../db && docker build --target db-prod -t $BACKEND_DATABASE . --no-cache
 }
 
 frontend_docker_build_test() {

@@ -3,13 +3,16 @@ kind: Service
 metadata:
   name: backend-merge
   namespace: {{ .Values.namespace }}
+  labels:
+    service: backend-merge
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: 8080
       targetPort: 8080
+      name: web
   selector:
-    web: pdf-editor-merge
+    app: backend-merge
 
 ---
 
@@ -18,13 +21,16 @@ kind: Service
 metadata:
   name: backend-rotate
   namespace: {{ .Values.namespace }}
+  labels:
+    service: backend-rotate
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: 8081
       targetPort: 8081
+      name: web
   selector:
-    web: pdf-editor-rotate
+    app: backend-rotate
 
 ---
 
@@ -33,12 +39,15 @@ kind: Service
 metadata:
   name: frontend-lb
   namespace: {{ .Values.namespace }}
+  labels:
+    name: pdf-editor-frontend
 spec:
   selector:
     app: frontend-pdf
   type: ClusterIP
   ports:
   - port: 80
+    name: web
     targetPort: web-port
     protocol: TCP
 
@@ -55,7 +64,7 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   rules:
-  - host: pdf-editor1
+  - host: pdf-editor
     http:
       paths:
       - pathType: Prefix

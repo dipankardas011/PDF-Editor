@@ -45,14 +45,6 @@ const __dirname = "/app";
 app.set("views", join(__dirname, "views"))
 app.set("view engine", "ejs")
 
-// having expiration time of 1m
-// app.use(session({
-//   secret: '1234',			// TODO: have a random password generator
-//   cookie: { maxAge: 1000 * 60 * 1 },	// DISCUSS
-//   saveUninitialized: true // false	// XXX: true is working fine
-// }));
-
-
 app.use(urlencoded({ extended: true }));
 app.use(json());
 
@@ -67,10 +59,6 @@ const uploadR = multer({ dest: "uploadsR/" });
 
 
 app.post('/merge/upload', uploadM.array('myFile'), (req, res) => {
-  /*
-   * session creation
-   */
-  // console.log(`{"Source": "pdf-frontend", "Status": "Session merger upload", "ID", "${req.sessionID}"}`);
   requestsProcessed.inc(1)
   if (req.files.length === 0) {
     requestsProcessedError.inc(1)
@@ -128,7 +116,6 @@ app.get('/merge/download', async (req, res) => {
 
 // -------BACKEND (Rotator)----------
 app.post('/rotate/upload', uploadR.single('myFile'), (req, res) => {
-  // console.log(`{"Source": "pdf-frontend", "Status": "Session merger upload", "ID", "${req.sessionID}"}`);
 
   requestsProcessed.inc(1)
   if (req.file.filename === '') {
@@ -182,19 +169,45 @@ app.get('/rotate/download', async (req, res) => {
 
 
 // ---------FRONTEND------------
-app.get('/', (_, res) => res.status(200).sendFile(join(__dirname, '/index.html')) )
+app.get('/', (_, res) => {
+  requestsProcessed.inc(1)
+  requestsProcessedSuccess.inc(1)
+  res.status(200).sendFile(join(__dirname, '/index.html'))
+})
 
-app.get('/about', (_, res) => res.status(200).sendFile(join(__dirname, '/About.html')) )
+app.get('/about', (_, res) => {
+  requestsProcessed.inc(1)
+  requestsProcessedSuccess.inc(1)
+  res.status(200).sendFile(join(__dirname, '/About.html'))
+})
 
-app.get('/merger', (_, res) => res.status(200).sendFile(join(__dirname, '/index-merge.html')) )
+app.get('/merger', (_, res) => {
+  requestsProcessed.inc(1)
+  requestsProcessedSuccess.inc(1)
+  res.status(200).sendFile(join(__dirname, '/index-merge.html'))
+})
 
-app.get('/rotator', (_, res) => res.status(200).sendFile(join(__dirname, '/index-rotate.html')) )
+app.get('/rotator', (_, res) => {
+  requestsProcessed.inc(1)
+  requestsProcessedSuccess.inc(1)
+  res.status(200).sendFile(join(__dirname, '/index-rotate.html'))
+})
 
-app.get('/home-img01', (_, res) => res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1628.excalidraw.svg')) )
+app.get('/home-img01', (_, res) => {
+  requestsProcessed.inc(1)
+  requestsProcessedSuccess.inc(1)
+  res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1628.excalidraw.svg'))
+})
 
-app.get('/home-img02', (_, res) => res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1629.excalidraw.svg')) )
+app.get('/home-img02', (_, res) => {
+  requestsProcessed.inc(1)
+  requestsProcessedSuccess.inc(1)
+  res.status(200).sendFile(join(__dirname, '/resources/Untitled-2022-08-02-1629.excalidraw.svg'))
+})
 
 app.get('/metrics', async(_, res) => {
+  requestsProcessed.inc(1)
+  requestsProcessedSuccess.inc(1)
   res.setHeader('Content-Type', register.contentType);
   res.send(await register.metrics());
 })

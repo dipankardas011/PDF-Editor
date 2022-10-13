@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Version 1.0
+* Improved the Observability stack (Metrics and traces)
+* CiliumNetworkPolicy
+* Addition of Skaffold for faster development
+* Removed the backend/db
+* removed DEPRICATED parts
+
 ## Version 0.8
 * New UX
 * Removed the need for the clear button

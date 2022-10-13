@@ -8,7 +8,7 @@ networks:
   pdf-editor:
 services:
   backend-merge:
-    image: docker.io/dipugodocker/pdf-editor:0.8-backend-merge
+    image: docker.io/dipugodocker/pdf-editor:1.0-backend-merge
     container_name: backend-merge
     ports:
       - "8080"
@@ -18,7 +18,7 @@ services:
       - app_data_M:/go/src
 
   backend-rotate:
-    image: docker.io/dipugodocker/pdf-editor:0.1-backend-rotate
+    image: docker.io/dipugodocker/pdf-editor:1.0-backend-rotate
     container_name: backend-rotate
     ports:
       - "8081"
@@ -31,7 +31,7 @@ services:
     depends_on:
       - backend-merge
       - backend-rotate
-    image: docker.io/dipugodocker/pdf-editor:0.8-frontend
+    image: docker.io/dipugodocker/pdf-editor:1.0-frontend
     container_name: frontend
     ports:
       - "80:80"

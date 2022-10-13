@@ -4,16 +4,16 @@ metadata:
   name: pdf-editor-backend-merge
   namespace: {{ .Values.namespace }}
   labels:
-    web: pdf-editor-merge
+    app: backend-merge
 spec:
   replicas: {{ .Values.replicaCount.backend }}
   selector:
     matchLabels:
-      web: pdf-editor-merge
+      app: backend-merge
   template:
     metadata:
       labels:
-        web: pdf-editor-merge
+        app: backend-merge
 
     spec:
       volumes:
@@ -64,16 +64,16 @@ metadata:
   name: pdf-editor-backend-rotate
   namespace: {{ .Values.namespace }}
   labels:
-    web: pdf-editor-rotate
+    app: backend-rotate
 spec:
   replicas: {{ .Values.replicaCount.backend }}
   selector:
     matchLabels:
-      web: pdf-editor-rotate
+      app: backend-rotate
   template:
     metadata:
       labels:
-        web: pdf-editor-rotate
+        app: backend-rotate
 
     spec:
       volumes:
@@ -81,7 +81,7 @@ spec:
         emptyDir: {}
       initContainers:
         - name: pdf-files
-          image: docker.io/dipugodocker/pdf-editor:0.1-backend-rotate
+          image: docker.io/dipugodocker/pdf-editor:{{ .Chart.AppVersion }}-backend-rotate
           volumeMounts:
           - name: backend
             mountPath: /mnt
@@ -89,7 +89,7 @@ spec:
 
       containers:
         - name: pdf-editor
-          image: docker.io/dipugodocker/pdf-editor:0.1-backend-rotate
+          image: docker.io/dipugodocker/pdf-editor:{{ .Chart.AppVersion }}-backend-rotate
           volumeMounts:
           - name: backend
             mountPath: /go/src/
