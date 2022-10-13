@@ -66,7 +66,6 @@ jobs:
       BACKEND_MERGE: dipugodocker/pdf-editor:backend-merge
       BACKEND_ROTATE: dipugodocker/pdf-editor:backend-rotate
       FRONTEND: dipugodocker/pdf-editor:frontend
-    # BACKEND_DATABASE: dipugodocker/pdf-editor:backend-db
 
     name: Install Cosign and test presence in path
     steps:
@@ -92,14 +91,12 @@ jobs:
           docker push $BACKEND_MERGE
           docker push $BACKEND_ROTATE
           docker push $FRONTEND
-        # docker push $BACKEND_DATABASE
 
       - name: sign
         run: |
           echo -n "${{secrets.COSIGNPASSWORD}}" | cosign sign --key cosign.key -a git_sha=$GITHUB_SHA $FRONTEND
           echo -n "${{secrets.COSIGNPASSWORD}}" | cosign sign --key cosign.key -a git_sha=$GITHUB_SHA $BACKEND_MERGE
           echo -n "${{secrets.COSIGNPASSWORD}}" | cosign sign --key cosign.key -a git_sha=$GITHUB_SHA $BACKEND_ROTATE
-        # echo -n "${{secrets.COSIGNPASSWORD}}" | cosign sign --key cosign.key -a git_sha=$GITHUB_SHA $BACKEND_DATABASE
 
       - name: verify
         run: |
@@ -108,31 +105,8 @@ jobs:
           echo "Backend images Verify"
           cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA $BACKEND_MERGE | jq .
           cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA $BACKEND_ROTATE | jq .
-        # cosign verify --key cosign.pub -a git_sha=$GITHUB_SHA $BACKEND_DATABASE | jq .
 
 
 
 # docker build . --file Dockerfile --tag dipugodocker/pdf-editor:0.$(($(date +%m) + 1))-rc
 # docker push dipugodocker/pdf-editor:0.$(($(date +%m) + 1))-rc
-  # heroku-preview:
-  #   needs: [docker_build]
-  #   runs-on: ubuntu-latest
-  #   environment: preview
-  #   steps:
-  #   - uses: actions/checkout@v1
-  #   - name: Login to Heroku Container registry
-  #     env:
-  #       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-  #     run: heroku container:login
-  #   - name: Build and push
-  #     env:
-  #       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-  #     run: |
-  #       cd backEnd/
-  #       heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
-  #   - name: Release
-  #     env:
-  #       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-  #     run: |
-  #       cd backEnd/
-  #       heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web

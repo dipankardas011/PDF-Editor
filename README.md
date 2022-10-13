@@ -1,6 +1,6 @@
 # Web-based PDF Editor 🥳
 
-website that can edit PDF's
+Website that can edit PDF's to give you a Merged or a Rotated version of it
 
 [![Golang and Docker CI](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml/badge.svg?branch=main)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CI.yaml) [![pages-build-deployment](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/pages/pages-build-deployment) [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/pdf-editor-web)](https://artifacthub.io/packages/search?repo=pdf-editor-web) [![CodeQL](https://github.com/dipankardas011/PDF-Editor/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/codeql-analysis.yml) [![\[Stable\](Backend-merger) Docker Signed Image Release](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD-backend-merge.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD-backend-merge.yaml) [![\[Stable\](Backend-rotate) Docker Signed Image Release](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD-backend-rotate.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD-backend-rotate.yaml) [![\[Stable\](Frontend) Stable Docker Signed Image Release](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD-frontend.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/CD-frontend.yaml) [![Datree-policy-Checks](https://github.com/dipankardas011/PDF-Editor/actions/workflows/Datree-CD.yaml/badge.svg?branch=main)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/Datree-CD.yaml) [![ImageScan [Aqua Trivy]](https://github.com/dipankardas011/PDF-Editor/actions/workflows/imageScan.yaml/badge.svg)](https://github.com/dipankardas011/PDF-Editor/actions/workflows/imageScan.yaml) [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/dipankardas011/PDF-Editor)[![CircleCI](https://dl.circleci.com/status-badge/img/gh/dipankardas011/PDF-Editor/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/dipankardas011/PDF-Editor/tree/main)
 
@@ -21,8 +21,8 @@ website that can edit PDF's
 
 Stage | Tags | Links | Status
 --|--|--|--
-Production | `0.8` | https://pdf-web-editor.azurewebsites.net/ | ✅
-Alpha | `latest` ; `0.9` | http://44.209.39.161/ | ✅
+Production | `1.0` | https://pdf-web-editor.azurewebsites.net/ | ✅
+Alpha | `latest` ; `1.0` | http://44.209.39.161/ | ✅
 
 > A Humble request! 🙏 don't expoit the resources I have used here
 
@@ -59,21 +59,7 @@ kubectl apply -k deploy/cluster/frontend
 ### Usage
 
 
-[Helm](https://helm.sh) must be installed to use the charts.  Please refer to
-Helm's [documentation](https://helm.sh/docs) to get started.
-
-Once Helm has been set up correctly, add the repo as follows:
-```
-helm repo add <alias> https://dipankardas011.github.io/PDF-Editor/
-helm install my-pdf-editor-helm pdf-editor-web/pdf-editor-helm --version 0.1.0
-
-```
-If you had already added this repo earlier, run `helm repo update` to retrieve
-the latest versions of the packages.  You can then run `helm search repo
-<alias>` to see the charts.
-
-To install the <chart-name> chart:
-```
+```bash
 kubectl create ns pdf
 helm repo add pdf-editor-web https://dipankardas011.github.io/PDF-Editor/
 helm install my-pdf-editor-helm pdf-editor-web/pdf-editor-helm --version 0.1.0
@@ -133,18 +119,11 @@ http://localhost
 # Blog Post on this project
 [![](./coverpage.png)](https://blog.kubesimplify.com/about-my-pdf-editor-project)
 
-# AWS Terraform
-![](./coverpageAWS.png)
-```bash
-cd IAC/AWS
-terraform init
-terraform apply
-# here you have to provide your access key and secret key to the input
-# go to
-<Elastic ip>:8080
-```
 
 # Decission Tree
+
+# Trace
+![](./trace.png)
 
 ## Frontend -> Backend-Merger
 ```mermaid
