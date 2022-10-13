@@ -16,6 +16,13 @@ jobs:
             docker run --rm xyz
 
       - run:
+          name: Unit-Testing backend-rotator
+          command: |
+            cd src/backend/rotator
+            docker build --target test -t xyz .
+            docker run --rm xyz
+
+      - run:
           name: Unit-Testing frontend
           command: |
             cd src/frontend
