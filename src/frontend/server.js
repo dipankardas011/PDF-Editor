@@ -5,14 +5,12 @@ import pkg from 'body-parser';
 const { urlencoded, json } = pkg;
 import multer from 'multer';
 import fetch from 'node-fetch';
-// import session from 'express-session';
-// import { request } from 'http';
 const app = express()
-
-// const client = require('prom-client');
 import prom from 'prom-client'
 const client = prom
 const register = new client.Registry();
+
+
 client.collectDefaultMetrics({
   app: 'frontend-metrics',
   prefix: 'node_',
@@ -69,11 +67,11 @@ app.post('/merge/upload', uploadM.array('myFile'), (req, res) => {
   var temp = execSync(`cd /app/uploadsM && mv ${req.files[1].filename} ${req.files[1].filename}.pdf`)
 
 
-  console.log('{"Source": "pdf-frontend", "FileNo": "1", "operation": "Merge", "Status": "Upload Ready"}');
+  console.info('{"Source": "pdf-frontend", "FileNo": "1", "operation": "Merge", "Status": "Upload Ready"}');
   var file = "/app/" + req.files[0].path + ".pdf"
   var ccc1 = execSync(`curl --raw -X POST --form "File=@${file}" http://backend-merge:8080/upload`, { encoding: "utf-8" })
 
-  console.log('{"Source": "pdf-frontend", "FileNo": "2", "operation": "Merge", "Status": "Upload Ready"}');
+  console.info('{"Source": "pdf-frontend", "FileNo": "2", "operation": "Merge", "Status": "Upload Ready"}');
   file = "/app/" + req.files[1].path + ".pdf"
   var ccc2 = execSync(`curl --raw -X POST --form "File=@${file}" http://backend-merge:8080/upload`, { encoding: "utf-8" })
   temp = execSync(`cd /app/uploadsM && rm -rf *`) // perodic clean up
@@ -89,6 +87,7 @@ app.post('/merge/upload', uploadM.array('myFile'), (req, res) => {
     console.log('{"Source": "pdf-frontend", "FileNo": ["1", "2"], "operation": "Merge", "Status": "Uploaded"}');
   } else {
     requestsProcessedError.inc(1)
+    console.error('{"type": "Critical", "operation": "Merge", "Message": "Error in Requesting Backend Services"}')
     storeError = (CHECK_ERRORS.exec(ccc1)) ? ccc1 : ccc2;
   }
 
@@ -126,7 +125,7 @@ app.post('/rotate/upload', uploadR.single('myFile'), (req, res) => {
   var temp = execSync(`cd /app/uploadsR && mv ${req.file.filename} ${req.file.filename}.pdf`)
 
 
-  console.log('{"Source": "pdf-frontend", "FileNo": "1", "operation": "Rotate", "Status": "Upload Ready"}');
+  console.info('{"Source": "pdf-frontend", "FileNo": "1", "operation": "Rotate", "Status": "Upload Ready"}');
   var file = "/app/" + req.file.path + ".pdf"
   var ccc1 = execSync(`curl --raw -X POST --form "Pages=${req.body.pages}" --form "File=@${file}" http://backend-rotate:8081/upload`, { encoding: "utf-8" })
   temp = execSync(`cd /app/uploadsR && rm -rf *`) // perodic clean up
@@ -142,6 +141,7 @@ app.post('/rotate/upload', uploadR.single('myFile'), (req, res) => {
     console.log('{"Source": "pdf-frontend", "FileNo": ["1"], "operation": "Rotate", "Status": "Uploaded"}');
   } else {
     storeError = ccc1;
+    console.error('{"type": "Critical", "operation": "Rotate", "Message": "Error in Requesting Backend Services"}')
     requestsProcessedError.inc(1)
   }
 
