@@ -12,7 +12,6 @@ metadata:
   namespace: pdf-editor-ns
   labels:
     name: pdf-editor-frontend
-  type: ClusterIP
 spec:
   selector:
     app: frontend-pdf
