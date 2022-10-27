@@ -34,8 +34,7 @@ metadata:
   namespace: pdf-editor-ns
 spec:
   rules:
-  - host: pdf-editor
-    http:
+  - http:
       paths:
       - pathType: Prefix
         path: "/"
