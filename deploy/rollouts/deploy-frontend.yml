@@ -83,7 +83,7 @@ spec:
     spec:
       containers:
       - name: pdf-editor-frontend
-        image: docker.io/dipugodocker/pdf-editor:0.8-frontend
+        image: docker.io/dipugodocker/pdf-editor:1.0-frontend
         resources:
           limits:
             memory: "128Mi"
