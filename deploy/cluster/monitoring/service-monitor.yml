@@ -3,7 +3,7 @@ kind: ServiceMonitor
 metadata:
   name: backend-merge-service-monitor
   labels:
-    release: prometheus
+    release: prom
     service-monitoring: backend-merge
   namespace: pdf-editor-ns
 spec:
@@ -20,7 +20,7 @@ kind: ServiceMonitor
 metadata:
   name: backend-rotate-service-monitor
   labels:
-    release: prometheus
+    release: prom
     service-monitoring: backend-rotate
   namespace: pdf-editor-ns
 spec:
@@ -37,7 +37,7 @@ kind: ServiceMonitor
 metadata:
   name: frontend-service-monitor
   labels:
-    release: prometheus
+    release: prom
     service-monitoring: frontend
   namespace: pdf-editor-ns
 spec:
