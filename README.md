@@ -116,6 +116,19 @@ make integration-test
 http://localhost
 ```
 
+# More Info
+<details>
+<summary><kbd>Production Cluster</kbd></summary>
+<h3>Civo Dashboard</h3>
+
+![image](https://user-images.githubusercontent.com/65275144/199149205-3c34da17-6b68-46ec-b2ce-737d09dc132c.png)
+
+<h3>Youtube Video</h3>
+    
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/bstJHtv0L_s/0.jpg)](http://www.youtube.com/watch?v=bstJHtv0L_s "Video Title")
+    
+</details>
+
 # Blog Post on this project
 [![](./coverpage.png)](https://blog.kubesimplify.com/about-my-pdf-editor-project)
 
@@ -169,16 +182,6 @@ flowchart LR;
     dd--->YY[END]:::BLUE;
 
 ```
-
-<details>
-<summary><kbd>Production Cluster</kbd></summary>
-<h3>Civo Dashboard</h3>
-
-![image](https://user-images.githubusercontent.com/65275144/199149205-3c34da17-6b68-46ec-b2ce-737d09dc132c.png)
-
-</p>
-
- </details>
 
 [**Changelog link**](./CHANGELOG.md)
 
