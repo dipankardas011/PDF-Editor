@@ -170,6 +170,16 @@ flowchart LR;
 
 ```
 
+<details>
+<summary><kbd>Production Cluster</kbd></summary>
+<h3>Civo Dashboard</h3>
+
+![image](https://user-images.githubusercontent.com/65275144/199149205-3c34da17-6b68-46ec-b2ce-737d09dc132c.png)
+
+</p>
+
+ </details>
+
 [**Changelog link**](./CHANGELOG.md)
 
 [**Code Of Conduct**](./code-of-conduct.md)
