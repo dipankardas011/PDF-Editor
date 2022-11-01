@@ -3,8 +3,13 @@ name: Datree-policy-Checks
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'deploy/cluster/**'
   pull_request:
     branches: [ main ]
+    paths:
+      - 'deploy/cluster/**'
+
 
 env:
   DATREE_TOKEN: ${{ secrets.DATREE_TOKEN }}

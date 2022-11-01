@@ -2,6 +2,9 @@ name: PR Checks 🤞🏼
 
 on:
   pull_request:
+    paths:
+    - 'src/**'
+    - 'build.sh'
     branches: [ main ]
 jobs:
   golang_build:

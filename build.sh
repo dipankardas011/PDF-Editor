@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# TODO: when removing the tag backend and frontend ensure all the are changed it used everywhere
-
 BACKEND_MERGE='dipugodocker/pdf-editor:backend-merge'
 BACKEND_ROTATE='dipugodocker/pdf-editor:backend-rotate'
 FRONTEND='dipugodocker/pdf-editor:frontend'
