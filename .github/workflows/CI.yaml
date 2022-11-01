@@ -2,6 +2,9 @@ name: Golang and Docker CI
 
 on:
   push:
+    paths:
+    - 'src/**'
+    - 'build.sh'
     branches: [ main ]
 
 jobs:
