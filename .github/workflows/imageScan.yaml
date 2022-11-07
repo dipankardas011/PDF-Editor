@@ -32,7 +32,7 @@ jobs:
           docker build -t docker.io/my-organization/my-appf:${{ github.sha }} .
 
       - name: Run Trivy vulnerability scanner(backend-merger)
-        uses: aquasecurity/trivy-action@cb606dfdb0d2b3698ace62192088ef4f5360b24f
+        uses: aquasecurity/trivy-action@9ab158e8597f3b310480b9a69402b419bc03dbd5
         with:
           image-ref: 'docker.io/my-organization/my-appm:${{ github.sha }}'
           format: 'template'
@@ -41,7 +41,7 @@ jobs:
           severity: 'CRITICAL'
 
       - name: Run Trivy vulnerability scanner(backend-rotator)
-        uses: aquasecurity/trivy-action@cb606dfdb0d2b3698ace62192088ef4f5360b24f
+        uses: aquasecurity/trivy-action@9ab158e8597f3b310480b9a69402b419bc03dbd5
         with:
           image-ref: 'docker.io/my-organization/my-appr:${{ github.sha }}'
           format: 'template'
@@ -50,7 +50,7 @@ jobs:
           severity: 'CRITICAL'
 
       - name: Run Trivy vulnerability scanner(frontend)
-        uses: aquasecurity/trivy-action@cb606dfdb0d2b3698ace62192088ef4f5360b24f
+        uses: aquasecurity/trivy-action@9ab158e8597f3b310480b9a69402b419bc03dbd5
         with:
           image-ref: 'docker.io/my-organization/my-appf:${{ github.sha }}'
           format: 'template'
