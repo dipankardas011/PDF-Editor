@@ -1,0 +1,268 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf-editor-frontend
+  labels:
+    app: frontend-pdf
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend-pdf
+  template:
+    metadata:
+      labels:
+        app: frontend-pdf
+    spec:
+      containers:
+      - name: pdf-editor-frontend
+        image: docker.io/dipugodocker/pdf-editor:1.0-frontend
+        resources:
+          requests:
+              memory: "50Mi"
+              cpu: "10m"
+          limits:
+            memory: "500Mi"
+            cpu: "100m"
+        livenessProbe:
+          httpGet:
+            port: 80
+            path: /
+          initialDelaySeconds: 5
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            port: 80
+            path: /about
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          name: web-port
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-merge
+spec:
+  selector:
+    app: backend-merger
+  ports:
+  - port: 8080
+    targetPort: backend-port
+    protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-rotate
+spec:
+  selector:
+    app: backend-rotate
+  ports:
+  - port: 8081
+    targetPort: rotate-port
+    protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-lb
+  labels:
+    type: frontend
+  annotations:
+    dev.okteto.com/auto-ingress: "true"
+spec:
+  selector:
+    app: frontend-pdf
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: web-port
+    protocol: TCP
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf-editor-backend
+  labels:
+    app: backend-merger
+spec:
+  selector:
+    matchLabels:
+      app: backend-merger
+  template:
+    metadata:
+      labels:
+        app: backend-merger
+    spec:
+      initContainers:
+        - name: pdf-files
+          image: docker.io/dipugodocker/pdf-editor:1.0-backend-merge
+          volumeMounts:
+          - name: backend
+            mountPath: /mnt
+          command: ["cp", "-vR", ".", "/mnt"]
+          resources:
+            requests:
+                memory: "10Mi"
+                cpu: "1m"
+            limits:
+              memory: "100Mi"
+              cpu: "50m"
+
+      containers:
+        - name: pdf-editor
+          image: docker.io/dipugodocker/pdf-editor:1.0-backend-merge
+          volumeMounts:
+          - name: backend
+            mountPath: /go/src/
+          resources:
+            requests:
+                memory: "50Mi"
+                cpu: "10m"
+            limits:
+              memory: "500Mi"
+              cpu: "100m"
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /greet
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /greet
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          ports:
+            - containerPort: 8080
+              name: backend-port
+      volumes:
+      - name: backend
+        emptyDir: {}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf-editor-rotate
+  labels:
+    app: backend-rotate
+spec:
+  selector:
+    matchLabels:
+      app: backend-rotate
+  template:
+    metadata:
+      labels:
+        app: backend-rotate
+    spec:
+      initContainers:
+        - name: pdf-files
+          image: docker.io/dipugodocker/pdf-editor:1.0-backend-rotate
+          volumeMounts:
+          - name: backend
+            mountPath: /mnt
+          command: ["cp", "-vR", ".", "/mnt"]
+          resources:
+            requests:
+                memory: "10Mi"
+                cpu: "1m"
+            limits:
+              memory: "100Mi"
+              cpu: "50m"
+
+      containers:
+        - name: pdf-editor
+          image: docker.io/dipugodocker/pdf-editor:1.0-backend-rotate
+          volumeMounts:
+          - name: backend
+            mountPath: /go/src/
+          resources:
+            requests:
+                memory: "50Mi"
+                cpu: "10m"
+            limits:
+              memory: "500Mi"
+              cpu: "100m"
+          livenessProbe:
+            httpGet:
+              port: 8081
+              path: /greet
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              port: 8081
+              path: /greet
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          ports:
+            - containerPort: 8081
+              name: rotate-port
+      volumes:
+      - name: backend
+        emptyDir: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger
+spec:
+  selector:
+    matchLabels:
+      app: jaeger
+  template:
+    metadata:
+      labels:
+        app: jaeger
+    spec:
+      containers:
+      - name: jaeger
+        image: jaegertracing/all-in-one:1.6
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5775
+        - containerPort: 6831
+        - containerPort: 6832
+        - containerPort: 5778
+        - containerPort: 16686
+        - containerPort: 14268
+        - containerPort: 9411
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: trace
+spec:
+  selector:
+    app: jaeger
+  ports:
+  - port: 16686
+    targetPort: 16686
+    name: web
+  - port: 14268
+    targetPort: 14268
+    name: conn
+
+---
