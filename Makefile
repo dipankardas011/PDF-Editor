@@ -29,6 +29,30 @@ integration-test:
 	chmod +x test-merger.sh && \
 	./test-merger.sh
 
+local-deploy-no-cd:
+	kubectl cluster-info
+	kubectl create ns monitoring
+	kubectl create ns pdf-editor-ns
+	helm install prom prometheus-community/kube-prometheus-stack -n monitoring
+	cd deploy/cluster && \
+		kubectl create -k backend && \
+		kubectl create -k frontend && \
+		kubectl create -f monitoring
+	helm upgrade --install loki-stack grafana/loki-stack --set fluent-bit.enabled=true,promtail.enabled=false -n monitoring
+	echo "use http://loki-stack-headless:3100 for connection"
+
+local-uninstall-no-cd:
+	kubectl cluster-info
+	cd deploy/cluster && \
+		kubectl delete -k backend && \
+		kubectl delete -k frontend && \
+		kubectl delete -f monitoring
+	helm remove prom -n monitoring
+	helm remove loki-stack
+	kubectl delete ns monitoring
+	kubectl delete ns pdf-editor-ns
+
+
 publish:
 	docker push dipugodocker/pdf-editor:frontend
 	docker push dipugodocker/pdf-editor:backend-merge
