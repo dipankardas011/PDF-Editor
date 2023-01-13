@@ -39,7 +39,7 @@ local-deploy-no-cd:
 		kubectl create -k frontend && \
 		kubectl create -f monitoring
 	helm upgrade --install loki-stack grafana/loki-stack --set fluent-bit.enabled=true,promtail.enabled=false -n monitoring
-	echo "use http://loki-stack-headless:3100 for connection"
+	echo "\nLoki URL for grafana datasource addition: http://loki-stack-headless:3100\nPrometheus URL for grafana datasource addition: http://prom-kube-prometheus-stack-prometheus:9090\nJaeger URL for grafana datasource addition: http://trace.pdf-editor-ns:16686"
 
 local-uninstall-no-cd:
 	kubectl cluster-info
@@ -47,8 +47,8 @@ local-uninstall-no-cd:
 		kubectl delete -k backend && \
 		kubectl delete -k frontend && \
 		kubectl delete -f monitoring
-	helm remove prom -n monitoring
-	helm remove loki-stack
+	helm uninstall prom -n monitoring
+	helm uninstall loki-stack -n monitoring
 	kubectl delete ns monitoring
 	kubectl delete ns pdf-editor-ns
 
