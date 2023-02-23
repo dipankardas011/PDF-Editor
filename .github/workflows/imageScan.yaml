@@ -62,3 +62,5 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: 'trivy-results.sarif'
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
