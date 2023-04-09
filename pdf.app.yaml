@@ -1,0 +1,168 @@
+---
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  name: napptive-sc
+spec:
+  components:
+    - name: napptive-sc
+      type: k8s-objects # Set to k8s-objects
+      properties:
+        objects:
+          - apiVersion: v1
+            kind: Secret
+            metadata:
+              name: napptive-sc
+            data:
+              url: SGkg8J+YiQ==
+
+---
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  name: pdf-editor
+spec:
+  components:
+    - name: frontend
+      type: webservice
+      properties:
+        image: docker.io/dipugodocker/pdf-editor:1.0-frontend
+        ports:
+          - port: 80
+            expose: true
+      traits:
+        - type: resource # Set to resource
+          properties:
+            requests: # (Optional) Specify resources in requests
+              cpu: 0.05 # (Optional) Specify the amount of cpu for requests. 1 by default
+              memory: "10Mi" # (Optional) Specify the amount of memory for requests. 2048Mi by default
+            limits: # (Optional) Specify resources in limits
+              cpu: 0.25 # (Optional) Specify the amount of cpu for limits. 1 by default
+              memory: "200Mi" # (Optional) Specify the amount of memory for limits. 2048Mi by default
+        - type: napptive-ingress
+          properties:
+            port: 80
+            path: /
+
+  workflow:
+    steps:
+      - name: apply-frontend
+        # Apply all the traits and the components in an application
+        type: apply-application # Set to apply-application 
+        # No arguments required
+      - name: slack-message
+        type: notification
+        properties:
+          slack: # set to slack  
+            # the Slack webhook address, please refer to: https://api.slack.com/messaging/webhooks
+            url:
+              # url can either specify in value or secretRef
+              value: "https://hooks.slack.com/services/AAABBBCdcddcde" # (Optional) slack url
+              secretRef: # (Optional) slack url in a secret
+                name: napptive-sc # (Required) secret name
+                key: url # (Required) secret key
+            message: # (Required) message to send
+              text: Hello from frontend!! # (Optional) text
+---
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  name: backend-merge
+spec:
+  components:
+    - name: backend-merge
+      type: webservice
+      properties:
+        image: docker.io/dipugodocker/pdf-editor:1.0-backend-merge
+        ports:
+          - port: 8080
+            expose: true
+      traits:
+        - type: resource # Set to resource
+          properties:
+            requests: # (Optional) Specify resources in requests
+              cpu: 0.1 # (Optional) Specify the amount of cpu for requests. 1 by default
+              memory: "50Mi" # (Optional) Specify the amount of memory for requests. 2048Mi by default
+            limits: # (Optional) Specify resources in limits
+              cpu: 0.25 # (Optional) Specify the amount of cpu for limits. 1 by default
+              memory: "200Mi" # (Optional) Specify the amount of memory for limits. 2048Mi by default
+        - type: init-container
+          properties:
+            name: backend-merge-init
+            image: docker.io/dipugodocker/pdf-editor:1.0-backend-merge
+            cmd: ["cp", "-vR", ".", "/mnt"] # (Optional) commands run in the init container
+            mountName: "empty-vol-rotate" # (Required) mount name of shared volume. workdir by default
+            appMountPath:  "/go/src/" # (Required) mount path of app container
+            initMountPath: "/mnt" # (Required) mount path of init container
+
+  workflow:
+    steps:
+      - name: apply-backend-merge
+        # Apply all the traits and the components in an application
+        type: apply-application # Set to apply-application 
+        # No arguments required
+      - name: slack-message
+        type: notification
+        properties:
+          slack: # set to slack  
+            # the Slack webhook address, please refer to: https://api.slack.com/messaging/webhooks
+            url:
+              # url can either specify in value or secretRef
+              value: "https://hooks.slack.com/services/AAABBBCdcddcde" # (Optional) slack url
+              secretRef: # (Optional) slack url in a secret
+                name: napptive-sc # (Required) secret name
+                key: url # (Required) secret key
+            message: # (Required) message to send
+              text: Hello from backend-merger!! # (Optional) text
+
+---
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  name: backend-rotate
+spec:
+  components:
+    - name: backend-rotate
+      type: webservice
+      properties:
+        image: docker.io/dipugodocker/pdf-editor:1.0-backend-rotate
+        ports:
+          - port: 8081
+            expose: true
+      traits:
+        - type: resource # Set to resource
+          properties:
+            requests: # (Optional) Specify resources in requests
+              cpu: 0.1 # (Optional) Specify the amount of cpu for requests. 1 by default
+              memory: "50Mi" # (Optional) Specify the amount of memory for requests. 2048Mi by default
+            limits: # (Optional) Specify resources in limits
+              cpu: 0.25 # (Optional) Specify the amount of cpu for limits. 1 by default
+              memory: "200Mi" # (Optional) Specify the amount of memory for limits. 2048Mi by default
+        - type: init-container
+          properties:
+            name: backend-merge-init
+            image: docker.io/dipugodocker/pdf-editor:1.0-backend-rotate
+            cmd: ["cp", "-vR", ".", "/mnt"] # (Optional) commands run in the init container
+            mountName: "empty-vol-rotate" # (Required) mount name of shared volume. workdir by default
+            appMountPath:  "/go/src/" # (Required) mount path of app container
+            initMountPath: "/mnt" # (Required) mount path of init container
+  workflow:
+    steps:
+      - name: apply-backend-rotate
+        # Apply all the traits and the components in an application
+        type: apply-application # Set to apply-application 
+        # No arguments required
+      - name: slack-message
+        type: notification
+        properties:
+          slack: # set to slack  
+            # the Slack webhook address, please refer to: https://api.slack.com/messaging/webhooks
+            url:
+              # url can either specify in value or secretRef
+              value: "https://hooks.slack.com/services/AAABBBCdcddcde" # (Optional) slack url
+              secretRef: # (Optional) slack url in a secret
+                name: napptive-sc # (Required) secret name
+                key: url # (Required) secret key
+            message: # (Required) message to send
+              text: Hello from backend-rotate!! # (Optional) text
+...
