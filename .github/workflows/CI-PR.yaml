@@ -13,7 +13,7 @@ jobs:
     environment: testing
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: 🧪 backend Merger
       run: |
         cd src/backend/merger
@@ -31,7 +31,7 @@ jobs:
     environment: testing
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: 🧪 frontend
       run: |
         cd src/frontend
@@ -46,7 +46,7 @@ jobs:
     environment: testing
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Build the Docker image
       run: |
         cd src/backend/merger
