@@ -21,7 +21,7 @@ RUN apk add qpdf
 WORKDIR /go/src
 
 
-FROM golang:1.18 as test
+FROM golang:1.24.2 as test
 RUN apt -y update
 RUN apt install -y qpdf
 WORKDIR /go/src
